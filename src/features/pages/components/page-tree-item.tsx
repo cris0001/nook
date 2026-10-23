@@ -4,6 +4,7 @@ import { ChevronRight, Plus } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
 import { renamePage } from '@/lib/data/pages';
+import { usePermissions } from '@/hooks/use-can';
 import { cn } from '@/lib/utils';
 
 import { useCreatePage } from '../hooks/use-create-page';
@@ -34,6 +35,8 @@ export function PageTreeItem({ node, depth }: { node: PageNode; depth: number })
   const renaming = useSidebarUiStore((s) => s.renamingId === page.id);
   const setRenaming = useSidebarUiStore((s) => s.setRenaming);
   const renameInput = useRef<HTMLInputElement>(null);
+  const allowed = usePermissions();
+  const canEdit = allowed('page.edit');
 
   // Focus after the frame in which a menu (if that's where Rename came from) closes —
   // an autoFocus would lose focus to the closing menu. The hidden mobile copy of the
@@ -46,7 +49,7 @@ export function PageTreeItem({ node, depth }: { node: PageNode; depth: number })
   const drop = useSidebarUiStore((s) =>
     s.dropTarget?.id === page.id ? s.dropTarget.position : null,
   );
-  const drag = useDraggable({ id: page.id });
+  const drag = useDraggable({ id: page.id, disabled: !canEdit });
   const { setNodeRef: setDropRef } = useDroppable({ id: page.id });
   const Icon = PAGE_TYPE_ICON[page.type];
   const indent = depth * INDENT_PX + 4;
@@ -135,6 +138,7 @@ export function PageTreeItem({ node, depth }: { node: PageNode; depth: number })
             to="/p/$pageId"
             params={{ pageId: page.id }}
             onDoubleClick={(event) => {
+              if (!canEdit) return;
               event.preventDefault();
               setRenaming(page.id);
             }}
@@ -162,15 +166,17 @@ export function PageTreeItem({ node, depth }: { node: PageNode; depth: number })
           renamable
           className="lg:hidden lg:group-has-focus-visible/row:flex lg:group-hover/row:flex lg:data-[state=open]:flex"
         />
-        <button
-          type="button"
-          aria-label={t.addSubpage}
-          title={t.addSubpage}
-          onClick={() => void addInside()}
-          className="text-muted-foreground hover:bg-hover flex size-6 shrink-0 items-center justify-center rounded lg:hidden lg:group-has-focus-visible/row:flex lg:group-hover/row:flex"
-        >
-          <Plus className="size-3.5" />
-        </button>
+        {allowed('page.create') ? (
+          <button
+            type="button"
+            aria-label={t.addSubpage}
+            title={t.addSubpage}
+            onClick={() => void addInside()}
+            className="text-muted-foreground hover:bg-hover flex size-6 shrink-0 items-center justify-center rounded lg:hidden lg:group-has-focus-visible/row:flex lg:group-hover/row:flex"
+          >
+            <Plus className="size-3.5" />
+          </button>
+        ) : null}
       </div>
 
       {expanded && children.length > 0 ? (

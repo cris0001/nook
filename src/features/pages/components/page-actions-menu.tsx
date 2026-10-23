@@ -7,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { usePermissions } from '@/hooks/use-can';
 import { cn } from '@/lib/utils';
 
 import { useDuplicatePage } from '../hooks/use-duplicate-page';
@@ -30,6 +31,11 @@ export function PageActionsMenu({
   const duplicate = useDuplicatePage();
   const trash = useTrashPage();
   const setRenaming = useSidebarUiStore((s) => s.setRenaming);
+  const allowed = usePermissions();
+
+  if (!allowed('page.edit')) {
+    return null;
+  }
 
   return (
     <DropdownMenu>
@@ -54,11 +60,15 @@ export function PageActionsMenu({
           <Copy />
           {t.actions.duplicate}
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onSelect={() => void trash(pageId)}>
-          <Trash2 />
-          {t.actions.moveToTrash}
-        </DropdownMenuItem>
+        {allowed('page.trash') ? (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive" onSelect={() => void trash(pageId)}>
+              <Trash2 />
+              {t.actions.moveToTrash}
+            </DropdownMenuItem>
+          </>
+        ) : null}
       </DropdownMenuContent>
     </DropdownMenu>
   );

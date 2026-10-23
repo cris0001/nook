@@ -1,9 +1,10 @@
 import { Link } from '@tanstack/react-router';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { pl } from 'date-fns/locale';
-import { Star } from 'lucide-react';
+import { Eye, Star } from 'lucide-react';
 import { Fragment } from 'react';
 
+import { useCommonTranslation } from '@/lib/i18n/common';
 import { cn } from '@/lib/utils';
 import type { Page } from '@/schemas/page.schema';
 import { useLocaleStore } from '@/stores/locale.store';
@@ -17,8 +18,9 @@ import { PageActionsMenu } from './page-actions-menu';
 // Slim bar above a page: breadcrumbs on the left (ancestors are links, the page itself
 // is plain text), the favorite star and the actions menu on the right. Breadcrumbs
 // truncate rather than wrap so the bar keeps one line on phones.
-export function PageHeader({ page }: { page: Page }) {
+export function PageHeader({ page, readOnly }: { page: Page; readOnly: boolean }) {
   const t = usePagesTranslation();
+  const common = useCommonTranslation();
   const state = usePages();
   const ancestors = state.status === 'ready' ? ancestorsOf(state.pages, page.id) : [];
   const starred = page.favoritedAt !== null;
@@ -52,6 +54,12 @@ export function PageHeader({ page }: { page: Page }) {
         </ol>
       </nav>
 
+      {readOnly ? (
+        <span className="bg-well text-muted-foreground mr-1 flex h-6 items-center gap-1 rounded-full px-2 text-xs whitespace-nowrap">
+          <Eye className="size-3.5" />
+          {common.readOnly}
+        </span>
+      ) : null}
       <span className="text-muted-foreground mr-1 hidden text-xs whitespace-nowrap sm:inline">
         {t.edited(
           formatDistanceToNowStrict(page.updatedAt, {

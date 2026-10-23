@@ -1,6 +1,7 @@
 import { FileQuestion, Smile } from 'lucide-react';
 import { useEffect, useRef, type ReactNode } from 'react';
 
+import { usePermissions } from '@/hooks/use-can';
 import { renamePage } from '@/lib/data/pages';
 import type { Page } from '@/schemas/page.schema';
 import { useOpenPage } from '../hooks/use-open-page';
@@ -14,7 +15,14 @@ import { PageIconPicker } from './page-icon-picker';
 // live with it. A brand-new (empty) page focuses its title, so typing goes straight
 // into it. The body below the title depends on the page type and is supplied by the
 // route (`body`), so this feature doesn't need to know about databases, editors, ….
-export function PageView({ pageId, body }: { pageId: string; body?: (page: Page) => ReactNode }) {
+export function PageView({
+  pageId,
+  body,
+}: {
+  pageId: string;
+  body?: (page: Page, editable: boolean) => ReactNode;
+}) {
+  const allowed = usePermissions();
   const t = usePagesTranslation();
   const state = usePage(pageId);
   useOpenPage(pageId);
@@ -45,34 +53,40 @@ export function PageView({ pageId, body }: { pageId: string; body?: (page: Page)
   }
 
   const { page } = state;
+  const editable = allowed(page.type === 'record' ? 'record.edit' : 'page.edit');
   return (
     <>
-      <PageHeader page={page} />
+      <PageHeader page={page} readOnly={!editable} />
       <article className="group/page w-full min-w-0 px-4 pt-6 pb-16 sm:px-8 lg:px-12 lg:pt-10">
-        <PageIconPicker pageId={page.id} hasIcon={page.icon !== null}>
-          {page.icon ? (
-            <button
-              type="button"
-              aria-label={t.icon.change}
-              className="hover:bg-hover mb-2 -ml-1 rounded-lg px-1 text-5xl leading-tight"
-            >
-              {page.icon}
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="text-muted-foreground hover:bg-hover hover:text-foreground mb-2 -ml-2 flex h-8 items-center gap-1.5 rounded-md px-2 text-sm transition-opacity lg:opacity-0 lg:group-hover/page:opacity-100 lg:focus-visible:opacity-100 lg:data-[state=open]:opacity-100"
-            >
-              <Smile className="size-4" />
-              {t.icon.add}
-            </button>
-          )}
-        </PageIconPicker>
+        {editable ? (
+          <PageIconPicker pageId={page.id} hasIcon={page.icon !== null}>
+            {page.icon ? (
+              <button
+                type="button"
+                aria-label={t.icon.change}
+                className="hover:bg-hover mb-2 -ml-1 rounded-lg px-1 text-5xl leading-tight"
+              >
+                {page.icon}
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="text-muted-foreground hover:bg-hover hover:text-foreground mb-2 -ml-2 flex h-8 items-center gap-1.5 rounded-md px-2 text-sm transition-opacity lg:opacity-0 lg:group-hover/page:opacity-100 lg:focus-visible:opacity-100 lg:data-[state=open]:opacity-100"
+              >
+                <Smile className="size-4" />
+                {t.icon.add}
+              </button>
+            )}
+          </PageIconPicker>
+        ) : page.icon ? (
+          <p className="mb-2 text-5xl leading-tight">{page.icon}</p>
+        ) : null}
         <input
           ref={titleInput}
           key={page.id}
           // A fresh page lands with the cursor in its title, ready to type.
-          autoFocus={page.title === ''}
+          autoFocus={editable && page.title === ''}
+          readOnly={!editable}
           defaultValue={page.title}
           placeholder={t.titlePlaceholder}
           aria-label={t.titlePlaceholder}
@@ -90,7 +104,7 @@ export function PageView({ pageId, body }: { pageId: string; body?: (page: Page)
           }}
           className="font-heading placeholder:text-muted-foreground/50 w-full bg-transparent text-[30px] leading-tight font-bold tracking-tight outline-none [font-variation-settings:'opsz'_96] sm:text-[36px]"
         />
-        {body?.(page)}
+        {body?.(page, editable)}
       </article>
     </>
   );

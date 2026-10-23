@@ -88,13 +88,27 @@ Three layers per resource: **api fn → hook → component**.
 - Every table row has `id` (uuid), `createdAt`, `updatedAt`; deletes are soft where
   the trash needs them
 
+## Roles and permissions
+
+- Roles: `owner`, `editor`, `viewer` (`lib/permissions`). One matrix (`GRANTS`)
+  maps each role to the actions it may perform (`page.create`, `page.edit`,
+  `page.trash`, `page.deleteForever`, `database.editSchema`, `record.edit`,
+  `workspace.manage`)
+- Components ask `useCan(action)` (or `usePermissions()` for several checks) and
+  hide or disable what the role can't do — never check the role name directly
+- Every new feature that writes data adds or reuses an action here
+- No auth yet: the role comes from `role.store` and a switcher in the sidebar.
+  With a backend the role comes from the session, and the server enforces the
+  same rules — the UI checks are only for UX
+
 ## Code style
 
 - File names kebab-case (`page-tree.tsx`, `use-pages.ts`, `pages-ui.store.ts`)
 - Components PascalCase, hooks `useX`, functions camelCase, constants
   SCREAMING_SNAKE_CASE, types PascalCase
-- A short comment above each component / hook / non-trivial function saying WHY it
-  exists or works this way — never restating the code ("fetch data")
+- No comments by default. Comment only something genuinely non-standard that the
+  code can't say itself: a browser quirk, a workaround, a non-obvious convention
+  (e.g. "the last option of the status select means done"). Never restate the code
 - Comments, code and commits in English
 - Discriminated unions for multi-state values
 - Prettier: single quotes, semicolons, trailing commas, width 100

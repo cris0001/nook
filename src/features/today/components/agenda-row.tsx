@@ -4,6 +4,7 @@ import { enGB, pl } from 'date-fns/locale';
 import { TriangleAlert } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { useCan } from '@/hooks/use-can';
 import { setRecordValue } from '@/lib/data/databases';
 import { cn } from '@/lib/utils';
 import { useLocaleStore } from '@/stores/locale.store';
@@ -18,6 +19,7 @@ export function AgendaRow({ item, late }: { item: AgendaItem; late: boolean }) {
   const locale = useLocaleStore((s) => s.locale);
   const { record, source, complete, status } = item;
   const title = record.title || t.untitled;
+  const canEdit = useCan('record.edit');
 
   function markDone() {
     if (!complete) return;
@@ -42,7 +44,7 @@ export function AgendaRow({ item, late }: { item: AgendaItem; late: boolean }) {
         type="button"
         aria-label={t.markDone}
         title={t.markDone}
-        disabled={!complete}
+        disabled={!complete || !canEdit}
         onClick={markDone}
         className="border-muted-foreground/60 hover:border-primary hover:bg-primary-tint size-4 shrink-0 rounded-full border-[1.5px] transition-colors disabled:opacity-30"
       />

@@ -17,15 +17,29 @@ const SAVE_DELAY_MS = 400;
 
 // The block editor under a page title. Loads the stored body once, then owns it:
 // changes are saved shortly after typing pauses, and flushed when leaving the page.
-export function DocumentEditor({ pageId }: { pageId: string }) {
+export function DocumentEditor({
+  pageId,
+  editable = true,
+}: {
+  pageId: string;
+  editable?: boolean;
+}) {
   const state = usePageContent(pageId);
   if (state.status === 'loading') {
     return null;
   }
-  return <Editor key={pageId} pageId={pageId} initial={state.doc} />;
+  return <Editor key={pageId} pageId={pageId} initial={state.doc} editable={editable} />;
 }
 
-function Editor({ pageId, initial }: { pageId: string; initial: JSONContent | null }) {
+function Editor({
+  pageId,
+  initial,
+  editable,
+}: {
+  pageId: string;
+  initial: JSONContent | null;
+  editable: boolean;
+}) {
   const t = useDocumentsTranslation();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const save = useMemo(
@@ -47,12 +61,17 @@ function Editor({ pageId, initial }: { pageId: string; initial: JSONContent | nu
       }),
       SlashCommand,
     ],
+    editable,
     content: initial ?? '',
     editorProps: { attributes: { class: 'nook-prose' } },
     onUpdate: ({ editor: e }) => save(e.getJSON()),
   });
 
   useEffect(() => () => save.flush(), [save]);
+
+  useEffect(() => {
+    editor.setEditable(editable);
+  }, [editor, editable]);
 
   // An empty transaction makes the placeholders redraw in the new language.
   useEffect(() => {
@@ -62,8 +81,12 @@ function Editor({ pageId, initial }: { pageId: string; initial: JSONContent | nu
   return (
     <div ref={setContainer} className="relative mt-4">
       <EditorContent editor={editor} />
-      <BlockHandle editor={editor} container={container} />
-      <SlashMenu />
+      {editable ? (
+        <>
+          <BlockHandle editor={editor} container={container} />
+          <SlashMenu />
+        </>
+      ) : null}
     </div>
   );
 }

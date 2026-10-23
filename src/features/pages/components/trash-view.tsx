@@ -5,6 +5,7 @@ import { RotateCcw, Trash2 } from 'lucide-react';
 import { useConfirm } from '@/stores/confirm.store';
 import { useLocaleStore } from '@/stores/locale.store';
 
+import { usePermissions } from '@/hooks/use-can';
 import { deletePageForever, restorePage } from '@/lib/data/pages';
 import { useTrash } from '../hooks/use-trash';
 import { usePagesTranslation } from '../i18n';
@@ -17,6 +18,7 @@ export function TrashView() {
   const locale = useLocaleStore((s) => s.locale);
   const state = useTrash();
   const confirm = useConfirm();
+  const allowed = usePermissions();
 
   if (state.status === 'loading') {
     return null;
@@ -59,24 +61,28 @@ export function TrashView() {
                   <p className="truncate text-sm font-medium">{page.title || t.untitled}</p>
                   <p className="text-muted-foreground text-xs">{t.trash.deletedAgo(when)}</p>
                 </div>
-                <button
-                  type="button"
-                  aria-label={t.trash.restore}
-                  title={t.trash.restore}
-                  onClick={() => void restorePage(page.id)}
-                  className="hover:bg-hover flex size-10 items-center justify-center rounded-lg lg:size-8"
-                >
-                  <RotateCcw className="size-4" />
-                </button>
-                <button
-                  type="button"
-                  aria-label={t.trash.deleteForever}
-                  title={t.trash.deleteForever}
-                  onClick={() => void onDelete(page.id, page.title)}
-                  className="text-destructive hover:bg-hover flex size-10 items-center justify-center rounded-lg lg:size-8"
-                >
-                  <Trash2 className="size-4" />
-                </button>
+                {allowed('page.trash') ? (
+                  <button
+                    type="button"
+                    aria-label={t.trash.restore}
+                    title={t.trash.restore}
+                    onClick={() => void restorePage(page.id)}
+                    className="hover:bg-hover flex size-10 items-center justify-center rounded-lg lg:size-8"
+                  >
+                    <RotateCcw className="size-4" />
+                  </button>
+                ) : null}
+                {allowed('page.deleteForever') ? (
+                  <button
+                    type="button"
+                    aria-label={t.trash.deleteForever}
+                    title={t.trash.deleteForever}
+                    onClick={() => void onDelete(page.id, page.title)}
+                    className="text-destructive hover:bg-hover flex size-10 items-center justify-center rounded-lg lg:size-8"
+                  >
+                    <Trash2 className="size-4" />
+                  </button>
+                ) : null}
               </li>
             );
           })}

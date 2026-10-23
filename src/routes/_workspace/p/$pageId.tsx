@@ -11,7 +11,7 @@ export const Route = createFileRoute('/_workspace/p/$pageId')({
 
 // Picks what goes under the title for each page type. Composing here keeps the pages
 // and databases features independent of each other.
-function pageBody(page: Page) {
+function pageBody(page: Page, editable: boolean) {
   switch (page.type) {
     case 'database':
       return <DatabaseView databaseId={page.id} />;
@@ -20,11 +20,11 @@ function pageBody(page: Page) {
         <>
           <RecordProperties record={page} />
           <hr className="my-6" />
-          <DocumentEditor pageId={page.id} />
+          <DocumentEditor pageId={page.id} editable={editable} />
         </>
       );
     case 'document':
-      return <DocumentEditor pageId={page.id} />;
+      return <DocumentEditor pageId={page.id} editable={editable} />;
     default:
       return null;
   }

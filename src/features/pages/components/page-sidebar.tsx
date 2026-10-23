@@ -3,6 +3,7 @@ import { House, Trash2 } from 'lucide-react';
 
 import { BrandMark } from '@/components/brand';
 import { LanguageToggle } from '@/components/language-toggle';
+import { RoleSwitcher } from '@/components/role-switcher';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { cn } from '@/lib/utils';
 
@@ -51,8 +52,9 @@ export function PageSidebar({ todayCount = 0 }: { todayCount?: number }) {
         <Trash2 className="size-4 shrink-0" />
         {t.trash.title}
       </Link>
-      <div className="mt-1 flex items-center justify-between">
+      <div className="mt-1 flex items-center gap-0.5">
         <LanguageToggle />
+        <RoleSwitcher className="mr-auto" />
         <ThemeToggle />
       </div>
     </div>

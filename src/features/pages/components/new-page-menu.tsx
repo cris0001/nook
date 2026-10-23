@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useCan } from '@/hooks/use-can';
 
 import { useCreatePage } from '../hooks/use-create-page';
 import { usePagesTranslation } from '../i18n';
@@ -20,6 +21,11 @@ const KINDS = [
 export function NewPageMenu() {
   const t = usePagesTranslation();
   const createPage = useCreatePage();
+  const canCreate = useCan('page.create');
+
+  if (!canCreate) {
+    return null;
+  }
 
   return (
     <DropdownMenu>
