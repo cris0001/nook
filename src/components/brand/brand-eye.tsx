@@ -4,10 +4,10 @@ import { cn } from '@/lib/utils';
 
 // How far the iris may travel from center, in viewBox units (the eye is 100 wide).
 // Sized so the iris just kisses the inner edge of the ring at full look.
-const IRIS_TRAVEL = 17;
+const IRIS_TRAVEL = 14;
 
-// One "O" of the nOOk wordmark drawn as an eye: white sclera inside a ring a touch lighter
-// than the letters, a brand-colored iris, a black pupil and two catchlights.
+// One "O" of the nOOk wordmark drawn as an eye: white sclera inside a ring the weight
+// of the letters, a brand-colored iris, a black pupil and two catchlights.
 // useEyeTracking only writes --look-x/--look-y (-1…1) onto the svg, and the iris group
 // turns them into a `translate` in viewBox units, so the same values work at any
 // rendered size. Blinking squashes the whole svg via `scale` — a separate property,
@@ -37,16 +37,16 @@ export function BrandEye({ eyeRef, closed }: { eyeRef: Ref<SVGSVGElement>; close
         </radialGradient>
         {/* Keeps the iris inside the white when it looks all the way to one side. */}
         <clipPath id={scleraId}>
-          <circle cx="50" cy="50" r="36" />
+          <circle cx="50" cy="50" r="32" />
         </clipPath>
       </defs>
       <circle
         cx="50"
         cy="50"
-        r="43"
+        r="41"
         className="fill-(--brand-eye-white)"
         stroke="currentColor"
-        strokeWidth="14"
+        strokeWidth="18"
       />
       <g clipPath={`url(#${scleraId})`}>
         <g
