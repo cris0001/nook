@@ -17,7 +17,7 @@
   --background: #ffffff;
   --foreground: #1b1a17;
   --muted: #f2f0ea;
-  --muted-foreground: #7d796f;
+  --muted-foreground: #6f6b62;
   --border: #e3e0d7;
   --divider: #efede6;
   --sidebar: #efeee9;
@@ -70,16 +70,16 @@
 }
 
 .dark {
-  --background: #151513;
-  --foreground: #ecebe5;
-  --muted: #1f1e1b;
-  --muted-foreground: #8a867c;
-  --border: #2a2925;
-  --divider: #211f1c;
-  --sidebar: #0b0b0a;
-  --well: #22211e;
-  --surface: #1a1a17;
-  --hover: rgb(255 250 235 / 0.06);
+  --background: #171715;
+  --foreground: #f3f2ee;
+  --muted: #24231f;
+  --muted-foreground: #aeaaa0;
+  --border: #383631;
+  --divider: #2b2a26;
+  --sidebar: #0e0e0d;
+  --well: #2b2a26;
+  --surface: #1f1e1b;
+  --hover: rgb(255 250 235 / 0.075);
 
   --primary: #a3e635;
   --primary-foreground: #0b0b0b;
@@ -87,7 +87,7 @@
   --primary-tint: rgb(163 230 53 / 0.16);
   --primary-tint-foreground: #a3e635;
   --ring: #a3e635;
-  --destructive: #f87171;
+  --destructive: #ff8f7e;
 
   /* Status dots: vivid single colors per option, used where a tag would be too loud. */
   --dot-gray: #8a877e;
@@ -100,24 +100,24 @@
   --dot-pink: #ec79b1;
   --dot-red: #f0686c;
 
-  --tag-gray-bg: #373735;
-  --tag-gray-fg: #d4d4d0;
-  --tag-brown-bg: #4a3a32;
-  --tag-brown-fg: #e6cdbf;
-  --tag-orange-bg: #5a3a1c;
-  --tag-orange-fg: #f3c79c;
-  --tag-yellow-bg: #54471a;
-  --tag-yellow-fg: #f1dd96;
-  --tag-green-bg: #24442a;
-  --tag-green-fg: #b2e0b5;
-  --tag-blue-bg: #1f3a59;
-  --tag-blue-fg: #b4d1f2;
-  --tag-purple-bg: #3d2f55;
-  --tag-purple-fg: #d5c2ee;
-  --tag-pink-bg: #52293d;
-  --tag-pink-fg: #f0bcd3;
-  --tag-red-bg: #5a2723;
-  --tag-red-fg: #f6b8b0;
+  --tag-gray-bg: #3a3935;
+  --tag-gray-fg: #e4e2dc;
+  --tag-brown-bg: #4d3d34;
+  --tag-brown-fg: #efd8cb;
+  --tag-orange-bg: #5d3d1e;
+  --tag-orange-fg: #f8d2ab;
+  --tag-yellow-bg: #574a1c;
+  --tag-yellow-fg: #f5e3a6;
+  --tag-green-bg: #26472c;
+  --tag-green-fg: #c0e8c3;
+  --tag-blue-bg: #213d5e;
+  --tag-blue-fg: #c2dbf6;
+  --tag-purple-bg: #40315a;
+  --tag-purple-fg: #dccbf2;
+  --tag-pink-bg: #55293f;
+  --tag-pink-fg: #f4c8db;
+  --tag-red-bg: #5e2925;
+  --tag-red-fg: #f9c4bb;
 }
 
 @theme inline {
