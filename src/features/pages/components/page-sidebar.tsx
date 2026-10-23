@@ -26,14 +26,14 @@ export function PageSidebar() {
 
       <nav aria-label={t.pages} className="min-h-0 flex-1 overflow-y-auto px-2">
         <FavoritesList />
-        <p className="text-muted-foreground px-2 pb-1 text-xs font-medium">{t.pages}</p>
+        <p className="eyebrow px-2 pt-2 pb-2">{t.pages}</p>
         <PageTree />
       </nav>
 
       <div className="px-2 pb-1">
         <Link
           to="/trash"
-          className="text-muted-foreground hover:bg-hover data-[status=active]:bg-hover data-[status=active]:text-foreground flex h-10 items-center gap-2 rounded-md px-2 text-sm lg:h-8"
+          className="text-muted-foreground hover:bg-hover data-[status=active]:bg-background data-[status=active]:text-foreground flex h-10 items-center gap-2 rounded-sm px-2 text-sm data-[status=active]:shadow-[inset_2px_0_0_var(--color-primary)] lg:h-8"
         >
           <Trash2 className="size-4" />
           {t.trash.title}

@@ -17,7 +17,7 @@ export function PageLinkRow({ page, className }: { page: Page; className?: strin
       to="/p/$pageId"
       params={{ pageId: page.id }}
       className={cn(
-        'text-muted-foreground hover:bg-hover data-[status=active]:bg-hover data-[status=active]:text-foreground flex h-10 min-w-0 items-center gap-2 rounded-md px-2 text-sm data-[status=active]:font-medium lg:h-8',
+        'text-muted-foreground hover:bg-hover data-[status=active]:bg-background data-[status=active]:text-foreground flex h-10 min-w-0 items-center gap-2 rounded-sm px-2 text-sm data-[status=active]:font-medium data-[status=active]:shadow-[inset_2px_0_0_var(--color-primary)] lg:h-8',
         className,
       )}
     >

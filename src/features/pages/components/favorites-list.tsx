@@ -15,7 +15,7 @@ export function FavoritesList() {
 
   return (
     <div className="pb-3">
-      <p className="text-muted-foreground px-2 pb-1 text-xs font-medium">{t.favorites}</p>
+      <p className="eyebrow px-2 pt-2 pb-2">{t.favorites}</p>
       <ul>
         {favorites.map((page) => (
           <li key={page.id}>

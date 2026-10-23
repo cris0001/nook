@@ -44,7 +44,7 @@ export function SlashMenu() {
   return (
     <div
       role="listbox"
-      className="bg-background fixed z-50 overflow-hidden rounded-lg border p-1 shadow-lg"
+      className="bg-background fixed z-50 overflow-hidden rounded-md border p-1 shadow-lg"
       style={{
         left,
         width: WIDTH,

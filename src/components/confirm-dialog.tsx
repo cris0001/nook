@@ -14,7 +14,7 @@ export function ConfirmDialog() {
     <AlertDialog.Root open={options !== null} onOpenChange={(open) => !open && answer(false)}>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed inset-0 z-50 bg-black/40" />
-        <AlertDialog.Content className="bg-background fixed top-1/2 left-1/2 z-50 w-[min(26rem,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 rounded-xl border p-5 shadow-xl">
+        <AlertDialog.Content className="bg-background fixed top-1/2 left-1/2 z-50 w-[min(26rem,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 rounded-md border p-5 shadow-xl">
           <AlertDialog.Title className="font-heading text-lg font-semibold">
             {options?.title}
           </AlertDialog.Title>

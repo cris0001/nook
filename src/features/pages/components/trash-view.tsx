@@ -41,7 +41,7 @@ export function TrashView() {
       {state.pages.length === 0 ? (
         <p className="text-muted-foreground mt-10 text-sm">{t.trash.empty}</p>
       ) : (
-        <ul className="mt-6 divide-y rounded-xl border">
+        <ul className="mt-6 divide-y rounded-md border">
           {state.pages.map((page) => {
             const Icon = PAGE_TYPE_ICON[page.type];
             const when = formatDistanceToNow(page.deletedAt ?? 0, {

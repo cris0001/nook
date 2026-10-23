@@ -26,7 +26,7 @@ export function NewPageMenu() {
       <DropdownMenuTrigger
         aria-label={t.newPage}
         title={t.newPage}
-        className="bg-primary text-primary-foreground flex h-8 w-11 shrink-0 items-center justify-center rounded-full transition-[filter] hover:brightness-95 lg:h-7 lg:w-10"
+        className="bg-primary text-primary-foreground flex h-8 w-11 shrink-0 items-center justify-center rounded-full shadow-[inset_0_0_0_1px_rgb(0_0_0/0.12)] transition-[filter] hover:brightness-95 lg:h-7 lg:w-10"
       >
         <Plus className="size-4" strokeWidth={2.5} />
       </DropdownMenuTrigger>

@@ -30,7 +30,7 @@ export function TableView({
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr className="border-y">
-            <th className="text-muted-foreground min-w-56 px-2 text-left font-normal">{t.name}</th>
+            <th className="eyebrow min-w-56 px-2 text-left font-normal">{t.name}</th>
             {columns.map((property) => (
               <th key={property.id} className="min-w-40 border-l p-0">
                 <PropertyHeader databaseId={database.id} property={property} />

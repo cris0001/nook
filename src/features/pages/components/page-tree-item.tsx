@@ -47,7 +47,7 @@ export function PageTreeItem({ node, depth }: { node: PageNode; depth: number })
         }}
         {...drag.listeners}
         className={cn(
-          'group/row hover:bg-hover has-[[data-status=active]]:bg-hover relative flex h-10 items-center gap-1 rounded-md pr-1 lg:h-8',
+          'group/row hover:bg-hover has-[[data-status=active]]:bg-background has-[[data-status=active]]:shadow-[inset_2px_0_0_var(--color-primary)] relative flex h-10 items-center gap-1 rounded-sm pr-1 lg:h-8',
           drag.isDragging && 'opacity-40',
           drop === 'inside' && 'bg-primary-tint ring-primary ring-1 ring-inset',
         )}

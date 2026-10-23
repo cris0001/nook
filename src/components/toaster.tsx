@@ -12,7 +12,7 @@ export function Toaster() {
       position="bottom-center"
       toastOptions={{
         classNames: {
-          toast: '!bg-foreground !text-background !border-0 !rounded-lg !shadow-lg',
+          toast: '!bg-foreground !text-background !border-0 !rounded-md !shadow-lg',
           actionButton: '!bg-primary !text-primary-foreground !font-semibold',
         },
       }}

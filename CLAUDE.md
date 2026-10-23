@@ -135,6 +135,10 @@ the lime, Bricolage for display type — and keep the rest quiet and precise.
 - NO emoji in headings or buttons as decoration (page icons are user content)
 - Lime is an accent, not a fill for every surface — one strong primary per view
 - Small details over big effects (drop lines, focus states, the eyes reacting)
+- Warm neutrals (paper sidebar, warm greys and borders), small radii (`rounded-sm`/
+  `rounded-md`), hairlines over shadows
+- `eyebrow` utility (mono, uppercase, 11px) for section labels, column names, counts
+- `btn-primary` utility for the main action; the active sidebar row gets a 2px lime bar
 - Content is left-aligned and fills the available width — no centered narrow column
   with empty gutters; columns (table, board) stretch to fit
 - No horizontal scrolling on desktop unless the content truly can't fit (e.g. many

@@ -37,7 +37,7 @@ export function PageView({ pageId, body }: { pageId: string; body?: (page: Page)
   return (
     <>
       <PageHeader page={page} />
-      <article className="group/page w-full min-w-0 px-4 pt-8 pb-16 sm:px-8 lg:px-12 lg:pt-14">
+      <article className="group/page w-full min-w-0 px-4 pt-6 pb-16 sm:px-8 lg:px-12 lg:pt-10">
         <PageIconPicker pageId={page.id} hasIcon={page.icon !== null}>
           {page.icon ? (
             <button
