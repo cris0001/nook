@@ -11,19 +11,12 @@ export const SPLASH_LOGO_OUT_MS = 500;
 // A beat of empty white between the wordmark leaving and the app fading in.
 const HOLD_WHITE_MS = 350;
 export const SPLASH_REVEAL_MS = 750;
-// Temporary: holds the splash on screen (no timed exit, no skip) while the wordmark is
-// being reviewed. Set back to false to restore the normal exit.
-const KEEP_OPEN = true;
 
 // visible → leaving (wordmark exits, white stays) → revealing (white fades, app
 // shows through) → done (unmounted).
 export type SplashPhase = 'visible' | 'leaving' | 'revealing' | 'done';
 
-// In dev the splash replays on every reload, so tweaking it doesn't need a new tab.
 function hasSeenSplash(): boolean {
-  if (import.meta.env.DEV) {
-    return false;
-  }
   try {
     return sessionStorage.getItem(SPLASH_KEY) === '1';
   } catch {
@@ -46,9 +39,6 @@ export function useSplash(ready: boolean) {
   const [phase, setPhase] = useState<SplashPhase>(() => (hasSeenSplash() ? 'done' : 'visible'));
 
   const skip = useCallback(() => {
-    if (KEEP_OPEN) {
-      return;
-    }
     setPhase((current) => (current === 'visible' ? 'leaving' : current));
   }, []);
 
@@ -71,10 +61,6 @@ export function useSplash(ready: boolean) {
         setPhase('done');
       }, SPLASH_REVEAL_MS);
       return () => window.clearTimeout(timer);
-    }
-
-    if (KEEP_OPEN) {
-      return;
     }
 
     window.addEventListener('keydown', skip);

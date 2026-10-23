@@ -7,10 +7,10 @@ import { prefersReducedMotion } from '@/utils/motion';
 
 import { BrandEye } from './brand-eye';
 
-// Splash entrance: after half a second of white the whole wordmark, eyes open, fades
+// Splash entrance: after a short beat of white the whole wordmark, eyes open, fades
 // from 0 to full opacity in place — nothing moves or scales, so nothing jumps.
 // `backwards` fill keeps it hidden until the delay is up.
-const START_MS = 500;
+const START_MS = 300;
 const FADE_IN_MS = 450;
 const INTRO: CSSProperties = {
   animation: `fade-in ${FADE_IN_MS}ms ease-out ${START_MS}ms backwards`,
