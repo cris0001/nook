@@ -21,6 +21,12 @@ const en = {
     },
   },
   readOnly: 'View only',
+  due: {
+    today: 'Today',
+    tomorrow: 'Tomorrow',
+    inDays: (n: number) => `In ${n} days`,
+    late: (n: number) => (n === 1 ? '1 day late' : `${n} days late`),
+  },
 };
 
 const pl: typeof en = {
@@ -44,6 +50,12 @@ const pl: typeof en = {
     },
   },
   readOnly: 'Tylko podgląd',
+  due: {
+    today: 'Dziś',
+    tomorrow: 'Jutro',
+    inDays: (n: number) => `Za ${n} dni`,
+    late: (n: number) => (n === 1 ? '1 dzień po terminie' : `${n} dni po terminie`),
+  },
 };
 
 export const useCommonTranslation = createTranslation({ en, pl });

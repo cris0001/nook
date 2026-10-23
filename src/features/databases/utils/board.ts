@@ -46,17 +46,17 @@ export function orderForDrop(column: BoardColumn, target: CardTarget, draggedId:
   return generateKeyBetween(prev?.order ?? null, next?.order ?? null);
 }
 
-// A date in the past counts as overdue — unless the record sits in the last option of
-// the grouping property, which by convention is the "Done" stage (To do → … → Done).
+// By convention the last option of the grouping property is the "Done" stage.
+export function isFinished(record: Page, group: PropertyDef | undefined): boolean {
+  const last = group?.options.at(-1);
+  return Boolean(last && group && groupKeyOf(record, group) === last.id);
+}
+
 export function isOverdue(
   date: string,
   record: Page,
   group: PropertyDef | undefined,
   today = todayKey(),
 ): boolean {
-  if (date >= today) {
-    return false;
-  }
-  const last = group?.options.at(-1);
-  return !(last && group && groupKeyOf(record, group) === last.id);
+  return date < today && !isFinished(record, group);
 }

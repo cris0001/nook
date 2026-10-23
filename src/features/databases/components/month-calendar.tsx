@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { useDateLocale } from '../hooks/use-date-locale';
+import { useDateLocale } from '@/hooks/use-date-locale';
 import { useDatabasesTranslation } from '../i18n';
 import { todayKey } from '@/utils/dates';
 import { monthGrid } from '../utils/month-grid';

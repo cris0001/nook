@@ -59,6 +59,7 @@ function Board({
             database={database}
             view={view}
             group={group}
+            total={records.length}
           />
         ))}
       </div>

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { setRecordValue } from '@/lib/data/databases';
 
-import { useDateLocale } from '../hooks/use-date-locale';
+import { useDateLocale } from '@/hooks/use-date-locale';
 import { useDatabasesTranslation } from '../i18n';
 import { todayKey } from '@/utils/dates';
 import { MonthCalendar } from './month-calendar';

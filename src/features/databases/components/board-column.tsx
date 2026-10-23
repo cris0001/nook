@@ -1,6 +1,7 @@
 import { useDroppable } from '@dnd-kit/core';
 import { Plus } from 'lucide-react';
 
+import { BrandMark } from '@/components/brand';
 import { addRecord } from '@/lib/data/databases';
 import { cn } from '@/lib/utils';
 import type { Database, PropertyDef, View } from '@/schemas/database.schema';
@@ -9,6 +10,7 @@ import type { BoardDropData } from '../hooks/use-board-dnd';
 import { useDatabasesTranslation } from '../i18n';
 import { useBoardUiStore } from '../stores/board-ui.store';
 import { NO_GROUP, type BoardColumn as Column } from '../utils/board';
+import { DOT_STYLE } from '../utils/option-style';
 import { BoardCard } from './board-card';
 import { BoardColumnMenu } from './board-column-menu';
 
@@ -17,8 +19,10 @@ export function BoardColumn({
   database,
   view,
   group,
+  total,
 }: {
   column: Column;
+  total: number;
   database: Database;
   view: View;
   group: PropertyDef;
@@ -64,8 +68,23 @@ export function BoardColumn({
           <Plus className="size-4" />
         </button>
       </header>
+      <div aria-hidden className="bg-well mx-1.5 mt-0.5 h-0.5 overflow-hidden rounded-full">
+        <div
+          className={cn(
+            'h-full rounded-full transition-[width] duration-300',
+            DOT_STYLE[column.option?.color ?? 'gray'],
+          )}
+          style={{ width: `${total ? (column.records.length / total) * 100 : 0}%` }}
+        />
+      </div>
 
-      <ul className="mt-1 flex min-h-12 flex-1 flex-col gap-2">
+      <ul className="mt-2 flex min-h-12 flex-1 flex-col gap-2">
+        {column.records.length === 0 && !lineAtEnd ? (
+          <li className="text-muted-foreground flex min-h-36 flex-1 flex-col items-center justify-center gap-2.5 rounded-[9px] border-[1.5px] border-dashed text-[12.5px]">
+            <BrandMark eyesOnly mood="asleep" className="text-[34px]" />
+            {t.emptyColumn}
+          </li>
+        ) : null}
         {column.records.map((record) => (
           <BoardCard
             key={record.id}

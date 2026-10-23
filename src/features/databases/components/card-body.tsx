@@ -1,13 +1,12 @@
-import { format, parseISO } from 'date-fns';
-import { CalendarClock, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import type { Database, PropertyDef, View } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
 
-import { useDateLocale } from '../hooks/use-date-locale';
-import { useDatabasesTranslation } from '../i18n';
-import { isOverdue } from '../utils/board';
+import { useDueLabel } from '@/hooks/use-due-label';
+import { DUE_CHIP, DUE_TONE } from '../utils/due-style';
+import { isFinished } from '../utils/board';
 import { OptionTag } from './option-tag';
 
 export function CardBody({
@@ -21,8 +20,7 @@ export function CardBody({
   view: View;
   group: PropertyDef;
 }) {
-  const t = useDatabasesTranslation();
-  const { locale } = useDateLocale();
+  const dueLabel = useDueLabel();
   const shown = database.properties.filter(
     (p) => p.id !== group.id && !view.hiddenProperties.includes(p.id),
   );
@@ -46,19 +44,11 @@ export function CardBody({
         : [];
     }
     if (property.type === 'date' && typeof value === 'string') {
-      const late = isOverdue(value, record, group);
+      const due = dueLabel(value, isFinished(record, group));
       return [
-        <p
-          key={property.id}
-          className={cn(
-            'flex items-center gap-1 font-mono text-[11px]',
-            late ? 'text-destructive font-medium' : 'text-muted-foreground',
-          )}
-        >
-          <CalendarClock className="size-3" />
-          {format(parseISO(value), 'd MMM yyyy', { locale })}
-          {late ? <span className="font-medium">· {t.overdue}</span> : null}
-        </p>,
+        <span key={property.id} className={cn(DUE_CHIP, DUE_TONE[due.tone])}>
+          {due.text}
+        </span>,
       ];
     }
     if (property.type === 'checkbox') {
@@ -80,6 +70,6 @@ export function CardBody({
   });
 
   return values.length ? (
-    <div className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">{values}</div>
+    <div className="mt-2 flex flex-wrap items-center gap-1.5">{values}</div>
   ) : null;
 }

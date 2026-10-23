@@ -1,6 +1,9 @@
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { Link } from '@tanstack/react-router';
 
+import { DoneCircle } from '@/components/done-circle';
+import { useCan } from '@/hooks/use-can';
+import { setRecordValue } from '@/lib/data/databases';
 import { renamePage } from '@/lib/data/pages';
 import { cn } from '@/lib/utils';
 import type { Database, PropertyDef, View } from '@/schemas/database.schema';
@@ -9,6 +12,7 @@ import type { Page } from '@/schemas/page.schema';
 import type { BoardDropData } from '../hooks/use-board-dnd';
 import { useDatabasesTranslation } from '../i18n';
 import { useBoardUiStore } from '../stores/board-ui.store';
+import { isFinished } from '../utils/board';
 import { CardBody } from './card-body';
 import { RecordActionsMenu } from './record-actions-menu';
 
@@ -36,6 +40,13 @@ export function BoardCard({
   );
   const editing = useBoardUiStore((s) => s.editingId === record.id);
   const setEditing = useBoardUiStore((s) => s.setEditing);
+  const canEdit = useCan('record.edit');
+  const done = isFinished(record, group);
+
+  function toggleDone() {
+    const target = done ? group.options[0] : group.options.at(-1);
+    if (target) void setRecordValue(record.id, group.id, target.id);
+  }
 
   return (
     <li
@@ -71,19 +82,31 @@ export function BoardCard({
           )}
         >
           {/* The link covers the whole card (::after); the menu sits above it. */}
-          <Link
-            to="/p/$pageId"
-            params={{ pageId: record.id }}
-            draggable={false}
-            className={cn(
-              'block pr-6 font-medium after:absolute after:inset-0 after:content-[""]',
-              !record.title && 'text-muted-foreground',
-            )}
-          >
-            {record.icon ? `${record.icon} ` : ''}
-            {record.title || t.untitled}
-          </Link>
-          <CardBody record={record} database={database} view={view} group={group} />
+          <div className="flex items-start gap-2.5">
+            <DoneCircle
+              done={done}
+              label={done ? t.markNotDone : t.markDone}
+              disabled={!canEdit || group.options.length < 2}
+              onToggle={toggleDone}
+              className="relative z-10 mt-[3px]"
+            />
+            <Link
+              to="/p/$pageId"
+              params={{ pageId: record.id }}
+              draggable={false}
+              className={cn(
+                'block min-w-0 flex-1 pr-6 font-medium after:absolute after:inset-0 after:content-[""]',
+                !record.title && 'text-muted-foreground',
+                done && 'text-muted-foreground',
+              )}
+            >
+              {record.icon ? `${record.icon} ` : ''}
+              {record.title || t.untitled}
+            </Link>
+          </div>
+          <div className="pl-6.5">
+            <CardBody record={record} database={database} view={view} group={group} />
+          </div>
           <RecordActionsMenu
             recordId={record.id}
             title={record.title}
