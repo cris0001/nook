@@ -1,6 +1,6 @@
 import { FileQuestion, Smile } from 'lucide-react';
 
-import { renamePage } from '../api/pages';
+import { renamePage } from '@/lib/data/pages';
 import { useOpenPage } from '../hooks/use-open-page';
 import { usePage } from '../hooks/use-page';
 import { usePagesTranslation } from '../i18n';

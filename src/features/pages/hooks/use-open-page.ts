@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { db } from '@/lib/db';
 
-import { markPageOpened } from '../api/pages';
+import { markPageOpened } from '@/lib/data/pages';
 import { useSidebarUiStore } from '../stores/sidebar-ui.store';
 
 // Side effects of opening a page: log the visit for "Recently opened", and expand its

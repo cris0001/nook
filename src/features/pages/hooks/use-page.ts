@@ -2,7 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 
 import type { Page } from '@/schemas/page.schema';
 
-import { getPage } from '../api/pages';
+import { getPage } from '@/lib/data/pages';
 
 export type PageState =
   { status: 'loading' } | { status: 'missing' } | { status: 'ready'; page: Page };

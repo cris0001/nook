@@ -5,7 +5,7 @@ import { Fragment } from 'react';
 import { cn } from '@/lib/utils';
 import type { Page } from '@/schemas/page.schema';
 
-import { toggleFavorite } from '../api/pages';
+import { toggleFavorite } from '@/lib/data/pages';
 import { usePages } from '../hooks/use-pages';
 import { usePagesTranslation } from '../i18n';
 import { ancestorsOf } from '../utils/page-lists';

@@ -1,17 +1,9 @@
 import type { Page } from '@/schemas/page.schema';
+import { byOrder } from '@/utils/order';
 
 export interface PageNode {
   page: Page;
   children: PageNode[];
-}
-
-// Fractional-index keys compare by plain code points — not localeCompare, which
-// would order them by locale rules and break the "between" guarantee.
-export function byOrder(a: Page, b: Page): number {
-  if (a.order === b.order) {
-    return 0;
-  }
-  return a.order < b.order ? -1 : 1;
 }
 
 // Shapes a flat list of pages into the sidebar tree, siblings in order. A page whose

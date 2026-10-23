@@ -2,7 +2,7 @@ import { generateKeyBetween } from 'fractional-indexing';
 
 import type { Page } from '@/schemas/page.schema';
 
-import { byOrder } from './page-tree';
+import { byOrder } from '@/utils/order';
 
 export type DropPosition = 'before' | 'after' | 'inside';
 

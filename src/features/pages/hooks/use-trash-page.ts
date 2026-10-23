@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useCallback } from 'react';
 
-import { getPage, trashPage } from '../api/pages';
+import { getPage, trashPage } from '@/lib/data/pages';
 
 // Moves a page (and its subpages) to the trash. If the open page went with it, the
 // view falls back to the workspace home instead of a "not found" screen.

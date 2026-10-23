@@ -1,7 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useCallback } from 'react';
 
-import { createPage, type CreatePageInput } from '../api/pages';
+import { createPage, type CreatePageInput } from '@/lib/data/pages';
 
 // Creates a page and opens it straight away, like Notion does.
 export function useCreatePage() {

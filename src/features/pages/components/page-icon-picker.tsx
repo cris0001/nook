@@ -3,7 +3,7 @@ import { useState, type ReactNode } from 'react';
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-import { setPageIcon } from '../api/pages';
+import { setPageIcon } from '@/lib/data/pages';
 import { usePagesTranslation } from '../i18n';
 import { PAGE_EMOJIS } from '../utils/page-emojis';
 

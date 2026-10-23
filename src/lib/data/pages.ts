@@ -3,7 +3,7 @@ import { generateKeyBetween } from 'fractional-indexing';
 import { db } from '@/lib/db';
 import type { Page, PageType } from '@/schemas/page.schema';
 
-import { byOrder } from '../utils/page-tree';
+import { byOrder } from '@/utils/order';
 
 export interface CreatePageInput {
   parentId: string | null;
@@ -140,10 +140,27 @@ export async function restorePage(id: string): Promise<void> {
   });
 }
 
+// Databases keep their columns and views in side tables keyed by the page id; a copied
+// database page needs its own copies of those. Property ids are kept, so the copied
+// records' values (keyed by property id) still line up.
+async function copyDatabaseRows(newIds: Map<string, string>): Promise<void> {
+  for (const [oldId, newId] of newIds) {
+    const database = await db.databases.get(oldId);
+    if (!database) {
+      continue;
+    }
+    await db.databases.add({ ...database, id: newId });
+    const views = await db.views.where('databaseId').equals(oldId).toArray();
+    await db.views.bulkAdd(
+      views.map((view) => ({ ...view, id: crypto.randomUUID(), databaseId: newId })),
+    );
+  }
+}
+
 // Copies a page and everything under it, fresh ids throughout, and places the copy
 // right after the original. Returns the new top page.
 export async function duplicatePage(id: string): Promise<Page | undefined> {
-  return db.transaction('rw', db.pages, async () => {
+  return db.transaction('rw', db.pages, db.databases, db.views, async () => {
     const original = await db.pages.get(id);
     if (original?.deletedAt !== null) {
       return undefined;
@@ -167,6 +184,7 @@ export async function duplicatePage(id: string): Promise<Page | undefined> {
       updatedAt: now,
     }));
     await db.pages.bulkAdd(copies);
+    await copyDatabaseRows(newIds);
     return copies[0];
   });
 }
@@ -189,7 +207,7 @@ export async function listTrash(): Promise<Page[]> {
 
 // Permanently removes a trashed page and the descendants trashed with it.
 export async function deletePageForever(id: string): Promise<void> {
-  await db.transaction('rw', db.pages, async () => {
+  await db.transaction('rw', db.pages, db.databases, db.views, async () => {
     const page = await db.pages.get(id);
     if (!page?.deletedAt) {
       return;
@@ -197,6 +215,10 @@ export async function deletePageForever(id: string): Promise<void> {
     const batch = page.deletedAt;
     const ids = await subtreeIds(id);
     const rows = (await db.pages.bulkGet(ids)).filter((p): p is Page => p?.deletedAt === batch);
-    await db.pages.bulkDelete(rows.map((p) => p.id));
+    const gone = rows.map((p) => p.id);
+    await db.pages.bulkDelete(gone);
+    // Database pages take their columns and views with them.
+    await db.databases.bulkDelete(gone);
+    await db.views.where('databaseId').anyOf(gone).delete();
   });
 }

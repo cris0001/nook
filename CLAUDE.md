@@ -48,7 +48,7 @@ src/
     ui/         # shadcn primitives (vendored, not linted)
     brand/      # nOOk wordmark + eyes
   hooks/        # shared hooks used by 2+ features
-  lib/          # infrastructure (db, utils)
+  lib/          # infrastructure (db, utils); lib/data = data access shared by features
   schemas/      # Zod schemas for persisted shapes; types via z.infer
   stores/       # shared Zustand stores
   utils/        # shared pure functions
@@ -78,8 +78,10 @@ Rules:
 
 Three layers per resource: **api fn → hook → component**.
 
-- `api/<resource>.ts` — plain async functions over the Dexie db (`listPages`,
-  `createPage`, …). The only place that touches the database.
+- `api/<resource>.ts` — plain async functions over the Dexie db, for data only one
+  feature uses. Data shared by several features lives in `lib/data/` instead
+  (`lib/data/pages.ts` — records are pages too, so databases need the page
+  functions). These are the only places that touch the database.
 - `hooks/use-<resource>.ts` — `useLiveQuery(() => listX())` for reads;
   `use-create-x.ts` etc. for writes
 - Components never call Dexie directly

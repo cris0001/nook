@@ -11,7 +11,7 @@ import { useCallback } from 'react';
 
 import type { Page } from '@/schemas/page.schema';
 
-import { movePage } from '../api/pages';
+import { movePage } from '@/lib/data/pages';
 import { useSidebarUiStore } from '../stores/sidebar-ui.store';
 import { planDrop, type DropPosition } from '../utils/plan-drop';
 

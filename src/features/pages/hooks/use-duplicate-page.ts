@@ -1,7 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useCallback } from 'react';
 
-import { duplicatePage } from '../api/pages';
+import { duplicatePage } from '@/lib/data/pages';
 
 // Duplicates a page with its subpages and opens the copy.
 export function useDuplicatePage() {

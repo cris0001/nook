@@ -4,7 +4,7 @@ import { RotateCcw, Trash2 } from 'lucide-react';
 
 import { useLocaleStore } from '@/stores/locale.store';
 
-import { deletePageForever, restorePage } from '../api/pages';
+import { deletePageForever, restorePage } from '@/lib/data/pages';
 import { useTrash } from '../hooks/use-trash';
 import { usePagesTranslation } from '../i18n';
 import { PAGE_TYPE_ICON } from '../utils/page-icon';
