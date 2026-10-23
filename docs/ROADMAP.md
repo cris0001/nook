@@ -41,17 +41,17 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 - [x] Trash with restore and delete forever
 - [x] Breadcrumbs, auto-expand ancestors of the open page
 
-### Stage 4 — Databases: model + table view
+### Stage 4 — Databases: model + table view ✅ COMPLETE
 
 - [x] Page type picker on create, routing to a view per page type
 - [x] Database page type with typed properties (text, number, date, select,
       multi-select, checkbox, URL)
 - [x] Add / rename / delete properties
-- [ ] Reorder and hide properties
+- [x] Reorder and hide properties
 - [x] Each record is a page (properties on top, content below)
 - [x] Table view with inline cell editing
-- [ ] Sorting and filtering
-- [ ] Views as tabs, each with its own filters and sorting
+- [x] Sorting and filtering
+- [x] Views as tabs, each with its own filters and sorting
 
 ### Stage 5 — Board view (Kanban)
 

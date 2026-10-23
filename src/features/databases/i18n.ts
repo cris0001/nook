@@ -1,6 +1,6 @@
 import { createTranslation } from '@/lib/i18n/create-translation';
 
-import type { PropertyType, ViewType } from '@/schemas/database.schema';
+import type { FilterOperator, PropertyType, ViewType } from '@/schemas/database.schema';
 
 // Databases feature copy: views, table, properties, cells.
 const en = {
@@ -31,6 +31,29 @@ const en = {
   createOption: (name: string) => `Create "${name}"`,
   empty: 'Empty',
   noRecords: 'No records yet.',
+  filter: 'Filter',
+  sort: 'Sort',
+  properties: 'Properties',
+  addFilter: 'Add filter',
+  addSort: 'Add sort',
+  remove: 'Remove',
+  noFilters: 'No filters yet.',
+  noSorts: 'No sorts yet.',
+  ascending: 'Ascending',
+  descending: 'Descending',
+  show: 'Show',
+  hide: 'Hide',
+  dragToReorder: 'Drag to reorder',
+  choose: 'Choose…',
+  yes: 'Checked',
+  no: 'Unchecked',
+  operator: {
+    contains: 'contains',
+    is: 'is',
+    isNot: 'is not',
+    isEmpty: 'is empty',
+    isNotEmpty: 'is not empty',
+  } satisfies Record<FilterOperator, string>,
 };
 
 const pl: typeof en = {
@@ -58,6 +81,29 @@ const pl: typeof en = {
   createOption: (name: string) => `Utwórz „${name}”`,
   empty: 'Puste',
   noRecords: 'Brak rekordów.',
+  filter: 'Filtr',
+  sort: 'Sortuj',
+  properties: 'Właściwości',
+  addFilter: 'Dodaj filtr',
+  addSort: 'Dodaj sortowanie',
+  remove: 'Usuń',
+  noFilters: 'Brak filtrów.',
+  noSorts: 'Brak sortowania.',
+  ascending: 'Rosnąco',
+  descending: 'Malejąco',
+  show: 'Pokaż',
+  hide: 'Ukryj',
+  dragToReorder: 'Przeciągnij, aby zmienić kolejność',
+  choose: 'Wybierz…',
+  yes: 'Zaznaczone',
+  no: 'Niezaznaczone',
+  operator: {
+    contains: 'zawiera',
+    is: 'to',
+    isNot: 'to nie',
+    isEmpty: 'jest puste',
+    isNotEmpty: 'nie jest puste',
+  },
 };
 
 export const useDatabasesTranslation = createTranslation({ en, pl });

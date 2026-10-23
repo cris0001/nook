@@ -168,6 +168,15 @@ export async function addProperty(
   return property;
 }
 
+// Puts the columns in the given order (ids not listed keep their place at the end).
+export function reorderProperties(databaseId: string, orderedIds: string[]) {
+  return updateProperties(databaseId, (properties) => {
+    const byId = new Map(properties.map((p) => [p.id, p]));
+    const ordered = orderedIds.flatMap((id) => byId.get(id) ?? []);
+    return [...ordered, ...properties.filter((p) => !orderedIds.includes(p.id))];
+  });
+}
+
 export function renameProperty(databaseId: string, propertyId: string, name: string) {
   return updateProperties(databaseId, (properties) =>
     properties.map((p) => (p.id === propertyId ? { ...p, name } : p)),
