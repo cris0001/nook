@@ -9,7 +9,7 @@ import { useCreatePage } from '../hooks/use-create-page';
 import { usePagesTranslation } from '../i18n';
 import { PageTree } from './page-tree';
 
-// Sidebar contents: wordmark, the primary "New page" action, the page tree (scrolls on
+// Sidebar contents: wordmark with a compact "New page" action beside it, the page tree (scrolls on
 // its own), the trash and settings toggles pinned at the bottom.
 export function PageSidebar() {
   const t = usePagesTranslation();
@@ -17,20 +17,18 @@ export function PageSidebar() {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex h-14 items-center px-4">
+      <div className="flex h-16 items-center justify-between gap-2 pr-3 pl-4">
         <Link to="/" aria-label="nOOk">
-          <BrandMark animated className="text-[28px]" />
+          <BrandMark animated className="text-[38px]" />
         </Link>
-      </div>
-
-      <div className="px-3 pb-3">
         <button
           type="button"
+          aria-label={t.newPage}
+          title={t.newPage}
           onClick={() => void createPage({ parentId: null, type: 'document' })}
-          className="bg-primary text-primary-foreground flex h-10 w-full items-center justify-center gap-2 rounded-full text-sm font-semibold transition-[filter] hover:brightness-95 lg:h-9"
+          className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center rounded-full transition-[filter] hover:brightness-95 lg:size-9"
         >
-          <Plus className="size-4" />
-          {t.newPage}
+          <Plus className="size-5" />
         </button>
       </div>
 
