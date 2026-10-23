@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnpm-store
+
+# Build outputs
+dist/
+.vite/
+*.tsbuildinfo
+vite.config.ts.timestamp-*
+
+# Local env files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/settings.json
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test outputs
+coverage/
+playwright-report/
+test-results/
+
+# Claude Code local files (do not commit session context)
+.claude/

@@ -1,0 +1,17 @@
+# Dependencies and lockfiles
+node_modules
+pnpm-lock.yaml
+
+# Build outputs
+dist
+.vite
+*.tsbuildinfo
+
+# Test artifacts
+coverage
+playwright-report
+test-results
+
+# Generated — TanStack Router writes this (no semicolons); its own header says to
+# exclude it from the formatter. Formatting it just fights the dev-server watcher.
+src/routeTree.gen.ts
