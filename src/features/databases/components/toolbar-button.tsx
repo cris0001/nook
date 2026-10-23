@@ -13,7 +13,7 @@ export const ToolbarButton = forwardRef<
       ref={ref}
       type="button"
       className={cn(
-        'flex h-8 items-center gap-1.5 rounded-md px-2 text-sm transition-colors',
+        'flex h-7 items-center gap-1.5 rounded-md px-2 text-[13px] transition-colors',
         active
           ? 'bg-primary-tint text-primary-tint-foreground font-medium'
           : 'text-muted-foreground hover:bg-hover hover:text-foreground',

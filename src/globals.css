@@ -53,6 +53,17 @@
   --tag-red-bg: #fbe0dd;
   --tag-red-fg: #9b2c22;
 
+  /* Status dots: vivid single colors per option, used where a tag would be too loud. */
+  --dot-gray: #a19e94;
+  --dot-brown: #a0765c;
+  --dot-orange: #f08c2e;
+  --dot-yellow: #e0b000;
+  --dot-green: #22a35a;
+  --dot-blue: #3b82f6;
+  --dot-purple: #8b5cf6;
+  --dot-pink: #e0559b;
+  --dot-red: #e5484d;
+
   --brand-eye-white: #ffffff;
   --brand-iris-inner: #3f6212;
   --brand-iris-outer: #a3e635;
@@ -77,6 +88,17 @@
   --primary-tint-foreground: #a3e635;
   --ring: #a3e635;
   --destructive: #f87171;
+
+  /* Status dots: vivid single colors per option, used where a tag would be too loud. */
+  --dot-gray: #8a877e;
+  --dot-brown: #b98e74;
+  --dot-orange: #f5a04f;
+  --dot-yellow: #eac43c;
+  --dot-green: #3fbf73;
+  --dot-blue: #60a0fa;
+  --dot-purple: #a78bfa;
+  --dot-pink: #ec79b1;
+  --dot-red: #f0686c;
 
   --tag-gray-bg: #373735;
   --tag-gray-fg: #d4d4d0;

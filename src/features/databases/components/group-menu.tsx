@@ -18,7 +18,9 @@ export function GroupMenu({ database, view }: { database: Database; view: View }
       <PopoverTrigger asChild>
         <ToolbarButton>
           <Columns3 className="size-4" />
-          <span className="max-sm:sr-only">{current ? current.name : t.groupBy}</span>
+          <span className="max-sm:sr-only">
+            {current ? `${t.group}: ${current.name}` : t.groupBy}
+          </span>
         </ToolbarButton>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-56 p-1">

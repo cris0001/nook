@@ -22,9 +22,9 @@ const VIEW_ICON: Record<ViewType, typeof Table2> = {
 // View types offered by "+" (calendar arrives with its own stage).
 const ADDABLE: ViewType[] = ['table', 'board'];
 
-const TAB = 'flex h-10 shrink-0 items-center gap-1.5 border-b-2 px-2 text-sm';
+const TAB = 'flex h-7 shrink-0 items-center gap-1.5 rounded-md px-2.5 text-[13px] font-medium';
 
-// Tabs across the top of a database. Clicking the open tab again opens its settings
+// The view switcher: a segmented control, one segment per view. Clicking the open tab again opens its settings
 // (rename, delete); "+" adds a new table or board view and switches to it.
 export function ViewTabs({
   databaseId,
@@ -45,63 +45,69 @@ export function ViewTabs({
   }
 
   return (
-    <div
-      role="tablist"
-      aria-label={t.views}
-      className="-mb-px flex min-w-0 items-center overflow-x-auto"
-    >
-      {views.map((view) => {
-        const Icon = VIEW_ICON[view.type];
-        const label = view.name || t.viewType[view.type];
-        if (view.id !== activeId) {
+    <div className="flex min-w-0 items-center gap-1">
+      <div
+        role="tablist"
+        aria-label={t.views}
+        className="bg-well flex min-w-0 overflow-x-auto rounded-lg p-0.5"
+      >
+        {views.map((view) => {
+          const Icon = VIEW_ICON[view.type];
+          const label = view.name || t.viewType[view.type];
+          if (view.id !== activeId) {
+            return (
+              <button
+                key={view.id}
+                type="button"
+                role="tab"
+                aria-selected={false}
+                onClick={() => onSelect(view.id)}
+                className={cn(TAB, 'text-muted-foreground hover:text-foreground')}
+              >
+                <Icon className="size-4" />
+                {label}
+              </button>
+            );
+          }
           return (
-            <button
-              key={view.id}
-              type="button"
-              role="tab"
-              aria-selected={false}
-              onClick={() => onSelect(view.id)}
-              className={cn(TAB, 'text-muted-foreground hover:text-foreground border-transparent')}
-            >
-              <Icon className="size-4" />
-              {label}
-            </button>
+            <Popover key={view.id}>
+              <PopoverTrigger
+                role="tab"
+                aria-selected
+                className={cn(TAB, 'bg-background text-foreground shadow-raised')}
+              >
+                <Icon className="size-4" />
+                {label}
+                <ChevronDown className="text-muted-foreground size-3.5" />
+              </PopoverTrigger>
+              <PopoverContent className="w-60 p-1">
+                <input
+                  autoFocus
+                  defaultValue={view.name}
+                  placeholder={t.viewType[view.type]}
+                  aria-label={t.viewName}
+                  onChange={(event) => void updateView(view.id, { name: event.target.value })}
+                  className="mb-1 h-9 w-full rounded-md border bg-transparent px-2 text-sm outline-none"
+                />
+                {views.length > 1 ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = views.find((v) => v.id !== view.id);
+                      void deleteView(view.id);
+                      if (next) onSelect(next.id);
+                    }}
+                    className="text-destructive hover:bg-hover flex h-9 w-full items-center gap-2 rounded-md px-2 text-sm lg:h-8"
+                  >
+                    <Trash2 className="size-4" />
+                    {t.deleteView}
+                  </button>
+                ) : null}
+              </PopoverContent>
+            </Popover>
           );
-        }
-        return (
-          <Popover key={view.id}>
-            <PopoverTrigger role="tab" aria-selected className={cn(TAB, 'border-foreground')}>
-              <Icon className="size-4" />
-              {label}
-              <ChevronDown className="text-muted-foreground size-3.5" />
-            </PopoverTrigger>
-            <PopoverContent className="w-60 p-1">
-              <input
-                autoFocus
-                defaultValue={view.name}
-                placeholder={t.viewType[view.type]}
-                aria-label={t.viewName}
-                onChange={(event) => void updateView(view.id, { name: event.target.value })}
-                className="mb-1 h-9 w-full rounded-md border bg-transparent px-2 text-sm outline-none"
-              />
-              {views.length > 1 ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    const next = views.find((v) => v.id !== view.id);
-                    void deleteView(view.id);
-                    if (next) onSelect(next.id);
-                  }}
-                  className="text-destructive hover:bg-hover flex h-9 w-full items-center gap-2 rounded-md px-2 text-sm lg:h-8"
-                >
-                  <Trash2 className="size-4" />
-                  {t.deleteView}
-                </button>
-              ) : null}
-            </PopoverContent>
-          </Popover>
-        );
-      })}
+        })}
+      </div>
       <DropdownMenu>
         <DropdownMenuTrigger
           aria-label={t.addView}

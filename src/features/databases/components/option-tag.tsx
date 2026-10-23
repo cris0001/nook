@@ -8,7 +8,7 @@ export function OptionTag({ option, className }: { option: SelectOption; classNa
   return (
     <span
       className={cn(
-        'inline-flex h-5 max-w-full items-center truncate rounded-sm px-1.5 text-xs font-medium',
+        'inline-flex h-5 max-w-full shrink-0 items-center truncate rounded-[5px] px-1.5 text-[11.5px] font-medium',
         OPTION_STYLE[option.color],
         className,
       )}

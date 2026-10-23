@@ -54,11 +54,11 @@ export function CardBody({
         <p
           key={property.id}
           className={cn(
-            'flex items-center gap-1 text-xs',
-            late ? 'text-destructive' : 'text-muted-foreground',
+            'flex items-center gap-1 font-mono text-[11px]',
+            late ? 'text-destructive font-medium' : 'text-muted-foreground',
           )}
         >
-          <CalendarClock className="size-3.5" />
+          <CalendarClock className="size-3" />
           {format(parseISO(value), 'd MMM yyyy', { locale })}
           {late ? <span className="font-medium">· {t.overdue}</span> : null}
         </p>,
@@ -66,18 +66,23 @@ export function CardBody({
     }
     if (property.type === 'checkbox') {
       return [
-        <p key={property.id} className="text-muted-foreground flex items-center gap-1 text-xs">
+        <p
+          key={property.id}
+          className="text-muted-foreground flex items-center gap-1 text-[11.5px]"
+        >
           <Check className="size-3.5" />
           {property.name}
         </p>,
       ];
     }
     return [
-      <p key={property.id} className="text-muted-foreground truncate text-xs">
+      <p key={property.id} className="text-muted-foreground max-w-full truncate text-[11.5px]">
         {String(value)}
       </p>,
     ];
   });
 
-  return values.length ? <div className="mt-1.5 space-y-1.5">{values}</div> : null;
+  return values.length ? (
+    <div className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">{values}</div>
+  ) : null;
 }

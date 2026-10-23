@@ -12,7 +12,7 @@ import { useBoardUiStore } from '../stores/board-ui.store';
 import { CardBody } from './card-body';
 import { RecordActionsMenu } from './record-actions-menu';
 
-const CARD = 'bg-background block rounded-md border px-3 py-2.5 text-sm';
+const CARD = 'bg-background block rounded-[9px] px-3 py-2.5 text-[13.5px] shadow-raised';
 
 // A record on the board. The whole card drags (after a few pixels / a long press) and
 // otherwise opens the record. Right after "Add a card" it shows a title input instead,
@@ -68,7 +68,10 @@ export function BoardCard({
         </div>
       ) : (
         <div
-          className={cn(CARD, 'group/card hover:border-foreground/40 relative transition-colors')}
+          className={cn(
+            CARD,
+            'group/card relative transition-[translate,box-shadow] hover:-translate-y-px hover:shadow-[0_0_0_1px_var(--color-border),0_6px_16px_-6px_rgb(0_0_0/0.18)]',
+          )}
         >
           {/* The link covers the whole card (::after); the menu sits above it. */}
           <Link

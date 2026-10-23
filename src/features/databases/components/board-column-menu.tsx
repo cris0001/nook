@@ -2,12 +2,13 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 import { reorderOptions } from '@/lib/data/databases';
 import type { PropertyDef, SelectOption } from '@/schemas/database.schema';
 
 import { useDatabasesTranslation } from '../i18n';
+import { DOT_STYLE } from '../utils/option-style';
 import { OptionEditor } from './option-editor';
-import { OptionTag } from './option-tag';
 
 // A column's tag doubles as its menu: edit the option, or nudge the column left/right
 // (swapping options, since option order is column order).
@@ -37,8 +38,15 @@ export function BoardColumnMenu({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger aria-label={t.editOption} className="min-w-0 rounded">
-        <OptionTag option={option} className="cursor-pointer" />
+      <PopoverTrigger
+        aria-label={t.editOption}
+        className="hover:bg-hover flex min-w-0 items-center gap-2 rounded-md px-1 py-0.5 text-[13px] font-semibold"
+      >
+        <i
+          aria-hidden
+          className={cn('size-[7px] shrink-0 rounded-full', DOT_STYLE[option.color])}
+        />
+        <span className="truncate">{option.name}</span>
       </PopoverTrigger>
       <PopoverContent className="p-1.5">
         <div className="mb-1 flex gap-1">

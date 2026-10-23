@@ -29,26 +29,28 @@ export function TableView({
     <div className="overflow-x-auto">
       <table className="w-full border-collapse text-sm">
         <thead>
-          <tr className="border-y">
-            <th className="eyebrow min-w-56 px-2 text-left font-normal">{t.name}</th>
+          <tr className="border-divider border-b">
+            <th className="text-muted-foreground min-w-56 px-2 text-left text-xs font-medium">
+              {t.name}
+            </th>
             {columns.map((property) => (
-              <th key={property.id} className="min-w-40 border-l p-0">
+              <th key={property.id} className="min-w-40 border-divider border-l p-0">
                 <PropertyHeader databaseId={database.id} property={property} />
               </th>
             ))}
-            <th className="w-10 border-l p-0">
+            <th className="w-10 border-divider border-l p-0">
               <AddPropertyButton databaseId={database.id} />
             </th>
           </tr>
         </thead>
         <tbody>
           {records.map((record) => (
-            <tr key={record.id} className="hover:bg-hover/50 border-b">
+            <tr key={record.id} className="hover:bg-hover/50 border-divider border-b">
               <td className="p-0">
                 <RecordTitleCell record={record} />
               </td>
               {columns.map((property) => (
-                <td key={property.id} className="border-l p-0 align-middle">
+                <td key={property.id} className="border-divider border-l p-0 align-middle">
                   <PropertyCell
                     databaseId={database.id}
                     recordId={record.id}
@@ -57,7 +59,7 @@ export function TableView({
                   />
                 </td>
               ))}
-              <td className="border-l" />
+              <td className="border-divider border-l" />
             </tr>
           ))}
         </tbody>

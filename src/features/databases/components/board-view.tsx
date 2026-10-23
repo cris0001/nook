@@ -69,7 +69,7 @@ function Board({
       {createPortal(
         <DragOverlay dropAnimation={null}>
           {dragging ? (
-            <div className="bg-background w-68 rotate-1 cursor-grabbing rounded-md border px-3 py-2.5 text-sm shadow-lg">
+            <div className="bg-background w-68 rotate-1 cursor-grabbing rounded-[9px] px-3 py-2.5 text-[13.5px] shadow-[0_0_0_1px_var(--color-border),0_12px_28px_-8px_rgb(0_0_0/0.3)]">
               <span className="font-medium">{dragging.title || t.untitled}</span>
               <CardBody record={dragging} database={database} view={view} group={group} />
             </div>

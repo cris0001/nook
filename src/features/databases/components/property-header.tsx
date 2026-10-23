@@ -38,7 +38,7 @@ export function PropertyHeader({
     <Popover>
       <PopoverTrigger className="text-muted-foreground hover:bg-hover flex h-9 w-full items-center gap-1.5 px-2 text-left font-normal">
         <Icon className="size-3.5 shrink-0" />
-        <span className="eyebrow truncate">{property.name}</span>
+        <span className="truncate text-xs font-medium">{property.name}</span>
       </PopoverTrigger>
       <PopoverContent className="w-60 p-1">
         <input

@@ -43,16 +43,20 @@ export function BoardColumn({
   return (
     <section
       ref={setNodeRef}
-      style={{ borderTopColor: `var(--tag-${column.option?.color ?? 'gray'}-fg)` }}
-      className="flex w-[82vw] shrink-0 snap-start flex-col border-t-2 pt-2 sm:w-auto sm:max-w-96 sm:min-w-48 sm:flex-1 sm:basis-0"
+      className="bg-surface flex w-[82vw] shrink-0 snap-start flex-col rounded-xl p-2 sm:w-auto sm:max-w-96 sm:min-w-48 sm:flex-1 sm:basis-0"
     >
-      <header className="flex h-8 items-center gap-2 px-1">
+      <header className="flex h-8 items-center gap-2 pr-0.5 pl-1.5">
         {column.option ? (
           <BoardColumnMenu databaseId={database.id} property={group} option={column.option} />
         ) : (
-          <span className="eyebrow">{t.noValue(group.name)}</span>
+          <span className="flex items-center gap-2 text-[13px] font-semibold">
+            <i aria-hidden className="size-[7px] rounded-full bg-(--dot-gray)" />
+            {t.noValue(group.name)}
+          </span>
         )}
-        <span className="eyebrow tabular-nums">{column.records.length}</span>
+        <span className="text-muted-foreground font-mono text-[11.5px] tabular-nums">
+          {column.records.length}
+        </span>
         <button
           type="button"
           aria-label={t.addCard}

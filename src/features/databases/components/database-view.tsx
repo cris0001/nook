@@ -44,14 +44,14 @@ export function DatabaseView({ databaseId }: { databaseId: string }) {
 
   return (
     <section className="mt-6">
-      <div className="flex flex-wrap items-end justify-between gap-x-2 border-b">
+      <div className="border-divider flex flex-wrap items-center gap-2 border-b pb-3">
         <ViewTabs
           databaseId={database.id}
           views={views}
           activeId={view.id}
           onSelect={setActiveId}
         />
-        <div className="mb-1.5 flex items-center gap-0.5">
+        <div className="ml-auto flex items-center gap-0.5">
           {view.type === 'board' ? <GroupMenu database={database} view={view} /> : null}
           <FilterMenu database={database} view={view} />
           <SortMenu database={database} view={view} />
@@ -59,7 +59,7 @@ export function DatabaseView({ databaseId }: { databaseId: string }) {
           <button
             type="button"
             onClick={() => void addRecord(database.id)}
-            className="btn-primary ml-1 h-8 shrink-0 px-2.5 text-sm"
+            className="btn-primary ml-1.5 h-7 shrink-0 px-2.5 text-[13px]"
           >
             <Plus className="size-4" />
             {t.newRecord}
