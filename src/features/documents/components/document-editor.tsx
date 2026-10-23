@@ -39,7 +39,11 @@ function Editor({ pageId, initial }: { pageId: string; initial: JSONContent | nu
       TaskList,
       TaskItem.configure({ nested: true }),
       Placeholder.configure({
-        placeholder: ({ node }) => (node.type.name === 'heading' ? t.emptyHeading : t.placeholder),
+        // Read at draw time, so a language switch applies without rebuilding the editor.
+        placeholder: ({ node }) => {
+          const copy = useDocumentsTranslation.peek();
+          return node.type.name === 'heading' ? copy.emptyHeading : copy.placeholder;
+        },
       }),
       SlashCommand,
     ],
@@ -49,6 +53,11 @@ function Editor({ pageId, initial }: { pageId: string; initial: JSONContent | nu
   });
 
   useEffect(() => () => save.flush(), [save]);
+
+  // An empty transaction makes the placeholders redraw in the new language.
+  useEffect(() => {
+    editor.view.dispatch(editor.state.tr);
+  }, [t, editor]);
 
   return (
     <div ref={setContainer} className="relative mt-4">
