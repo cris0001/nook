@@ -54,6 +54,25 @@ export async function renamePage(id: string, title: string): Promise<void> {
   await db.pages.update(id, { title, updatedAt: Date.now() });
 }
 
+// Sets the page's emoji, or clears it with null (the type icon shows instead).
+export async function setPageIcon(id: string, icon: string | null): Promise<void> {
+  await db.pages.update(id, { icon, updatedAt: Date.now() });
+}
+
+// Stars / unstars a page. The timestamp doubles as the favorites order.
+export async function toggleFavorite(id: string): Promise<void> {
+  const page = await db.pages.get(id);
+  if (page) {
+    await db.pages.update(id, { favoritedAt: page.favoritedAt === null ? Date.now() : null });
+  }
+}
+
+// Records a visit for "Recently opened". Deliberately leaves updatedAt alone — opening
+// a page isn't editing it.
+export async function markPageOpened(id: string): Promise<void> {
+  await db.pages.update(id, { lastOpenedAt: Date.now() });
+}
+
 // Re-parents and/or reorders a page. The target spot is worked out by planDrop.
 export async function movePage(id: string, parentId: string | null, order: string): Promise<void> {
   await db.pages.update(id, { parentId, order, updatedAt: Date.now() });
