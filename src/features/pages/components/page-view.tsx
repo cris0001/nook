@@ -65,6 +65,17 @@ export function PageView({ pageId, body }: { pageId: string; body?: (page: Page)
           placeholder={t.titlePlaceholder}
           aria-label={t.titlePlaceholder}
           onChange={(event) => void renamePage(page.id, event.target.value)}
+          onKeyDown={(event) => {
+            // Enter / ↓ continue into the page body, like moving to the next line.
+            if (event.key !== 'Enter' && event.key !== 'ArrowDown') return;
+            const body = event.currentTarget
+              .closest('article')
+              ?.querySelector('[contenteditable=true]');
+            if (body instanceof HTMLElement) {
+              event.preventDefault();
+              body.focus();
+            }
+          }}
           className="font-heading placeholder:text-muted-foreground/50 w-full bg-transparent text-3xl font-bold outline-none sm:text-4xl"
         />
         {body?.(page)}
