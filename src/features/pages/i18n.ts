@@ -26,7 +26,12 @@ const en = {
   edited: (when: string) => `Edited ${when}`,
   recent: 'Jump back in',
   tip: 'Press / in any page to insert a block.',
-  actions: { label: 'Page actions', duplicate: 'Duplicate', moveToTrash: 'Move to trash' },
+  actions: {
+    label: 'Page actions',
+    rename: 'Rename',
+    duplicate: 'Duplicate',
+    moveToTrash: 'Move to trash',
+  },
   trash: {
     title: 'Trash',
     description: 'Pages here can be restored, or deleted for good.',
@@ -73,7 +78,12 @@ const pl: typeof en = {
   edited: (when: string) => `Edytowano ${when}`,
   recent: 'Wróć do',
   tip: 'Wciśnij / na dowolnej stronie, żeby wstawić blok.',
-  actions: { label: 'Akcje strony', duplicate: 'Duplikuj', moveToTrash: 'Przenieś do kosza' },
+  actions: {
+    label: 'Akcje strony',
+    rename: 'Zmień nazwę',
+    duplicate: 'Duplikuj',
+    moveToTrash: 'Przenieś do kosza',
+  },
   trash: {
     title: 'Kosz',
     description: 'Strony z kosza możesz przywrócić albo usunąć na zawsze.',

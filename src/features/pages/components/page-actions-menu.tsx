@@ -1,4 +1,4 @@
-import { Copy, MoreHorizontal, Trash2 } from 'lucide-react';
+import { Copy, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -12,13 +12,24 @@ import { cn } from '@/lib/utils';
 import { useDuplicatePage } from '../hooks/use-duplicate-page';
 import { useTrashPage } from '../hooks/use-trash-page';
 import { usePagesTranslation } from '../i18n';
+import { useSidebarUiStore } from '../stores/sidebar-ui.store';
 
-// The "⋯" menu on a page row. The trigger is styled by the caller (it hides until
+// The "⋯" menu on a page row (with Rename, which edits the title in place in the tree)
+// and in the page header. The trigger is styled by the caller (it hides until
 // hover on desktop rows but stays visible on touch).
-export function PageActionsMenu({ pageId, className }: { pageId: string; className?: string }) {
+export function PageActionsMenu({
+  pageId,
+  className,
+  renamable = false,
+}: {
+  pageId: string;
+  className?: string;
+  renamable?: boolean;
+}) {
   const t = usePagesTranslation();
   const duplicate = useDuplicatePage();
   const trash = useTrashPage();
+  const setRenaming = useSidebarUiStore((s) => s.setRenaming);
 
   return (
     <DropdownMenu>
@@ -33,6 +44,12 @@ export function PageActionsMenu({ pageId, className }: { pageId: string; classNa
         <MoreHorizontal className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" onCloseAutoFocus={(event) => event.preventDefault()}>
+        {renamable ? (
+          <DropdownMenuItem onSelect={() => setRenaming(pageId)}>
+            <Pencil />
+            {t.actions.rename}
+          </DropdownMenuItem>
+        ) : null}
         <DropdownMenuItem onSelect={() => void duplicate(pageId)}>
           <Copy />
           {t.actions.duplicate}

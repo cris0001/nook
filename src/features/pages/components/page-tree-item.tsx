@@ -1,7 +1,9 @@
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { Link } from '@tanstack/react-router';
 import { ChevronRight, Plus } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 
+import { renamePage } from '@/lib/data/pages';
 import { cn } from '@/lib/utils';
 
 import { useCreatePage } from '../hooks/use-create-page';
@@ -26,6 +28,18 @@ export function PageTreeItem({ node, depth }: { node: PageNode; depth: number })
   const expanded = useSidebarUiStore((s) => s.expanded.includes(page.id));
   const toggle = useSidebarUiStore((s) => s.toggle);
   const expand = useSidebarUiStore((s) => s.expand);
+  const renaming = useSidebarUiStore((s) => s.renamingId === page.id);
+  const setRenaming = useSidebarUiStore((s) => s.setRenaming);
+  const renameInput = useRef<HTMLInputElement>(null);
+
+  // Focus after the frame in which a menu (if that's where Rename came from) closes —
+  // an autoFocus would lose focus to the closing menu. The hidden mobile copy of the
+  // sidebar is inert, so only the visible input actually takes focus.
+  useEffect(() => {
+    if (!renaming) return;
+    const frame = requestAnimationFrame(() => renameInput.current?.focus());
+    return () => cancelAnimationFrame(frame);
+  }, [renaming]);
   const drop = useSidebarUiStore((s) =>
     s.dropTarget?.id === page.id ? s.dropTarget.position : null,
   );
@@ -33,6 +47,13 @@ export function PageTreeItem({ node, depth }: { node: PageNode; depth: number })
   const { setNodeRef: setDropRef } = useDroppable({ id: page.id });
   const Icon = PAGE_TYPE_ICON[page.type];
   const indent = depth * INDENT_PX + 4;
+
+  function finishRename(value: string) {
+    setRenaming(null);
+    if (value !== page.title) {
+      void renamePage(page.id, value.trim());
+    }
+  }
 
   async function addInside() {
     expand(page.id);
@@ -80,22 +101,55 @@ export function PageTreeItem({ node, depth }: { node: PageNode; depth: number })
           <ChevronRight className={cn('size-3.5 transition-transform', expanded && 'rotate-90')} />
         </button>
 
-        <Link
-          to="/p/$pageId"
-          params={{ pageId: page.id }}
-          draggable={false}
-          className="data-[status=active]:text-foreground flex min-w-0 flex-1 items-center gap-2 data-[status=active]:font-medium"
-        >
-          {page.icon ? (
-            <span className="w-4 shrink-0 text-center">{page.icon}</span>
-          ) : (
-            <Icon className="size-4 shrink-0" />
-          )}
-          <span className="truncate">{page.title || t.untitled}</span>
-        </Link>
+        {renaming ? (
+          <span className="flex min-w-0 flex-1 items-center gap-2">
+            {page.icon ? (
+              <span className="w-4 shrink-0 text-center">{page.icon}</span>
+            ) : (
+              <Icon className="size-4 shrink-0" />
+            )}
+            <input
+              ref={renameInput}
+              defaultValue={page.title}
+              placeholder={t.untitled}
+              aria-label={t.actions.rename}
+              onFocus={(event) => event.currentTarget.select()}
+              onMouseDown={(event) => event.stopPropagation()}
+              onTouchStart={(event) => event.stopPropagation()}
+              onBlur={(event) => finishRename(event.currentTarget.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') event.currentTarget.blur();
+                if (event.key === 'Escape') {
+                  event.currentTarget.value = page.title;
+                  event.currentTarget.blur();
+                }
+              }}
+              className="text-foreground ring-primary min-w-0 flex-1 rounded-sm bg-transparent px-1 outline-none focus:ring-1"
+            />
+          </span>
+        ) : (
+          <Link
+            to="/p/$pageId"
+            params={{ pageId: page.id }}
+            onDoubleClick={(event) => {
+              event.preventDefault();
+              setRenaming(page.id);
+            }}
+            draggable={false}
+            className="data-[status=active]:text-foreground flex min-w-0 flex-1 items-center gap-2 data-[status=active]:font-medium"
+          >
+            {page.icon ? (
+              <span className="w-4 shrink-0 text-center">{page.icon}</span>
+            ) : (
+              <Icon className="size-4 shrink-0" />
+            )}
+            <span className="truncate">{page.title || t.untitled}</span>
+          </Link>
+        )}
 
         <PageActionsMenu
           pageId={page.id}
+          renamable
           className="lg:opacity-0 lg:group-hover/row:opacity-100 lg:focus-visible:opacity-100 lg:data-[state=open]:opacity-100"
         />
         <button

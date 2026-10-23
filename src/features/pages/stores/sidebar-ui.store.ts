@@ -15,6 +15,9 @@ interface SidebarUiState {
   expanded: string[];
   draggingId: string | null;
   dropTarget: DropTarget | null;
+  // The page whose title is being edited in place in the tree.
+  renamingId: string | null;
+  setRenaming: (id: string | null) => void;
   toggle: (id: string) => void;
   expand: (id: string) => void;
   startDrag: (id: string) => void;
@@ -28,6 +31,8 @@ export const useSidebarUiStore = create<SidebarUiState>()(
       expanded: [],
       draggingId: null,
       dropTarget: null,
+      renamingId: null,
+      setRenaming: (renamingId) => set({ renamingId }),
       toggle: (id) =>
         set((s) => ({
           expanded: s.expanded.includes(id)

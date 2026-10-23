@@ -1,5 +1,5 @@
 import { FileQuestion, Smile } from 'lucide-react';
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 
 import { renamePage } from '@/lib/data/pages';
 import type { Page } from '@/schemas/page.schema';
@@ -18,6 +18,17 @@ export function PageView({ pageId, body }: { pageId: string; body?: (page: Page)
   const t = usePagesTranslation();
   const state = usePage(pageId);
   useOpenPage(pageId);
+  const titleInput = useRef<HTMLInputElement>(null);
+  const title = state.status === 'ready' ? state.page.title : null;
+
+  // The title input is uncontrolled (typing writes straight to the database). When the
+  // title changes elsewhere — renamed in the sidebar — sync it, unless it's being typed in.
+  useEffect(() => {
+    const input = titleInput.current;
+    if (input && title !== null && document.activeElement !== input && input.value !== title) {
+      input.value = title;
+    }
+  }, [title]);
 
   if (state.status === 'loading') {
     return null;
@@ -58,6 +69,7 @@ export function PageView({ pageId, body }: { pageId: string; body?: (page: Page)
           )}
         </PageIconPicker>
         <input
+          ref={titleInput}
           key={page.id}
           // A fresh page lands with the cursor in its title, ready to type.
           autoFocus={page.title === ''}
