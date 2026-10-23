@@ -4,15 +4,39 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Placeholder design tokens. The real palette and type scale land with the design
-   pass; until then components only reference these names, so swapping values here
-   restyles the app without touching markup. */
+/* Design tokens. Neutrals are placeholders until the design pass; the brand color is
+   settled. Components only reference these names, so changing a value here restyles
+   the whole app (and the wordmark's irises) without touching markup.
+
+   Primary is lime — rare among productivity apps, and clear of the status hues
+   (red = danger, green = success, orange = warning). Lime is too light for white
+   text or for text on white, hence a dark foreground on primary fills and a deeper
+   --primary-text for links and accents on light surfaces. */
 :root {
   --background: #ffffff;
   --foreground: #111111;
   --muted-foreground: #6b6b6b;
   --border: #e5e5e5;
+
+  --primary: #84cc16;
+  --primary-foreground: #0b0b0b;
+  --primary-text: #4d7c0f;
+  --primary-tint: #ecfccb;
+  --primary-tint-foreground: #3f6212;
+  --ring: #84cc16;
+
   --brand-eye-white: #ffffff;
+  --brand-iris-inner: #3f6212;
+  --brand-iris-outer: #a3e635;
+}
+
+.dark {
+  --primary: #a3e635;
+  --primary-foreground: #0b0b0b;
+  --primary-text: #a3e635;
+  --primary-tint: rgb(163 230 53 / 0.16);
+  --primary-tint-foreground: #a3e635;
+  --ring: #a3e635;
 }
 
 @theme inline {
@@ -25,6 +49,13 @@
   --color-foreground: var(--foreground);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-text: var(--primary-text);
+  --color-primary-tint: var(--primary-tint);
+  --color-primary-tint-foreground: var(--primary-tint-foreground);
+  --color-ring: var(--ring);
 }
 
 /* Splash wordmark fade (see components/brand). A top-level keyframe rather than
