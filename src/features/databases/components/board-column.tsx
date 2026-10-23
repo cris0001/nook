@@ -43,7 +43,7 @@ export function BoardColumn({
   return (
     <section
       ref={setNodeRef}
-      className="bg-muted/60 flex w-72 shrink-0 snap-start flex-col rounded-xl p-2"
+      className="bg-muted/60 flex w-[82vw] shrink-0 snap-start flex-col rounded-xl p-2 sm:w-auto sm:max-w-96 sm:min-w-48 sm:flex-1 sm:basis-0"
     >
       <header className="flex h-8 items-center gap-2 px-1">
         {column.option ? (

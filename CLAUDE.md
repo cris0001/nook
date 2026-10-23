@@ -135,6 +135,10 @@ the lime, Bricolage for display type — and keep the rest quiet and precise.
 - NO emoji in headings or buttons as decoration (page icons are user content)
 - Lime is an accent, not a fill for every surface — one strong primary per view
 - Small details over big effects (drop lines, focus states, the eyes reacting)
+- Content is left-aligned and fills the available width — no centered narrow column
+  with empty gutters; columns (table, board) stretch to fit
+- No horizontal scrolling on desktop unless the content truly can't fit (e.g. many
+  columns); on phones, swipeable rows are fine
 
 ## What NOT to do
 

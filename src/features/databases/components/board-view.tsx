@@ -13,7 +13,9 @@ import { BoardColumn } from './board-column';
 import { CardBody } from './card-body';
 
 // Kanban view: records grouped into columns by a select property (the view's choice,
-// else the first select). Columns scroll sideways and snap on touch screens.
+// else the first select). On wider screens the columns share the available width and
+// only scroll sideways when there are too many to fit; on phones each column takes
+// most of the screen and they swipe with snapping.
 export function BoardView({
   database,
   view,
@@ -53,7 +55,7 @@ function Board({
 
   return (
     <DndContext {...dnd}>
-      <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pt-3 pb-6 sm:-mx-8 sm:px-8">
+      <div className="flex snap-x gap-3 overflow-x-auto pt-3 pb-6">
         {columns.map((column) => (
           <BoardColumn
             key={column.key}

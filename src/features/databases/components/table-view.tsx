@@ -11,8 +11,8 @@ import { PropertyHeader } from './property-header';
 import { RecordTitleCell } from './record-title-cell';
 
 // Spreadsheet-style view: a Name column plus one column per visible property, every cell
-// editable in place. Wider than the screen on phones, so it scrolls sideways inside its
-// own box while the page stays put.
+// editable in place. Columns stretch to fill the width; only when their minimum widths
+// don't fit (phones, many columns) does the table scroll sideways inside its own box.
 export function TableView({
   database,
   view,
@@ -27,14 +27,12 @@ export function TableView({
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-max min-w-full border-collapse text-sm">
+      <table className="w-full border-collapse text-sm">
         <thead>
           <tr className="border-y">
-            <th className="text-muted-foreground w-64 min-w-64 px-2 text-left font-normal">
-              {t.name}
-            </th>
+            <th className="text-muted-foreground min-w-56 px-2 text-left font-normal">{t.name}</th>
             {columns.map((property) => (
-              <th key={property.id} className="w-48 min-w-48 border-l p-0">
+              <th key={property.id} className="min-w-40 border-l p-0">
                 <PropertyHeader databaseId={database.id} property={property} />
               </th>
             ))}
