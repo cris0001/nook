@@ -10,6 +10,7 @@ import {
   addRecord,
   createDatabase,
   deleteOption,
+  deleteView,
   deleteProperty,
   getDatabase,
   listRecords,
@@ -144,5 +145,13 @@ describe('databases data', () => {
     expect(record?.properties[status.id]).toBeNull();
     expect(record?.properties[tags.id]).toEqual([b.id]);
     expect((await listViews(database.id))[0]?.filters).toEqual([]);
+  });
+
+  it('deletes views but always keeps the last one', async () => {
+    const database = await createDatabase(null);
+    const [table, board] = await listViews(database.id);
+    await deleteView(board!.id);
+    await deleteView(table!.id);
+    expect((await listViews(database.id)).map((v) => v.id)).toEqual([table!.id]);
   });
 });

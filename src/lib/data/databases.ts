@@ -53,13 +53,14 @@ function makeView(databaseId: string, type: ViewType, name: string, order: strin
 }
 
 // Creates a database page with its column definitions and two starter views: a table
-// and a board grouped by Status.
+// and a board grouped by Status. Views start unnamed, so the UI shows their type in
+// the current language until the user names them.
 export async function createDatabase(parentId: string | null, title = ''): Promise<Page> {
   return db.transaction('rw', db.pages, db.databases, db.views, async () => {
     const page = await createPage({ parentId, type: 'database', title });
     const properties = defaultProperties();
-    const table = makeView(page.id, 'table', 'Table', generateKeyBetween(null, null));
-    const board = makeView(page.id, 'board', 'Board', generateKeyBetween(table.order, null));
+    const table = makeView(page.id, 'table', '', generateKeyBetween(null, null));
+    const board = makeView(page.id, 'board', '', generateKeyBetween(table.order, null));
     board.groupBy = properties[0]?.id ?? null;
     await db.databases.add({ id: page.id, properties });
     await db.views.bulkAdd([table, board]);
@@ -347,4 +348,14 @@ export async function addView(databaseId: string, type: ViewType, name: string):
   );
   await db.views.add(view);
   return view;
+}
+
+// Deletes a view; a database always keeps at least one.
+export async function deleteView(id: string): Promise<void> {
+  await db.transaction('rw', db.views, async () => {
+    const view = await db.views.get(id);
+    if (view && (await db.views.where('databaseId').equals(view.databaseId).count()) > 1) {
+      await db.views.delete(id);
+    }
+  });
 }
