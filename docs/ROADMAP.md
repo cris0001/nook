@@ -43,12 +43,13 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 
 ### Stage 4 — Databases: model + table view
 
-- [ ] Page type picker on create, routing to a view per page type
-- [ ] Database page type with typed properties (text, number, date, select,
+- [x] Page type picker on create, routing to a view per page type
+- [x] Database page type with typed properties (text, number, date, select,
       multi-select, checkbox, URL)
-- [ ] Add / edit / reorder / delete properties
-- [ ] Each record is a page (properties on top, content below)
-- [ ] Table view with inline cell editing
+- [x] Add / rename / delete properties
+- [ ] Reorder and hide properties
+- [x] Each record is a page (properties on top, content below)
+- [x] Table view with inline cell editing
 - [ ] Sorting and filtering
 - [ ] Views as tabs, each with its own filters and sorting
 

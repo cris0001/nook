@@ -14,6 +14,7 @@ import {
   listRecords,
   listViews,
   setRecordValue,
+  toggleRecordOption,
 } from './databases';
 import { deletePageForever, duplicatePage, trashPage } from './pages';
 
@@ -83,5 +84,27 @@ describe('databases data', () => {
 
     expect(await db.databases.count()).toBe(0);
     expect(await db.views.count()).toBe(0);
+  });
+
+  it('toggles options on the stored value, so quick picks accumulate', async () => {
+    const database = await createDatabase(null);
+    const tags = await addProperty(database.id, 'multiSelect', 'Tags');
+    const record = await addRecord(database.id);
+    await Promise.all([
+      toggleRecordOption(record.id, tags.id, 'a', true),
+      toggleRecordOption(record.id, tags.id, 'b', true),
+    ]);
+    expect((await listRecords(database.id))[0]?.properties[tags.id]).toEqual(['a', 'b']);
+  });
+
+  it('keeps both options when two are created at once', async () => {
+    const database = await createDatabase(null);
+    const tags = await addProperty(database.id, 'multiSelect', 'Tags');
+    await Promise.all([
+      addOption(database.id, tags.id, 'design'),
+      addOption(database.id, tags.id, 'web'),
+    ]);
+    const stored = (await getDatabase(database.id))?.properties.find((p) => p.id === tags.id);
+    expect(stored?.options.map((o) => o.name).sort()).toEqual(['design', 'web']);
   });
 });

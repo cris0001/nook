@@ -29,6 +29,26 @@
   --ring: #84cc16;
   --destructive: #dc2626;
 
+  /* Select-option tags: a soft fill + readable text per named color. */
+  --tag-gray-bg: #ededeb;
+  --tag-gray-fg: #4b4b47;
+  --tag-brown-bg: #eee0da;
+  --tag-brown-fg: #6b4a3a;
+  --tag-orange-bg: #fbe4d0;
+  --tag-orange-fg: #8a4b14;
+  --tag-yellow-bg: #f9efc7;
+  --tag-yellow-fg: #7a5d0a;
+  --tag-green-bg: #dcf0dc;
+  --tag-green-fg: #2e6b35;
+  --tag-blue-bg: #dbe8f7;
+  --tag-blue-fg: #1f5591;
+  --tag-purple-bg: #ebe2f5;
+  --tag-purple-fg: #5c3d87;
+  --tag-pink-bg: #f6e0ea;
+  --tag-pink-fg: #8a2f5b;
+  --tag-red-bg: #fbe0dd;
+  --tag-red-fg: #9b2c22;
+
   --brand-eye-white: #ffffff;
   --brand-iris-inner: #3f6212;
   --brand-iris-outer: #a3e635;
@@ -50,6 +70,25 @@
   --primary-tint-foreground: #a3e635;
   --ring: #a3e635;
   --destructive: #f87171;
+
+  --tag-gray-bg: #373735;
+  --tag-gray-fg: #d4d4d0;
+  --tag-brown-bg: #4a3a32;
+  --tag-brown-fg: #e6cdbf;
+  --tag-orange-bg: #5a3a1c;
+  --tag-orange-fg: #f3c79c;
+  --tag-yellow-bg: #54471a;
+  --tag-yellow-fg: #f1dd96;
+  --tag-green-bg: #24442a;
+  --tag-green-fg: #b2e0b5;
+  --tag-blue-bg: #1f3a59;
+  --tag-blue-fg: #b4d1f2;
+  --tag-purple-bg: #3d2f55;
+  --tag-purple-fg: #d5c2ee;
+  --tag-pink-bg: #52293d;
+  --tag-pink-fg: #f0bcd3;
+  --tag-red-bg: #5a2723;
+  --tag-red-fg: #f6b8b0;
 }
 
 @theme inline {
