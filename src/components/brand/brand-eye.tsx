@@ -3,6 +3,7 @@ import { useId, type Ref } from 'react';
 import { cn } from '@/lib/utils';
 
 export type EyeSide = 'left' | 'right';
+export type EyeMood = 'open' | 'asleep' | 'happy';
 
 const OUTLINES: Record<EyeSide, string> = {
   left: 'M53 1 C80 4 99 25 97 53 C95 80 74 100 47 98 C20 96 2 76 4 48 C6 21 26 -2 53 1Z',
@@ -25,10 +26,12 @@ export function BrandEye({
   side,
   eyeRef,
   closed,
+  mood = 'open',
 }: {
   side: EyeSide;
-  eyeRef: Ref<SVGSVGElement>;
+  eyeRef?: Ref<SVGSVGElement>;
   closed: boolean;
+  mood?: EyeMood;
 }) {
   // Gradient and clip ids must be unique per eye — two eyes (or two logos) share a page.
   const id = useId();
@@ -43,7 +46,7 @@ export function BrandEye({
       aria-hidden
       className={cn(
         'mx-[0.01em] inline-block size-[0.6em] overflow-visible transition-[scale] duration-100',
-        closed && 'scale-y-[0.08]',
+        closed && mood === 'open' && 'scale-y-[0.08]',
       )}
     >
       <defs>
@@ -57,19 +60,34 @@ export function BrandEye({
       </defs>
       <path d={outline} fill="currentColor" />
       <path d={outline} transform={SCLERA} className="fill-(--brand-eye-white)" />
-      <g clipPath={`url(#${scleraId})`}>
-        <g
-          style={{
-            translate: `calc(var(--look-x, 0) * ${IRIS_TRAVEL}px) calc(var(--look-y, 0) * ${IRIS_TRAVEL}px)`,
-            transition: 'translate var(--look-ms, 0ms) ease-out',
-          }}
-        >
-          <circle cx="50" cy="50" r="17" fill={`url(#${irisId})`} />
-          <circle cx="50" cy="50" r="8" fill="#000" />
-          <circle cx="44.5" cy="43.5" r="4" className="fill-(--brand-eye-white)" />
-          <circle cx="55.5" cy="56" r="1.6" className="fill-(--brand-eye-white)" />
+      {mood === 'asleep' ? (
+        <g className="stroke-black" fill="none" strokeLinecap="round">
+          <path d="M28 52 Q50 68 72 52" strokeWidth="6.5" />
+          <path d="M35 60 l-4 7 M50 64 v8 M65 60 l4 7" strokeWidth="4" />
         </g>
-      </g>
+      ) : mood === 'happy' ? (
+        <path
+          d="M28 60 Q50 30 72 60"
+          className="stroke-black"
+          fill="none"
+          strokeWidth="7"
+          strokeLinecap="round"
+        />
+      ) : (
+        <g clipPath={`url(#${scleraId})`}>
+          <g
+            style={{
+              translate: `calc(var(--look-x, 0) * ${IRIS_TRAVEL}px) calc(var(--look-y, 0) * ${IRIS_TRAVEL}px)`,
+              transition: 'translate var(--look-ms, 0ms) ease-out',
+            }}
+          >
+            <circle cx="50" cy="50" r="17" fill={`url(#${irisId})`} />
+            <circle cx="50" cy="50" r="8" fill="#000" />
+            <circle cx="44.5" cy="43.5" r="4" className="fill-(--brand-eye-white)" />
+            <circle cx="55.5" cy="56" r="1.6" className="fill-(--brand-eye-white)" />
+          </g>
+        </g>
+      )}
     </svg>
   );
 }

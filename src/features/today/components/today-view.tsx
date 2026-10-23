@@ -3,6 +3,7 @@ import { enGB, pl } from 'date-fns/locale';
 import type { ReactNode } from 'react';
 
 import { BrandMark } from '@/components/brand';
+import { useCelebrateWhen } from '@/hooks/use-celebrate-when';
 import { cn } from '@/lib/utils';
 import { useLocaleStore } from '@/stores/locale.store';
 
@@ -16,6 +17,10 @@ export function TodayView({ aside }: { aside?: ReactNode }) {
   const t = useTodayTranslation();
   const locale = useLocaleStore((s) => s.locale);
   const state = useAgenda();
+  const agenda = state.status === 'ready' ? state.agenda : null;
+  useCelebrateWhen(
+    agenda ? agenda.overdue.length + agenda.today.length + agenda.week.length === 0 : undefined,
+  );
 
   if (state.status === 'loading') {
     return null;
@@ -49,7 +54,7 @@ export function TodayView({ aside }: { aside?: ReactNode }) {
         <section>
           {open === 0 ? (
             <div className="flex items-center gap-4 py-6">
-              <BrandMark animated className="text-4xl" />
+              <BrandMark animated mood="asleep" className="text-4xl" />
               <div>
                 <p className="font-medium">{t.emptyTitle}</p>
                 <p className="text-muted-foreground mt-0.5 max-w-sm text-sm">

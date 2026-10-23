@@ -1,3 +1,4 @@
+import { useCelebrateWhen } from '@/hooks/use-celebrate-when';
 import { cn } from '@/lib/utils';
 
 import { useDatabaseProgress } from '../hooks/use-database-progress';
@@ -12,6 +13,7 @@ export function DatabaseProgress({
 }) {
   const t = usePagesTranslation();
   const progress = useDatabaseProgress(databaseId);
+  useCelebrateWhen(progress === undefined ? undefined : progress?.done === progress?.total);
   if (!progress) {
     return null;
   }

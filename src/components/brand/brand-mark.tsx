@@ -3,9 +3,10 @@ import { type CSSProperties } from 'react';
 import { useBlink } from '@/hooks/use-blink';
 import { useEyeTracking } from '@/hooks/use-eye-tracking';
 import { cn } from '@/lib/utils';
+import { useBrandMoodStore } from '@/stores/brand-mood.store';
 import { prefersReducedMotion } from '@/utils/motion';
 
-import { BrandEye } from './brand-eye';
+import { BrandEye, type EyeMood } from './brand-eye';
 
 // Splash entrance: after a short beat of white the whole wordmark, eyes open, fades
 // from 0 to full opacity in place — nothing moves or scales, so nothing jumps.
@@ -25,13 +26,19 @@ export function BrandMark({
   className,
   animated = false,
   intro = false,
+  mood = 'open',
+  eyesOnly = false,
 }: {
   className?: string;
   animated?: boolean;
   intro?: boolean;
+  mood?: EyeMood;
+  eyesOnly?: boolean;
 }) {
-  const [left, right] = useEyeTracking(animated);
-  const blinking = useBlink(animated);
+  const happy = useBrandMoodStore((s) => s.happy);
+  const shown: EyeMood = animated && happy ? 'happy' : mood;
+  const [left, right] = useEyeTracking(animated && shown === 'open');
+  const blinking = useBlink(animated && shown === 'open');
   const playIntro = intro && !prefersReducedMotion();
 
   return (
@@ -44,10 +51,10 @@ export function BrandMark({
         className,
       )}
     >
-      <span aria-hidden>n</span>
-      <BrandEye side="left" eyeRef={left} closed={blinking} />
-      <BrandEye side="right" eyeRef={right} closed={blinking} />
-      <span aria-hidden>k</span>
+      {eyesOnly ? null : <span aria-hidden>n</span>}
+      <BrandEye side="left" eyeRef={left} closed={blinking} mood={shown} />
+      <BrandEye side="right" eyeRef={right} closed={blinking} mood={shown} />
+      {eyesOnly ? null : <span aria-hidden>k</span>}
     </span>
   );
 }

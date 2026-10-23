@@ -2,6 +2,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { pl } from 'date-fns/locale';
 import { RotateCcw, Trash2 } from 'lucide-react';
 
+import { BrandMark } from '@/components/brand';
 import { useConfirm } from '@/stores/confirm.store';
 import { useLocaleStore } from '@/stores/locale.store';
 
@@ -39,7 +40,10 @@ export function TrashView() {
       <p className="text-muted-foreground mt-1 text-sm">{t.trash.description}</p>
 
       {state.pages.length === 0 ? (
-        <p className="text-muted-foreground mt-10 text-sm">{t.trash.empty}</p>
+        <div className="mt-10 flex items-center gap-4">
+          <BrandMark eyesOnly mood="asleep" className="text-4xl" />
+          <p className="text-muted-foreground text-sm">{t.trash.empty}</p>
+        </div>
       ) : (
         <ul className="mt-6 divide-y rounded-md border">
           {state.pages.map((page) => {
