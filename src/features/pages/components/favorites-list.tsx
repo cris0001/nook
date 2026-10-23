@@ -1,6 +1,7 @@
 import { usePages } from '../hooks/use-pages';
 import { usePagesTranslation } from '../i18n';
 import { favoritesOf } from '../utils/page-lists';
+import { SECTION_LABEL } from '../utils/row-styles';
 import { PageLinkRow } from './page-link-row';
 
 // Starred pages above the tree. Hidden entirely until something is starred.
@@ -14,8 +15,8 @@ export function FavoritesList() {
   }
 
   return (
-    <div className="pb-3">
-      <p className="eyebrow px-2 pt-2 pb-2">{t.favorites}</p>
+    <div>
+      <p className={SECTION_LABEL}>{t.favorites}</p>
       <ul>
         {favorites.map((page) => (
           <li key={page.id}>

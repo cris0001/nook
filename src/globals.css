@@ -15,12 +15,15 @@
    --primary-text for links and accents on light surfaces. */
 :root {
   --background: #ffffff;
-  --foreground: #161513;
+  --foreground: #1b1a17;
   --muted: #f2f0ea;
-  --muted-foreground: #6e6a61;
-  --border: #e4e1d8;
-  --sidebar: #f6f4ee;
-  --hover: rgb(40 32 10 / 0.055);
+  --muted-foreground: #7d796f;
+  --border: #e3e0d7;
+  --divider: #efede6;
+  --sidebar: #efeee9;
+  --well: #e6e4dd;
+  --surface: #f6f5f1;
+  --hover: rgb(40 32 10 / 0.05);
 
   --primary: #84cc16;
   --primary-foreground: #0b0b0b;
@@ -56,12 +59,15 @@
 }
 
 .dark {
-  --background: #131311;
-  --foreground: #ecebe6;
+  --background: #151513;
+  --foreground: #ecebe5;
   --muted: #1f1e1b;
-  --muted-foreground: #9b978d;
-  --border: #2d2b27;
-  --sidebar: #191815;
+  --muted-foreground: #8a867c;
+  --border: #2a2925;
+  --divider: #211f1c;
+  --sidebar: #0b0b0a;
+  --well: #22211e;
+  --surface: #1a1a17;
   --hover: rgb(255 250 235 / 0.06);
 
   --primary: #a3e635;
@@ -105,6 +111,9 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-sidebar: var(--sidebar);
+  --color-divider: var(--divider);
+  --color-well: var(--well);
+  --color-surface: var(--surface);
   --color-hover: var(--hover);
 
   --color-primary: var(--primary);
@@ -138,6 +147,21 @@
 
 /* The main action button: lime, squared-off, with a hairline edge instead of a soft
    shadow so it stays crisp on both the white page and the paper sidebar. */
+/* The content panel floating on the window background, and raised items on it (the
+   active sidebar row, the selected segment): a hairline ring plus a soft drop. */
+@utility shadow-panel {
+  box-shadow:
+    0 0 0 1px var(--color-border),
+    0 1px 3px rgb(0 0 0 / 0.04),
+    0 8px 24px -12px rgb(0 0 0 / 0.12);
+}
+
+@utility shadow-raised {
+  box-shadow:
+    0 0 0 1px var(--color-border),
+    0 1px 2px rgb(0 0 0 / 0.05);
+}
+
 @utility btn-primary {
   display: inline-flex;
   align-items: center;

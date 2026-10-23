@@ -76,7 +76,7 @@ export function PageView({ pageId, body }: { pageId: string; body?: (page: Page)
               body.focus();
             }
           }}
-          className="font-heading placeholder:text-muted-foreground/50 w-full bg-transparent text-3xl font-bold outline-none sm:text-4xl"
+          className="font-heading placeholder:text-muted-foreground/50 w-full bg-transparent text-[30px] leading-tight font-bold tracking-tight outline-none [font-variation-settings:'opsz'_96] sm:text-[36px]"
         />
         {body?.(page)}
       </article>

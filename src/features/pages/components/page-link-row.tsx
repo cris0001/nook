@@ -5,6 +5,7 @@ import type { Page } from '@/schemas/page.schema';
 
 import { usePagesTranslation } from '../i18n';
 import { PAGE_TYPE_ICON } from '../utils/page-icon';
+import { ACTIVE_SELF, SIDEBAR_ROW } from '../utils/row-styles';
 
 // A flat, non-draggable link to a page — favorites in the sidebar, recents on the home
 // screen. Same icon/title treatment as the tree rows.
@@ -16,10 +17,7 @@ export function PageLinkRow({ page, className }: { page: Page; className?: strin
     <Link
       to="/p/$pageId"
       params={{ pageId: page.id }}
-      className={cn(
-        'text-muted-foreground hover:bg-hover data-[status=active]:bg-background data-[status=active]:text-foreground flex h-10 min-w-0 items-center gap-2 rounded-sm px-2 text-sm data-[status=active]:font-medium data-[status=active]:shadow-[inset_2px_0_0_var(--color-primary)] lg:h-8',
-        className,
-      )}
+      className={cn(SIDEBAR_ROW, ACTIVE_SELF, 'gap-2 px-2', className)}
     >
       {page.icon ? (
         <span className="w-4 shrink-0 text-center">{page.icon}</span>

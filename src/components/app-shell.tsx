@@ -6,8 +6,9 @@ import { BrandMark } from '@/components/brand';
 import { useCommonTranslation } from '@/lib/i18n/common';
 import { cn } from '@/lib/utils';
 
-// Two-pane workspace frame. On lg+ the sidebar is a fixed column; below that it
-// becomes an off-canvas drawer opened from a slim top bar, so phones get the full
+// Two-pane workspace frame. On lg+ the sidebar sits on the window background and the
+// content is a rounded panel inset from the edges, scrolling on its own; below that the
+// sidebar becomes an off-canvas drawer opened from a slim top bar, so phones get the full
 // width for content. The drawer remembers the path it was opened on and counts as open
 // only while that path is current, so any navigation (a link, or "New page" opening
 // the page it just created) closes it without an effect. Backdrop tap, Escape and
@@ -39,10 +40,8 @@ export function AppShell({ sidebar, children }: { sidebar: ReactNode; children: 
   }
 
   return (
-    <div className="flex min-h-dvh">
-      <aside className="bg-sidebar sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r lg:flex">
-        {sidebar}
-      </aside>
+    <div className="bg-sidebar flex min-h-dvh lg:h-dvh lg:overflow-hidden">
+      <aside className="hidden h-dvh w-64 shrink-0 flex-col lg:flex">{sidebar}</aside>
 
       <div className={cn('fixed inset-0 z-40 lg:hidden', !open && 'pointer-events-none')}>
         <div
@@ -65,7 +64,7 @@ export function AppShell({ sidebar, children }: { sidebar: ReactNode; children: 
         </aside>
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="bg-background flex min-w-0 flex-1 flex-col lg:my-2 lg:mr-2 lg:overflow-y-auto lg:rounded-xl lg:shadow-panel">
         <header className="bg-background/85 sticky top-0 z-30 flex h-12 items-center gap-2 border-b px-2 backdrop-blur lg:hidden">
           <button
             type="button"

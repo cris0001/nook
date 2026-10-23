@@ -8,6 +8,7 @@ import { useCreatePage } from '../hooks/use-create-page';
 import { usePagesTranslation } from '../i18n';
 import { useSidebarUiStore } from '../stores/sidebar-ui.store';
 import { PAGE_TYPE_ICON } from '../utils/page-icon';
+import { ACTIVE_WITHIN, SIDEBAR_ROW } from '../utils/row-styles';
 import type { PageNode } from '../utils/page-tree';
 import { PageActionsMenu } from './page-actions-menu';
 
@@ -47,7 +48,9 @@ export function PageTreeItem({ node, depth }: { node: PageNode; depth: number })
         }}
         {...drag.listeners}
         className={cn(
-          'group/row hover:bg-hover has-[[data-status=active]]:bg-background has-[[data-status=active]]:shadow-[inset_2px_0_0_var(--color-primary)] relative flex h-10 items-center gap-1 rounded-sm pr-1 lg:h-8',
+          SIDEBAR_ROW,
+          ACTIVE_WITHIN,
+          'group/row gap-1 pr-1',
           drag.isDragging && 'opacity-40',
           drop === 'inside' && 'bg-primary-tint ring-primary ring-1 ring-inset',
         )}
@@ -81,7 +84,7 @@ export function PageTreeItem({ node, depth }: { node: PageNode; depth: number })
           to="/p/$pageId"
           params={{ pageId: page.id }}
           draggable={false}
-          className="data-[status=active]:text-foreground text-muted-foreground flex min-w-0 flex-1 items-center gap-2 text-sm data-[status=active]:font-medium"
+          className="data-[status=active]:text-foreground flex min-w-0 flex-1 items-center gap-2 data-[status=active]:font-medium"
         >
           {page.icon ? (
             <span className="w-4 shrink-0 text-center">{page.icon}</span>

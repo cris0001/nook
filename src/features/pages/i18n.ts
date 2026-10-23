@@ -6,6 +6,7 @@ const en = {
   newKind: { document: 'Page', database: 'Database' },
   newDatabase: 'New database',
   pages: 'Pages',
+  today: 'Today',
   untitled: 'Untitled',
   addSubpage: 'Add a page inside',
   expand: 'Expand',
@@ -15,6 +16,7 @@ const en = {
   favorite: { add: 'Add to favorites', remove: 'Remove from favorites' },
   icon: { add: 'Add icon', change: 'Change icon', remove: 'Remove', random: 'Random' },
   breadcrumbs: 'Breadcrumbs',
+  edited: (when: string) => `Edited ${when}`,
   recent: 'Recently opened',
   actions: { label: 'Page actions', duplicate: 'Duplicate', moveToTrash: 'Move to trash' },
   trash: {
@@ -43,6 +45,7 @@ const pl: typeof en = {
   newKind: { document: 'Strona', database: 'Baza danych' },
   newDatabase: 'Nowa baza danych',
   pages: 'Strony',
+  today: 'Dziś',
   untitled: 'Bez tytułu',
   addSubpage: 'Dodaj stronę w środku',
   expand: 'Rozwiń',
@@ -52,6 +55,7 @@ const pl: typeof en = {
   favorite: { add: 'Dodaj do ulubionych', remove: 'Usuń z ulubionych' },
   icon: { add: 'Dodaj ikonę', change: 'Zmień ikonę', remove: 'Usuń', random: 'Losowa' },
   breadcrumbs: 'Ścieżka',
+  edited: (when: string) => `Edytowano ${when}`,
   recent: 'Ostatnio otwierane',
   actions: { label: 'Akcje strony', duplicate: 'Duplikuj', moveToTrash: 'Przenieś do kosza' },
   trash: {
