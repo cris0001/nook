@@ -5,9 +5,9 @@ import { pupilOffset, type Point } from '@/utils/pupil-offset';
 
 // Without pointer movement for this long, the eyes stop following and look around.
 const IDLE_AFTER_MS = 2500;
-// First glance comes sooner so a freshly mounted logo (and touch devices, which never
-// send a hover) shows signs of life right away.
-const FIRST_GLANCE_MS = 900;
+// First glance lands just after the splash intro opens the eyes, so a freshly mounted
+// logo (and touch devices, which never send a hover) shows signs of life early.
+const FIRST_GLANCE_MS = 1800;
 const GLANCE_EVERY_MS = 1400;
 const FOLLOW_MS = 90;
 const GLANCE_MS = 320;
@@ -23,40 +23,28 @@ const GLANCES: readonly Point[] = [
 ];
 const CENTER: Point = { x: 0, y: 0 };
 
-export interface EyeRefs {
-  eye: RefObject<HTMLSpanElement | null>;
-  pupil: RefObject<HTMLSpanElement | null>;
-}
+export type EyeRef = RefObject<SVGSVGElement | null>;
 
-// How far a pupil can travel from center: half the free space inside the eye.
-function travelOf(eye: HTMLElement, pupil: HTMLElement): number {
-  return Math.max((eye.clientWidth - pupil.offsetWidth) / 2, 0);
-}
-
-function centerOf(el: HTMLElement): Point {
-  const r = el.getBoundingClientRect();
-  return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+// The cursor pulls the pupil fully to the rim only from a few eye-widths away, so a
+// big splash logo and a small sidebar logo feel equally lively.
+function reachOf(rect: DOMRect): number {
+  return Math.max(rect.width * 3, 80);
 }
 
 // Drives a pair of eyes: pupils follow the pointer, and after a pause they glance
-// around on their own. Pupils are moved by writing `translate` straight to the DOM
-// inside requestAnimationFrame — pointermove fires far too often to go through
-// React state and re-render the logo on every event.
-export function useEyeTracking(enabled: boolean): readonly [EyeRefs, EyeRefs] {
-  const leftEye = useRef<HTMLSpanElement>(null);
-  const leftPupil = useRef<HTMLSpanElement>(null);
-  const rightEye = useRef<HTMLSpanElement>(null);
-  const rightPupil = useRef<HTMLSpanElement>(null);
+// around on their own. The look direction is written as CSS variables straight to
+// the DOM inside requestAnimationFrame — pointermove fires far too often to go
+// through React state and re-render the logo on every event.
+export function useEyeTracking(enabled: boolean): readonly [EyeRef, EyeRef] {
+  const leftEye = useRef<SVGSVGElement>(null);
+  const rightEye = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     if (!enabled) {
       return;
     }
 
-    const pairs = [
-      { eye: leftEye, pupil: leftPupil },
-      { eye: rightEye, pupil: rightPupil },
-    ];
+    const eyes = [leftEye, rightEye];
     const reducedMotion = prefersReducedMotion();
     let pointer: Point | null = null;
     let frame = 0;
@@ -64,29 +52,35 @@ export function useEyeTracking(enabled: boolean): readonly [EyeRefs, EyeRefs] {
     let idleTimer = 0;
     let glanceTimer = 0;
 
-    function place(offsetFor: (eye: HTMLElement, travel: number) => Point, durationMs: number) {
-      for (const { eye, pupil } of pairs) {
-        if (!eye.current || !pupil.current) {
+    function look(lookFor: (eye: SVGSVGElement) => Point, durationMs: number) {
+      for (const { current: eye } of eyes) {
+        if (!eye) {
           continue;
         }
-        const { x, y } = offsetFor(eye.current, travelOf(eye.current, pupil.current));
-        pupil.current.style.transitionDuration = `${durationMs}ms`;
-        pupil.current.style.translate = `${x}px ${y}px`;
+        const { x, y } = lookFor(eye);
+        eye.style.setProperty('--look-x', x.toFixed(3));
+        eye.style.setProperty('--look-y', y.toFixed(3));
+        eye.style.setProperty('--look-ms', `${durationMs}ms`);
       }
     }
 
     function follow() {
       frame = 0;
       const target = pointer;
-      if (target) {
-        place((eye, travel) => pupilOffset(centerOf(eye), target, travel), FOLLOW_MS);
+      if (!target) {
+        return;
       }
+      look((eye) => {
+        const rect = eye.getBoundingClientRect();
+        const center = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+        return pupilOffset(center, target, 1, reachOf(rect));
+      }, FOLLOW_MS);
     }
 
     function lookAround() {
       const next = GLANCES[glance % GLANCES.length] ?? CENTER;
       glance += 1;
-      place((_eye, travel) => ({ x: next.x * travel, y: next.y * travel }), GLANCE_MS);
+      look(() => next, GLANCE_MS);
       glanceTimer = window.setTimeout(lookAround, GLANCE_EVERY_MS);
     }
 
@@ -95,7 +89,7 @@ export function useEyeTracking(enabled: boolean): readonly [EyeRefs, EyeRefs] {
       window.clearTimeout(idleTimer);
       window.clearTimeout(glanceTimer);
       if (reducedMotion) {
-        place(() => CENTER, GLANCE_MS);
+        look(() => CENTER, GLANCE_MS);
       } else {
         lookAround();
       }
@@ -125,8 +119,5 @@ export function useEyeTracking(enabled: boolean): readonly [EyeRefs, EyeRefs] {
     };
   }, [enabled]);
 
-  return [
-    { eye: leftEye, pupil: leftPupil },
-    { eye: rightEye, pupil: rightPupil },
-  ];
+  return [leftEye, rightEye];
 }
