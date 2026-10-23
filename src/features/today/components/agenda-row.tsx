@@ -1,55 +1,64 @@
 import { Link } from '@tanstack/react-router';
-import { format, parseISO } from 'date-fns';
-import { enGB, pl } from 'date-fns/locale';
-import { TriangleAlert } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
+import { DoneCircle } from '@/components/done-circle';
 import { useCan } from '@/hooks/use-can';
+import { useDueLabel } from '@/hooks/use-due-label';
 import { setRecordValue } from '@/lib/data/databases';
 import { cn } from '@/lib/utils';
-import { useLocaleStore } from '@/stores/locale.store';
 
 import { useTodayTranslation } from '../i18n';
 import type { AgendaItem } from '../utils/agenda';
 
-export function AgendaRow({ item, late }: { item: AgendaItem; late: boolean }) {
+const LEAVE_DELAY_MS = 650;
+
+export function AgendaRow({ item }: { item: AgendaItem }) {
   const t = useTodayTranslation();
-  const locale = useLocaleStore((s) => s.locale);
+  const dueLabel = useDueLabel();
+  const canEdit = useCan('record.edit');
+  const [checked, setChecked] = useState(false);
   const { record, source, complete, status } = item;
   const title = record.title || t.untitled;
-  const canEdit = useCan('record.edit');
+  const due = dueLabel(item.date);
 
-  function markDone() {
-    if (!complete) return;
+  // The row stays a beat after the click so the check-off is seen, then the write
+  // drops it from the agenda.
+  useEffect(() => {
+    if (!checked || !complete) return;
     const previous = record.properties[complete.propertyId] ?? null;
-    void setRecordValue(record.id, complete.propertyId, complete.optionId);
-    toast(t.markedDone(title), {
-      action: {
-        label: t.undo,
-        onClick: () => void setRecordValue(record.id, complete.propertyId, previous),
-      },
-    });
-  }
-
-  const due =
-    item.date === format(new Date(), 'yyyy-MM-dd')
-      ? t.dueToday
-      : format(parseISO(item.date), 'EEE d MMM', { locale: locale === 'pl' ? pl : enGB });
+    const timer = window.setTimeout(() => {
+      void setRecordValue(record.id, complete.propertyId, complete.optionId);
+      toast(t.markedDone(title), {
+        action: {
+          label: t.undo,
+          onClick: () => void setRecordValue(record.id, complete.propertyId, previous),
+        },
+      });
+    }, LEAVE_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, [checked, complete, record, title, t]);
 
   return (
-    <li className="border-divider flex h-11 items-center gap-3 border-b px-1 lg:h-10">
-      <button
-        type="button"
-        aria-label={t.markDone}
-        title={t.markDone}
+    <li
+      className={cn(
+        'border-divider flex h-11 items-center gap-3 border-b px-1 transition-opacity delay-300 duration-300 lg:h-10',
+        checked && 'opacity-50',
+      )}
+    >
+      <DoneCircle
+        done={checked}
+        label={t.markDone}
         disabled={!complete || !canEdit}
-        onClick={markDone}
-        className="border-muted-foreground/60 hover:border-primary hover:bg-primary-tint size-4 shrink-0 rounded-full border-[1.5px] transition-colors disabled:opacity-30"
+        onToggle={() => setChecked(true)}
       />
       <Link
         to="/p/$pageId"
         params={{ pageId: record.id }}
-        className="min-w-0 flex-1 truncate font-medium hover:underline"
+        className={cn(
+          'min-w-0 flex-1 truncate font-medium decoration-2 hover:underline',
+          checked && 'text-muted-foreground decoration-primary line-through hover:line-through',
+        )}
       >
         {record.icon ? `${record.icon} ` : ''}
         {title}
@@ -68,12 +77,13 @@ export function AgendaRow({ item, late }: { item: AgendaItem; late: boolean }) {
       </Link>
       <span
         className={cn(
-          'flex w-24 shrink-0 items-center justify-end gap-1 font-mono text-[11.5px]',
-          late ? 'text-destructive font-medium' : 'text-muted-foreground',
+          'w-32 shrink-0 text-right font-mono text-[11.5px] whitespace-nowrap',
+          due.tone === 'late' && 'text-destructive font-medium',
+          due.tone === 'today' && 'text-primary-text font-semibold',
+          due.tone === 'plain' && 'text-muted-foreground',
         )}
       >
-        {late ? <TriangleAlert className="size-3" /> : null}
-        {due}
+        {due.text}
       </span>
     </li>
   );

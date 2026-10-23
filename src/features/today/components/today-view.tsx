@@ -79,7 +79,7 @@ export function TodayView({ aside }: { aside?: ReactNode }) {
                   </p>
                   <ul className="border-divider border-t">
                     {items.map((item) => (
-                      <AgendaRow key={item.record.id} item={item} late={late} />
+                      <AgendaRow key={item.record.id} item={item} />
                     ))}
                   </ul>
                 </div>
