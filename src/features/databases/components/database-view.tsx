@@ -20,7 +20,10 @@ export function DatabaseView({ databaseId }: { databaseId: string }) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const ready = state.status === 'ready' ? state : null;
-  const view = ready?.views.find((v) => v.id === activeId) ?? ready?.views[0];
+  const view =
+    ready?.views.find((v) => v.id === activeId) ??
+    ready?.views.find((v) => v.type === 'board') ??
+    ready?.views[0];
   const visible = useMemo(
     () =>
       ready && view
@@ -42,12 +45,7 @@ export function DatabaseView({ databaseId }: { databaseId: string }) {
   return (
     <section className="mt-6">
       <div className="border-divider flex flex-wrap items-center gap-2 border-b pb-3">
-        <ViewTabs
-          databaseId={database.id}
-          views={views}
-          activeId={view.id}
-          onSelect={setActiveId}
-        />
+        <ViewTabs views={views} activeId={view.id} onSelect={setActiveId} />
         <div className="ml-auto flex items-center gap-0.5">
           {view.type === 'board' ? <GroupMenu database={database} view={view} /> : null}
           <FilterMenu database={database} view={view} />

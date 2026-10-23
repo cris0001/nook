@@ -1,13 +1,7 @@
-import { CalendarDays, ChevronDown, Kanban, Plus, Table2, Trash2 } from 'lucide-react';
+import { CalendarDays, ChevronDown, Kanban, Table2 } from 'lucide-react';
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { addView, deleteView, updateView } from '@/lib/data/databases';
+import { updateView } from '@/lib/data/databases';
 import { cn } from '@/lib/utils';
 import type { View, ViewType } from '@/schemas/database.schema';
 
@@ -19,27 +13,18 @@ const VIEW_ICON: Record<ViewType, typeof Table2> = {
   calendar: CalendarDays,
 };
 
-const ADDABLE: ViewType[] = ['table', 'board'];
-
 const TAB = 'flex h-7 shrink-0 items-center gap-1.5 rounded-md px-2.5 text-[13px] font-medium';
 
 export function ViewTabs({
-  databaseId,
   views,
   activeId,
   onSelect,
 }: {
-  databaseId: string;
   views: View[];
   activeId: string;
   onSelect: (id: string) => void;
 }) {
   const t = useDatabasesTranslation();
-
-  async function add(type: ViewType) {
-    const view = await addView(databaseId, type, '');
-    onSelect(view.id);
-  }
 
   return (
     <div className="flex min-w-0 items-center gap-1">
@@ -84,47 +69,13 @@ export function ViewTabs({
                   placeholder={t.viewType[view.type]}
                   aria-label={t.viewName}
                   onChange={(event) => void updateView(view.id, { name: event.target.value })}
-                  className="mb-1 h-9 w-full rounded-md border bg-transparent px-2 text-sm outline-none"
+                  className="h-9 w-full rounded-md border bg-transparent px-2 text-sm outline-none"
                 />
-                {views.length > 1 ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const next = views.find((v) => v.id !== view.id);
-                      void deleteView(view.id);
-                      if (next) onSelect(next.id);
-                    }}
-                    className="text-destructive hover:bg-hover flex h-9 w-full items-center gap-2 rounded-md px-2 text-sm lg:h-8"
-                  >
-                    <Trash2 className="size-4" />
-                    {t.deleteView}
-                  </button>
-                ) : null}
               </PopoverContent>
             </Popover>
           );
         })}
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          aria-label={t.addView}
-          title={t.addView}
-          className="text-muted-foreground hover:bg-hover hover:text-foreground ml-1 flex size-7 shrink-0 items-center justify-center rounded-md"
-        >
-          <Plus className="size-4" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          {ADDABLE.map((type) => {
-            const Icon = VIEW_ICON[type];
-            return (
-              <DropdownMenuItem key={type} onSelect={() => void add(type)}>
-                <Icon />
-                {t.viewType[type]}
-              </DropdownMenuItem>
-            );
-          })}
-        </DropdownMenuContent>
-      </DropdownMenu>
     </div>
   );
 }
