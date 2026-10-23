@@ -1,35 +1,19 @@
 import { describe, expect, it } from 'vitest';
 
-import type { Page } from '@/schemas/page.schema';
+import { makePage } from '@/test/make-page';
 
 import { planDrop } from './plan-drop';
-
-function page(id: string, parentId: string | null, order: string): Page {
-  return {
-    id,
-    parentId,
-    type: 'document',
-    title: id,
-    icon: null,
-    order,
-    favoritedAt: null,
-    lastOpenedAt: null,
-    deletedAt: null,
-    createdAt: 0,
-    updatedAt: 0,
-  };
-}
 
 // a ─ a1
 //   └ a2
 // b
 // c
 const PAGES = [
-  page('a', null, 'a0'),
-  page('a1', 'a', 'a0'),
-  page('a2', 'a', 'a1'),
-  page('b', null, 'a1'),
-  page('c', null, 'a2'),
+  makePage('a', null, { order: 'a0' }),
+  makePage('a1', 'a', { order: 'a0' }),
+  makePage('a2', 'a', { order: 'a1' }),
+  makePage('b', null, { order: 'a1' }),
+  makePage('c', null, { order: 'a2' }),
 ];
 
 describe('planDrop', () => {

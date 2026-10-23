@@ -9,6 +9,7 @@ export interface CreatePageInput {
   parentId: string | null;
   type: PageType;
   title?: string;
+  properties?: Page['properties'];
 }
 
 // Every page that isn't in the trash. The sidebar shapes these into a tree.
@@ -28,7 +29,12 @@ async function childrenOf(parentId: string | null): Promise<Page[]> {
 }
 
 // Appends a new page as the last child of `parentId`.
-export async function createPage({ parentId, type, title = '' }: CreatePageInput): Promise<Page> {
+export async function createPage({
+  parentId,
+  type,
+  title = '',
+  properties = {},
+}: CreatePageInput): Promise<Page> {
   return db.transaction('rw', db.pages, async () => {
     const siblings = await childrenOf(parentId);
     const now = Date.now();
@@ -39,6 +45,7 @@ export async function createPage({ parentId, type, title = '' }: CreatePageInput
       title,
       icon: null,
       order: generateKeyBetween(siblings.at(-1)?.order ?? null, null),
+      properties,
       favoritedAt: null,
       lastOpenedAt: null,
       deletedAt: null,
