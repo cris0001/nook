@@ -132,3 +132,110 @@
     @apply bg-background text-foreground font-sans antialiased;
   }
 }
+
+/* Document body (Tiptap). Plain CSS rather than utilities: the editor renders its own
+   markup, so styles target the elements it produces. Headings use the display face;
+   lime is kept for interactive bits (checked to-dos, selection), not decoration. */
+@layer components {
+  .nook-prose {
+    @apply min-h-40 text-[15px] leading-7 outline-none;
+  }
+
+  .nook-prose > * + * {
+    @apply mt-1;
+  }
+
+  .nook-prose h1,
+  .nook-prose h2,
+  .nook-prose h3 {
+    @apply font-heading font-bold tracking-tight;
+  }
+
+  .nook-prose h1 {
+    @apply mt-8 text-[1.875rem] leading-tight;
+  }
+
+  .nook-prose h2 {
+    @apply mt-6 text-2xl leading-snug;
+  }
+
+  .nook-prose h3 {
+    @apply mt-4 text-xl leading-snug;
+  }
+
+  .nook-prose ul {
+    @apply list-disc pl-6;
+  }
+
+  .nook-prose ol {
+    @apply list-decimal pl-6;
+  }
+
+  .nook-prose li > p {
+    @apply my-0;
+  }
+
+  .nook-prose ul[data-type='taskList'] {
+    @apply list-none pl-0.5;
+  }
+
+  .nook-prose ul[data-type='taskList'] li {
+    @apply flex items-start gap-2;
+  }
+
+  .nook-prose ul[data-type='taskList'] li > label {
+    @apply mt-[0.3rem] shrink-0;
+  }
+
+  .nook-prose ul[data-type='taskList'] li > label input {
+    @apply accent-primary size-4 cursor-pointer;
+  }
+
+  .nook-prose ul[data-type='taskList'] li > div {
+    @apply min-w-0 flex-1;
+  }
+
+  .nook-prose ul[data-type='taskList'] li[data-checked='true'] > div {
+    @apply text-muted-foreground line-through;
+  }
+
+  .nook-prose blockquote {
+    @apply border-foreground/80 border-l-[3px] pl-4;
+  }
+
+  .nook-prose pre {
+    @apply bg-muted my-2 overflow-x-auto rounded-lg px-4 py-3 font-mono text-[13px] leading-6;
+  }
+
+  .nook-prose :not(pre) > code {
+    @apply bg-muted rounded px-1 py-0.5 font-mono text-[0.85em];
+  }
+
+  .nook-prose hr {
+    @apply my-6;
+  }
+
+  .nook-prose hr.ProseMirror-selectednode {
+    @apply border-primary;
+  }
+
+  .nook-prose a {
+    @apply text-primary-text underline underline-offset-2;
+  }
+
+  .nook-prose p.is-empty::before,
+  .nook-prose h1.is-empty::before,
+  .nook-prose h2.is-empty::before,
+  .nook-prose h3.is-empty::before {
+    @apply text-muted-foreground/60 pointer-events-none float-left h-0;
+    content: attr(data-placeholder);
+  }
+
+  .nook-prose ::selection {
+    background: color-mix(in srgb, var(--primary) 35%, transparent);
+  }
+
+  .nook-prose .ProseMirror-selectednode {
+    @apply rounded-sm outline-primary outline-2 outline-offset-2;
+  }
+}

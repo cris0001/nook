@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 
 import { DatabaseView, RecordProperties } from '@/features/databases';
+import { DocumentEditor } from '@/features/documents';
 import { PageView } from '@/features/pages';
 import type { Page } from '@/schemas/page.schema';
 
@@ -15,7 +16,15 @@ function pageBody(page: Page) {
     case 'database':
       return <DatabaseView databaseId={page.id} />;
     case 'record':
-      return <RecordProperties record={page} />;
+      return (
+        <>
+          <RecordProperties record={page} />
+          <hr className="my-6" />
+          <DocumentEditor pageId={page.id} />
+        </>
+      );
+    case 'document':
+      return <DocumentEditor pageId={page.id} />;
     default:
       return null;
   }

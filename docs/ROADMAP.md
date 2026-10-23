@@ -65,11 +65,11 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 
 ## Week 2 — documents, calendar, whiteboard, charts
 
-### Stage 6 — Documents
+### Stage 6 — Documents ✅ COMPLETE
 
-- [ ] Block editor (Tiptap): headings, lists, to-dos, quotes, code, dividers
-- [ ] Slash menu and Markdown shortcuts
-- [ ] Drag blocks
+- [x] Block editor (Tiptap): headings, lists, to-dos, quotes, code, dividers
+- [x] Slash menu and Markdown shortcuts
+- [x] Drag blocks
 
 ### Stage 7 — Links and backlinks
 

@@ -9,5 +9,5 @@ export async function getContent(pageId: string): Promise<JSONContent | null> {
 }
 
 export async function saveContent(pageId: string, doc: JSONContent): Promise<void> {
-  await db.contents.put({ id: pageId, doc: doc, updatedAt: Date.now() });
+  await db.contents.put({ id: pageId, doc, updatedAt: Date.now() });
 }
