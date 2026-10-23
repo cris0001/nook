@@ -3,6 +3,7 @@ import { ExternalLink } from 'lucide-react';
 import { setRecordValue } from '@/lib/data/databases';
 import type { PropertyDef, PropertyValue } from '@/schemas/database.schema';
 
+import { DateCell } from './date-cell';
 import { SelectCell } from './select-cell';
 
 const INPUT =
@@ -53,14 +54,7 @@ export function PropertyCell({
         />
       );
     case 'date':
-      return (
-        <input
-          type="date"
-          value={text}
-          onChange={(event) => save(event.target.value || null)}
-          className={INPUT}
-        />
-      );
+      return <DateCell recordId={recordId} propertyId={property.id} value={text || null} />;
     case 'url':
       return (
         <div className="flex h-full items-center">

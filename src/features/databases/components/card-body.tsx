@@ -1,12 +1,11 @@
 import { format, parseISO } from 'date-fns';
-import { pl } from 'date-fns/locale';
 import { CalendarClock, Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import type { Database, PropertyDef, View } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
-import { useLocaleStore } from '@/stores/locale.store';
 
+import { useDateLocale } from '../hooks/use-date-locale';
 import { useDatabasesTranslation } from '../i18n';
 import { isOverdue } from '../utils/board';
 import { OptionTag } from './option-tag';
@@ -26,7 +25,7 @@ export function CardBody({
   group: PropertyDef;
 }) {
   const t = useDatabasesTranslation();
-  const locale = useLocaleStore((s) => s.locale);
+  const { locale } = useDateLocale();
   const shown = database.properties.filter(
     (p) => p.id !== group.id && !view.hiddenProperties.includes(p.id),
   );
@@ -60,7 +59,7 @@ export function CardBody({
           )}
         >
           <CalendarClock className="size-3.5" />
-          {format(parseISO(value), 'd MMM yyyy', locale === 'pl' ? { locale: pl } : {})}
+          {format(parseISO(value), 'd MMM yyyy', { locale })}
           {late ? <span className="font-medium">· {t.overdue}</span> : null}
         </p>,
       ];
