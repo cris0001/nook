@@ -22,6 +22,29 @@
   --color-border: var(--border);
 }
 
+/* Motion for the wordmark intro (see components/brand). Plain :root vars and
+   top-level keyframes rather than @theme: they're referenced from inline styles,
+   which Tailwind can't see, so it would tree-shake them away. The keyframes animate
+   the individual `translate` / `scale` properties so they compose with the pupil
+   tracking and blinking instead of overwriting a shared `transform`. */
+:root {
+  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-pop: cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    translate: 0 0.3em;
+  }
+}
+
+@keyframes eye-open {
+  from {
+    scale: 1 0.05;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
