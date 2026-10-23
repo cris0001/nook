@@ -5,9 +5,10 @@ import { renamePage } from '@/lib/data/pages';
 import type { Page } from '@/schemas/page.schema';
 
 import { useDatabasesTranslation } from '../i18n';
+import { RecordActionsMenu } from './record-actions-menu';
 
-// The Name cell: the record's page title, editable in place, plus an "Open" button
-// (on hover on desktop, always on touch) that opens the record as a full page.
+// The Name cell: the record's page title, editable in place, plus "Open" and a "⋯"
+// actions menu (on hover on desktop, always on touch).
 export function RecordTitleCell({ record }: { record: Page }) {
   const t = useDatabasesTranslation();
 
@@ -29,6 +30,10 @@ export function RecordTitleCell({ record }: { record: Page }) {
       >
         <Maximize2 className="size-3" />
       </Link>
+      <RecordActionsMenu
+        recordId={record.id}
+        className="mr-1 lg:opacity-0 lg:group-hover/title:opacity-100 lg:data-[state=open]:opacity-100"
+      />
     </div>
   );
 }

@@ -10,6 +10,7 @@ import type { BoardDropData } from '../hooks/use-board-dnd';
 import { useDatabasesTranslation } from '../i18n';
 import { useBoardUiStore } from '../stores/board-ui.store';
 import { CardBody } from './card-body';
+import { RecordActionsMenu } from './record-actions-menu';
 
 const CARD = 'bg-background block rounded-lg border px-3 py-2 text-sm shadow-xs';
 
@@ -66,18 +67,28 @@ export function BoardCard({
           />
         </div>
       ) : (
-        <Link
-          to="/p/$pageId"
-          params={{ pageId: record.id }}
-          draggable={false}
-          className={cn(CARD, 'hover:border-foreground/25 transition-colors')}
+        <div
+          className={cn(CARD, 'group/card hover:border-foreground/25 relative transition-colors')}
         >
-          <span className={cn('font-medium', !record.title && 'text-muted-foreground')}>
+          {/* The link covers the whole card (::after); the menu sits above it. */}
+          <Link
+            to="/p/$pageId"
+            params={{ pageId: record.id }}
+            draggable={false}
+            className={cn(
+              'block pr-6 font-medium after:absolute after:inset-0 after:content-[""]',
+              !record.title && 'text-muted-foreground',
+            )}
+          >
             {record.icon ? `${record.icon} ` : ''}
             {record.title || t.untitled}
-          </span>
+          </Link>
           <CardBody record={record} database={database} view={view} group={group} />
-        </Link>
+          <RecordActionsMenu
+            recordId={record.id}
+            className="absolute top-1.5 right-1.5 z-10 lg:opacity-0 lg:group-hover/card:opacity-100 lg:data-[state=open]:opacity-100"
+          />
+        </div>
       )}
     </li>
   );
