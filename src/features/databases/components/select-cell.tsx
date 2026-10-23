@@ -6,6 +6,7 @@ import { addOption, toggleRecordOption } from '@/lib/data/databases';
 import type { PropertyDef, PropertyValue } from '@/schemas/database.schema';
 
 import { useDatabasesTranslation } from '../i18n';
+import { OptionEditButton } from './option-edit-button';
 import { OptionTag } from './option-tag';
 
 // Select / multi-select cell: shows the chosen tags; the popover filters options as you
@@ -69,15 +70,21 @@ export function SelectCell({
         />
         <ul className="max-h-60 overflow-y-auto">
           {matches.map((option) => (
-            <li key={option.id}>
+            <li key={option.id} className="group/option flex items-center">
               <button
                 type="button"
                 onClick={() => toggle(option.id)}
-                className="hover:bg-hover flex h-9 w-full items-center gap-2 rounded-md px-2 lg:h-8"
+                className="hover:bg-hover flex h-9 min-w-0 flex-1 items-center gap-2 rounded-md px-2 lg:h-8"
               >
                 <OptionTag option={option} />
                 {selected.includes(option.id) ? <Check className="ml-auto size-4" /> : null}
               </button>
+              <OptionEditButton
+                databaseId={databaseId}
+                propertyId={property.id}
+                option={option}
+                className="lg:opacity-0 lg:group-hover/option:opacity-100 lg:data-[state=open]:opacity-100"
+              />
             </li>
           ))}
           {needle && !exact ? (

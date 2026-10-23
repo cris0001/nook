@@ -10,7 +10,7 @@ import { useDatabasesTranslation } from '../i18n';
 import { useBoardUiStore } from '../stores/board-ui.store';
 import { NO_GROUP, type BoardColumn as Column } from '../utils/board';
 import { BoardCard } from './board-card';
-import { OptionTag } from './option-tag';
+import { BoardColumnMenu } from './board-column-menu';
 
 // One board column: header with the option and a count, the cards, and "Add a card"
 // which creates a record already in this column and puts its title in edit mode.
@@ -47,7 +47,7 @@ export function BoardColumn({
     >
       <header className="flex h-8 items-center gap-2 px-1">
         {column.option ? (
-          <OptionTag option={column.option} />
+          <BoardColumnMenu databaseId={database.id} property={group} option={column.option} />
         ) : (
           <span className="text-muted-foreground text-xs font-medium">{t.noValue(group.name)}</span>
         )}

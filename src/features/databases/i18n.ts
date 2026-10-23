@@ -1,6 +1,11 @@
 import { createTranslation } from '@/lib/i18n/create-translation';
 
-import type { FilterOperator, PropertyType, ViewType } from '@/schemas/database.schema';
+import type {
+  FilterOperator,
+  OptionColor,
+  PropertyType,
+  ViewType,
+} from '@/schemas/database.schema';
 
 // Databases feature copy: views, table, properties, cells.
 const en = {
@@ -36,6 +41,25 @@ const en = {
   noValue: (name: string) => `No ${name}`,
   addCard: 'Add a card',
   overdue: 'Overdue',
+  options: 'Options',
+  editOption: 'Edit option',
+  optionName: 'Option name',
+  color: 'Color',
+  colorName: {
+    gray: 'Gray',
+    brown: 'Brown',
+    orange: 'Orange',
+    yellow: 'Yellow',
+    green: 'Green',
+    blue: 'Blue',
+    purple: 'Purple',
+    pink: 'Pink',
+    red: 'Red',
+  } satisfies Record<OptionColor, string>,
+  deleteOption: 'Delete option',
+  confirmDeleteOption: (name: string) => `Delete "${name}"? Cards using it lose this value.`,
+  moveLeft: 'Move left',
+  moveRight: 'Move right',
   filter: 'Filter',
   sort: 'Sort',
   properties: 'Properties',
@@ -91,6 +115,25 @@ const pl: typeof en = {
   noValue: (name: string) => `Brak: ${name}`,
   addCard: 'Dodaj kartę',
   overdue: 'Po terminie',
+  options: 'Opcje',
+  editOption: 'Edytuj opcję',
+  optionName: 'Nazwa opcji',
+  color: 'Kolor',
+  colorName: {
+    gray: 'Szary',
+    brown: 'Brązowy',
+    orange: 'Pomarańczowy',
+    yellow: 'Żółty',
+    green: 'Zielony',
+    blue: 'Niebieski',
+    purple: 'Fioletowy',
+    pink: 'Różowy',
+    red: 'Czerwony',
+  },
+  deleteOption: 'Usuń opcję',
+  confirmDeleteOption: (name: string) => `Usunąć „${name}”? Rekordy stracą tę wartość.`,
+  moveLeft: 'Przesuń w lewo',
+  moveRight: 'Przesuń w prawo',
   filter: 'Filtr',
   sort: 'Sortuj',
   properties: 'Właściwości',
