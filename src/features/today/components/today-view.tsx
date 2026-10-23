@@ -50,7 +50,7 @@ export function TodayView({ aside }: { aside?: ReactNode }) {
         {doneRatio !== null ? <ProgressRing ratio={doneRatio} label={t.doneLabel} /> : null}
       </header>
 
-      <div className="grid gap-10 pt-6 lg:grid-cols-[minmax(0,1fr)_20rem] xl:gap-12">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-10 pt-6 lg:grid-cols-[minmax(0,1fr)_20rem] xl:gap-12">
         <section>
           {open === 0 ? (
             <div className="flex items-center gap-4 py-6">
