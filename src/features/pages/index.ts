@@ -2,3 +2,4 @@
 export { PageSidebar } from './components/page-sidebar';
 export { PageView } from './components/page-view';
 export { WorkspaceHome } from './components/workspace-home';
+export { TrashView } from './components/trash-view';

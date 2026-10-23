@@ -27,6 +27,7 @@
   --primary-tint: #ecfccb;
   --primary-tint-foreground: #3f6212;
   --ring: #84cc16;
+  --destructive: #dc2626;
 
   --brand-eye-white: #ffffff;
   --brand-iris-inner: #3f6212;
@@ -48,6 +49,7 @@
   --primary-tint: rgb(163 230 53 / 0.16);
   --primary-tint-foreground: #a3e635;
   --ring: #a3e635;
+  --destructive: #f87171;
 }
 
 @theme inline {
@@ -70,6 +72,7 @@
   --color-primary-tint: var(--primary-tint);
   --color-primary-tint-foreground: var(--primary-tint-foreground);
   --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
 }
 
 /* Splash wordmark fade (see components/brand). A top-level keyframe rather than

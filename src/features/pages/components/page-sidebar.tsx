@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { Plus } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 
 import { BrandMark } from '@/components/brand';
 import { LanguageToggle } from '@/components/language-toggle';
@@ -10,7 +10,7 @@ import { usePagesTranslation } from '../i18n';
 import { PageTree } from './page-tree';
 
 // Sidebar contents: wordmark, the primary "New page" action, the page tree (scrolls on
-// its own) and settings toggles pinned at the bottom.
+// its own), the trash and settings toggles pinned at the bottom.
 export function PageSidebar() {
   const t = usePagesTranslation();
   const createPage = useCreatePage();
@@ -38,6 +38,16 @@ export function PageSidebar() {
         <p className="text-muted-foreground px-2 pb-1 text-xs font-medium">{t.pages}</p>
         <PageTree />
       </nav>
+
+      <div className="px-2 pb-1">
+        <Link
+          to="/trash"
+          className="text-muted-foreground hover:bg-hover data-[status=active]:bg-hover data-[status=active]:text-foreground flex h-10 items-center gap-2 rounded-md px-2 text-sm lg:h-8"
+        >
+          <Trash2 className="size-4" />
+          {t.trash.title}
+        </Link>
+      </div>
 
       <div className="flex items-center justify-between border-t px-3 py-2">
         <LanguageToggle />

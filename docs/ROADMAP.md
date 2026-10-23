@@ -34,11 +34,11 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 ### Stage 3 — Sidebar and pages
 
 - [x] Page tree with nesting, editable page title
-- [ ] Create, rename, delete, duplicate pages
+- [x] Create, rename, delete, duplicate pages
 - [ ] Drag to reorder and re-parent
 - [ ] Emoji icon per page
 - [ ] Favorites and recently opened
-- [ ] Trash with restore
+- [x] Trash with restore and delete forever
 - [ ] Breadcrumbs, routing by page type
 
 ### Stage 4 — Databases: model + table view

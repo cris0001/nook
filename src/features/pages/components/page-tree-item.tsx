@@ -8,10 +8,11 @@ import { useCreatePage } from '../hooks/use-create-page';
 import { usePagesTranslation } from '../i18n';
 import { PAGE_TYPE_ICON } from '../utils/page-icon';
 import type { PageNode } from '../utils/page-tree';
+import { PageActionsMenu } from './page-actions-menu';
 
 // One row of the sidebar tree, plus its children when expanded. Indentation grows with
-// depth; the expand chevron and "add inside" button sit on the row so nesting is one
-// tap away. Rows are taller on touch screens (h-10) than on desktop (h-8).
+// depth; the expand chevron, the actions menu and the "add inside" button sit on the
+// row so they're one tap away. Rows are taller on touch screens (h-10) than on desktop (h-8).
 export function PageTreeItem({ node, depth }: { node: PageNode; depth: number }) {
   const t = usePagesTranslation();
   const createPage = useCreatePage();
@@ -56,6 +57,10 @@ export function PageTreeItem({ node, depth }: { node: PageNode; depth: number })
           <span className="truncate">{page.title || t.untitled}</span>
         </Link>
 
+        <PageActionsMenu
+          pageId={page.id}
+          className="lg:opacity-0 lg:group-hover/row:opacity-100 lg:focus-visible:opacity-100 lg:data-[state=open]:opacity-100"
+        />
         <button
           type="button"
           aria-label={t.addSubpage}

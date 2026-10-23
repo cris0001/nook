@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkspaceRouteImport } from './routes/_workspace'
 import { Route as WorkspaceIndexRouteImport } from './routes/_workspace/index'
+import { Route as WorkspaceTrashRouteImport } from './routes/_workspace/trash'
 import { Route as WorkspacePPageIdRouteImport } from './routes/_workspace/p/$pageId'
 
 const WorkspaceRoute = WorkspaceRouteImport.update({
@@ -22,6 +23,11 @@ const WorkspaceIndexRoute = WorkspaceIndexRouteImport.update({
   path: '/',
   getParentRoute: () => WorkspaceRoute,
 } as any)
+const WorkspaceTrashRoute = WorkspaceTrashRouteImport.update({
+  id: '/trash',
+  path: '/trash',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
 const WorkspacePPageIdRoute = WorkspacePPageIdRouteImport.update({
   id: '/p/$pageId',
   path: '/p/$pageId',
@@ -30,24 +36,32 @@ const WorkspacePPageIdRoute = WorkspacePPageIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof WorkspaceIndexRoute
+  '/trash': typeof WorkspaceTrashRoute
   '/p/$pageId': typeof WorkspacePPageIdRoute
 }
 export interface FileRoutesByTo {
+  '/trash': typeof WorkspaceTrashRoute
   '/': typeof WorkspaceIndexRoute
   '/p/$pageId': typeof WorkspacePPageIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_workspace': typeof WorkspaceRouteWithChildren
+  '/_workspace/trash': typeof WorkspaceTrashRoute
   '/_workspace/': typeof WorkspaceIndexRoute
   '/_workspace/p/$pageId': typeof WorkspacePPageIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/p/$pageId'
+  fullPaths: '/' | '/trash' | '/p/$pageId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/p/$pageId'
-  id: '__root__' | '/_workspace' | '/_workspace/' | '/_workspace/p/$pageId'
+  to: '/trash' | '/' | '/p/$pageId'
+  id:
+    | '__root__'
+    | '/_workspace'
+    | '/_workspace/trash'
+    | '/_workspace/'
+    | '/_workspace/p/$pageId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -70,6 +84,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkspaceIndexRouteImport
       parentRoute: typeof WorkspaceRoute
     }
+    '/_workspace/trash': {
+      id: '/_workspace/trash'
+      path: '/trash'
+      fullPath: '/trash'
+      preLoaderRoute: typeof WorkspaceTrashRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
     '/_workspace/p/$pageId': {
       id: '/_workspace/p/$pageId'
       path: '/p/$pageId'
@@ -81,11 +102,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface WorkspaceRouteChildren {
+  WorkspaceTrashRoute: typeof WorkspaceTrashRoute
   WorkspaceIndexRoute: typeof WorkspaceIndexRoute
   WorkspacePPageIdRoute: typeof WorkspacePPageIdRoute
 }
 
 const WorkspaceRouteChildren: WorkspaceRouteChildren = {
+  WorkspaceTrashRoute: WorkspaceTrashRoute,
   WorkspaceIndexRoute: WorkspaceIndexRoute,
   WorkspacePPageIdRoute: WorkspacePPageIdRoute,
 }
