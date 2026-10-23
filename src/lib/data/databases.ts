@@ -144,6 +144,27 @@ export async function toggleRecordOption(
   });
 }
 
+// Moves a record on a board: into another group (a select option, or null for "no
+// value") and, when the board is in manual order, to a new spot via `order`.
+export async function moveRecord(
+  recordId: string,
+  propertyId: string,
+  optionId: string | null,
+  order: string | null,
+): Promise<void> {
+  await db.transaction('rw', db.pages, async () => {
+    const record = await db.pages.get(recordId);
+    if (!record) {
+      return;
+    }
+    await db.pages.update(recordId, {
+      properties: { ...record.properties, [propertyId]: optionId },
+      ...(order ? { order } : {}),
+      updatedAt: Date.now(),
+    });
+  });
+}
+
 // Read-modify-write of a database's columns inside one transaction, so two quick
 // edits (e.g. creating two options back to back) can't overwrite each other.
 async function updateProperties(
