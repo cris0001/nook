@@ -23,17 +23,17 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 - [x] Lime primary color tokens (light + dark)
 - [x] Once-per-session splash (fade in, blur out, reveal the app)
 
-### Stage 2 — App shell and data foundation
+### Stage 2 — App shell and data foundation ✅ COMPLETE
 
 - [x] Dexie database + first schema (pages)
 - [x] Pages data access (create, rename, trash, restore) + tree builder
-- [ ] i18n (EN default, PL) with per-feature dictionaries
-- [ ] Theme store (light / dark / system)
-- [ ] App layout: sidebar + content area, mobile drawer
+- [x] i18n (EN default, PL) with per-feature dictionaries
+- [x] Theme store (light / dark / system)
+- [x] App layout: sidebar + content area, mobile drawer
 
 ### Stage 3 — Sidebar and pages
 
-- [ ] Page tree with nesting
+- [x] Page tree with nesting, editable page title
 - [ ] Create, rename, delete, duplicate pages
 - [ ] Drag to reorder and re-parent
 - [ ] Emoji icon per page
