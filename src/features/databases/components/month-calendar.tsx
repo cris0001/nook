@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 import { useDateLocale } from '../hooks/use-date-locale';
 import { useDatabasesTranslation } from '../i18n';
-import { todayKey } from '../utils/board';
+import { todayKey } from '@/utils/dates';
 import { monthGrid } from '../utils/month-grid';
 
 // A compact month picker: weekday header, a fixed 6-week grid, today ringed and the

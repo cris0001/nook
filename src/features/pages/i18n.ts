@@ -17,7 +17,8 @@ const en = {
   icon: { add: 'Add icon', change: 'Change icon', remove: 'Remove', random: 'Random' },
   breadcrumbs: 'Breadcrumbs',
   edited: (when: string) => `Edited ${when}`,
-  recent: 'Recently opened',
+  recent: 'Jump back in',
+  tip: 'Press / in any page to insert a block.',
   actions: { label: 'Page actions', duplicate: 'Duplicate', moveToTrash: 'Move to trash' },
   trash: {
     title: 'Trash',
@@ -56,7 +57,8 @@ const pl: typeof en = {
   icon: { add: 'Dodaj ikonę', change: 'Zmień ikonę', remove: 'Usuń', random: 'Losowa' },
   breadcrumbs: 'Ścieżka',
   edited: (when: string) => `Edytowano ${when}`,
-  recent: 'Ostatnio otwierane',
+  recent: 'Wróć do',
+  tip: 'Wciśnij / na dowolnej stronie, żeby wstawić blok.',
   actions: { label: 'Akcje strony', duplicate: 'Duplikuj', moveToTrash: 'Przenieś do kosza' },
   trash: {
     title: 'Kosz',

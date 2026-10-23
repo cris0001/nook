@@ -6,7 +6,7 @@ import { setRecordValue } from '@/lib/data/databases';
 
 import { useDateLocale } from '../hooks/use-date-locale';
 import { useDatabasesTranslation } from '../i18n';
-import { todayKey } from '../utils/board';
+import { todayKey } from '@/utils/dates';
 import { MonthCalendar } from './month-calendar';
 
 // A date value shown the readable way ("1 Oct 2026" / "1 paź 2026") instead of the

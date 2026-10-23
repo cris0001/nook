@@ -15,7 +15,7 @@ import { PageTree } from './page-tree';
 // Sidebar contents, sitting on the window background: wordmark with the "new" pill,
 // Today, favorites, the page tree (scrolls on its own), and the trash and settings
 // pinned at the bottom.
-export function PageSidebar() {
+export function PageSidebar({ todayCount = 0 }: { todayCount?: number }) {
   const t = usePagesTranslation();
 
   return (
@@ -30,10 +30,15 @@ export function PageSidebar() {
       <Link
         to="/"
         activeOptions={{ exact: true }}
-        className={cn(SIDEBAR_ROW, ACTIVE_SELF, 'mt-3 gap-2 px-2')}
+        className={cn(SIDEBAR_ROW, ACTIVE_SELF, 'mt-3 gap-2 pr-2.5 pl-2')}
       >
         <House className="size-4 shrink-0" />
-        {t.today}
+        <span className="flex-1">{t.today}</span>
+        {todayCount ? (
+          <span className="text-muted-foreground font-mono text-[11px] tabular-nums">
+            {todayCount}
+          </span>
+        ) : null}
       </Link>
 
       <nav aria-label={t.pages} className="-mx-1.5 min-h-0 flex-1 overflow-y-auto px-1.5 pb-2">

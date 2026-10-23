@@ -2,6 +2,7 @@ import { generateKeyBetween } from 'fractional-indexing';
 
 import type { PropertyDef, SelectOption } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
+import { todayKey } from '@/utils/dates';
 
 // Column key for records with no value in the grouping property.
 export const NO_GROUP = '__none__';
@@ -50,13 +51,6 @@ export function orderForDrop(column: BoardColumn, target: CardTarget, draggedId:
   const next = index === -1 ? undefined : cards[index];
   const prev = index === -1 ? cards.at(-1) : cards[index - 1];
   return generateKeyBetween(prev?.order ?? null, next?.order ?? null);
-}
-
-// Today as 'YYYY-MM-DD' in local time — the same shape date cells store.
-export function todayKey(now = new Date()): string {
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  return `${now.getFullYear()}-${month}-${day}`;
 }
 
 // A date in the past counts as overdue — unless the record sits in the last option of
