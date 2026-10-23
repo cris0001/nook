@@ -18,7 +18,9 @@ const INTRO: CSSProperties = {
 
 // The nOOk wordmark, where the double O is a pair of eyes. `animated` turns on cursor
 // tracking, idle glances and blinking; `intro` plays the splash entrance. Font size
-// comes from the parent (or className) — everything inside is sized in em.
+// comes from the parent (or className) — everything inside is sized in em. The optical
+// size is pinned to Bricolage's display end (opsz 96) so the letters keep the same
+// shapes at any size instead of the font redrawing them for small text.
 export function BrandMark({
   className,
   animated = false,
@@ -38,7 +40,7 @@ export function BrandMark({
       aria-label="nOOk"
       style={playIntro ? INTRO : undefined}
       className={cn(
-        'font-heading inline-block leading-none font-extrabold tracking-tight whitespace-nowrap select-none',
+        "font-heading inline-block leading-none [font-variation-settings:'opsz'_96] font-extrabold tracking-tight whitespace-nowrap select-none",
         className,
       )}
     >

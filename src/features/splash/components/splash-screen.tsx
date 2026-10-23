@@ -35,9 +35,7 @@ export function SplashScreen() {
           phase !== 'visible' && 'scale-90 opacity-0 blur-md',
         )}
       >
-        {fontReady ? (
-          <BrandMark animated intro className="text-[clamp(4.5rem,18vw,11rem)]" />
-        ) : null}
+        {fontReady ? <BrandMark animated intro className="text-[clamp(3.5rem,14vw,8rem)]" /> : null}
       </div>
     </div>
   );
