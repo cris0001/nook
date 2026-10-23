@@ -30,7 +30,9 @@ export function NewPageMenu() {
       >
         <Plus className="size-4" strokeWidth={2.5} />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      {/* Don't hand focus back to the trigger on close — the new page's title input
+          has just taken it, ready for typing. */}
+      <DropdownMenuContent align="end" onCloseAutoFocus={(event) => event.preventDefault()}>
         {KINDS.map(({ type, Icon }) => (
           <DropdownMenuItem key={type} onSelect={() => void createPage({ parentId: null, type })}>
             <Icon />

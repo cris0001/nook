@@ -32,7 +32,7 @@ export function PageActionsMenu({ pageId, className }: { pageId: string; classNa
       >
         <MoreHorizontal className="size-4" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start">
+      <DropdownMenuContent align="start" onCloseAutoFocus={(event) => event.preventDefault()}>
         <DropdownMenuItem onSelect={() => void duplicate(pageId)}>
           <Copy />
           {t.actions.duplicate}
