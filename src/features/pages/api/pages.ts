@@ -108,3 +108,64 @@ export async function restorePage(id: string): Promise<void> {
     }
   });
 }
+
+// Copies a page and everything under it, fresh ids throughout, and places the copy
+// right after the original. Returns the new top page.
+export async function duplicatePage(id: string): Promise<Page | undefined> {
+  return db.transaction('rw', db.pages, async () => {
+    const original = await db.pages.get(id);
+    if (original?.deletedAt !== null) {
+      return undefined;
+    }
+
+    const siblings = await childrenOf(original.parentId);
+    const next = siblings[siblings.findIndex((page) => page.id === id) + 1];
+    const now = Date.now();
+    const ids = await subtreeIds(id);
+    const rows = (await db.pages.bulkGet(ids)).filter((p): p is Page => p?.deletedAt === null);
+    const newIds = new Map(rows.map((page) => [page.id, crypto.randomUUID()]));
+
+    const copies = rows.map((page) => ({
+      ...page,
+      id: newIds.get(page.id) ?? crypto.randomUUID(),
+      parentId: page.id === id ? page.parentId : (newIds.get(page.parentId ?? '') ?? null),
+      order: page.id === id ? generateKeyBetween(original.order, next?.order ?? null) : page.order,
+      favoritedAt: null,
+      lastOpenedAt: null,
+      createdAt: now,
+      updatedAt: now,
+    }));
+    await db.pages.bulkAdd(copies);
+    return copies[0];
+  });
+}
+
+// What the trash shows: each trashed batch once, by its top page. Pages trashed along
+// with a parent come back (or go) with it, so they aren't listed on their own.
+export async function listTrash(): Promise<Page[]> {
+  const pages = await db.pages.toArray();
+  const byId = new Map(pages.map((page) => [page.id, page]));
+  return pages
+    .filter((page) => {
+      if (page.deletedAt === null) {
+        return false;
+      }
+      const parent = page.parentId ? byId.get(page.parentId) : undefined;
+      return parent?.deletedAt !== page.deletedAt;
+    })
+    .sort((a, b) => (b.deletedAt ?? 0) - (a.deletedAt ?? 0));
+}
+
+// Permanently removes a trashed page and the descendants trashed with it.
+export async function deletePageForever(id: string): Promise<void> {
+  await db.transaction('rw', db.pages, async () => {
+    const page = await db.pages.get(id);
+    if (!page?.deletedAt) {
+      return;
+    }
+    const batch = page.deletedAt;
+    const ids = await subtreeIds(id);
+    const rows = (await db.pages.bulkGet(ids)).filter((p): p is Page => p?.deletedAt === batch);
+    await db.pages.bulkDelete(rows.map((p) => p.id));
+  });
+}

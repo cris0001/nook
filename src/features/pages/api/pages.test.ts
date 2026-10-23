@@ -4,7 +4,17 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { db } from '@/lib/db';
 
-import { createPage, getPage, listPages, renamePage, restorePage, trashPage } from './pages';
+import {
+  createPage,
+  deletePageForever,
+  duplicatePage,
+  getPage,
+  listPages,
+  listTrash,
+  renamePage,
+  restorePage,
+  trashPage,
+} from './pages';
 
 // Each call to Date.now() moves time forward, so separate trash actions never share a
 // timestamp (and therefore never share a restore batch) by accident.
@@ -65,5 +75,41 @@ describe('pages api', () => {
     await restorePage(child.id);
 
     expect((await getPage(child.id))?.parentId).toBeNull();
+  });
+
+  it('duplicates a page with its subtree, right after the original', async () => {
+    const original = await createPage({ parentId: null, type: 'document', title: 'Plan' });
+    await createPage({ parentId: original.id, type: 'document', title: 'Week 1' });
+    const after = await createPage({ parentId: null, type: 'document', title: 'After' });
+
+    const copy = await duplicatePage(original.id);
+
+    expect(copy?.title).toBe('Plan');
+    expect(copy && original.order < copy.order && copy.order < after.order).toBe(true);
+    const pages = await listPages();
+    const copiedChild = pages.find((p) => p.parentId === copy?.id);
+    expect(copiedChild?.title).toBe('Week 1');
+    expect(pages).toHaveLength(5);
+  });
+
+  it('lists each trashed batch once, newest first', async () => {
+    const parent = await createPage({ parentId: null, type: 'document' });
+    await createPage({ parentId: parent.id, type: 'document' });
+    const loose = await createPage({ parentId: null, type: 'document' });
+
+    await trashPage(parent.id);
+    await trashPage(loose.id);
+
+    expect((await listTrash()).map((p) => p.id)).toEqual([loose.id, parent.id]);
+  });
+
+  it('deletes a trashed batch for good', async () => {
+    const parent = await createPage({ parentId: null, type: 'document' });
+    await createPage({ parentId: parent.id, type: 'document' });
+
+    await trashPage(parent.id);
+    await deletePageForever(parent.id);
+
+    expect(await db.pages.count()).toBe(0);
   });
 });
