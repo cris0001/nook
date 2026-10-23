@@ -1,5 +1,6 @@
 import { Dexie, type EntityTable } from 'dexie';
 
+import type { Content } from '@/schemas/content.schema';
 import type { Database, View } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
 
@@ -12,6 +13,7 @@ export const db = new Dexie('nook') as Dexie & {
   pages: EntityTable<Page, 'id'>;
   databases: EntityTable<Database, 'id'>;
   views: EntityTable<View, 'id'>;
+  contents: EntityTable<Content, 'id'>;
 };
 
 db.version(1).stores({
@@ -34,3 +36,9 @@ db.version(2)
         page.properties ??= {};
       }),
   );
+
+// v3: documents. Page bodies live apart from the page rows, so the sidebar and the
+// database views never load rich text they don't show.
+db.version(3).stores({
+  contents: 'id',
+});
