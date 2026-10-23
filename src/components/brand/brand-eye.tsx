@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 // How far the pupil may travel from center, in viewBox units (the eye is 100 wide).
 // Sized so the pupil just kisses the inner edge of the ring at full look.
-const PUPIL_TRAVEL = 14;
+const PUPIL_TRAVEL = 13;
 
 // One "O" of the nOOk wordmark drawn as an eye: white sclera, a ring the weight of the
 // letters, and a pupil with a catchlight. useEyeTracking only writes --look-x/--look-y
@@ -27,17 +27,17 @@ export function BrandEye({
       aria-hidden
       style={style}
       className={cn(
-        'mx-[0.01em] inline-block size-[0.54em] overflow-visible transition-[scale] duration-100',
+        'mx-[0.01em] inline-block size-[0.66em] overflow-visible transition-[scale] duration-100',
         closed && 'scale-y-[0.08]',
       )}
     >
       <circle
         cx="50"
         cy="50"
-        r="42.5"
+        r="41"
         fill="var(--brand-eye-white)"
         stroke="currentColor"
-        strokeWidth="15"
+        strokeWidth="18"
       />
       <g
         style={{
@@ -45,8 +45,8 @@ export function BrandEye({
           transition: 'translate var(--look-ms, 0ms) ease-out',
         }}
       >
-        <circle cx="50" cy="50" r="17" fill="currentColor" />
-        <circle cx="44" cy="44" r="5" fill="var(--brand-eye-white)" />
+        <circle cx="50" cy="50" r="18" fill="currentColor" />
+        <circle cx="43" cy="43" r="5.5" fill="var(--brand-eye-white)" />
       </g>
     </svg>
   );
