@@ -86,6 +86,7 @@ export function BoardCard({
           <CardBody record={record} database={database} view={view} group={group} />
           <RecordActionsMenu
             recordId={record.id}
+            title={record.title}
             className="absolute top-1.5 right-1.5 z-10 lg:opacity-0 lg:group-hover/card:opacity-100 lg:data-[state=open]:opacity-100"
           />
         </div>

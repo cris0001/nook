@@ -2,6 +2,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { pl } from 'date-fns/locale';
 import { RotateCcw, Trash2 } from 'lucide-react';
 
+import { useConfirm } from '@/stores/confirm.store';
 import { useLocaleStore } from '@/stores/locale.store';
 
 import { deletePageForever, restorePage } from '@/lib/data/pages';
@@ -15,14 +16,20 @@ export function TrashView() {
   const t = usePagesTranslation();
   const locale = useLocaleStore((s) => s.locale);
   const state = useTrash();
+  const confirm = useConfirm();
 
   if (state.status === 'loading') {
     return null;
   }
 
-  function onDelete(id: string, title: string) {
-    if (window.confirm(t.trash.confirmDelete(title || t.untitled))) {
-      void deletePageForever(id);
+  async function onDelete(id: string, title: string) {
+    const ok = await confirm({
+      title: t.trash.confirmDelete(title || t.untitled),
+      confirmText: t.trash.deleteForever,
+      destructive: true,
+    });
+    if (ok) {
+      await deletePageForever(id);
     }
   }
 
@@ -65,7 +72,7 @@ export function TrashView() {
                   type="button"
                   aria-label={t.trash.deleteForever}
                   title={t.trash.deleteForever}
-                  onClick={() => onDelete(page.id, page.title)}
+                  onClick={() => void onDelete(page.id, page.title)}
                   className="text-destructive hover:bg-hover flex size-10 items-center justify-center rounded-lg lg:size-8"
                 >
                   <Trash2 className="size-4" />

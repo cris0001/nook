@@ -8,7 +8,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { duplicatePage, trashPage } from '@/lib/data/pages';
+import { useTrashWithUndo } from '@/hooks/use-trash-with-undo';
+import { duplicatePage } from '@/lib/data/pages';
 import { cn } from '@/lib/utils';
 
 import { useDatabasesTranslation } from '../i18n';
@@ -17,13 +18,16 @@ import { useDatabasesTranslation } from '../i18n';
 // to the trash — without leaving the view.
 export function RecordActionsMenu({
   recordId,
+  title,
   className,
 }: {
   recordId: string;
+  title: string;
   className?: string;
 }) {
   const t = useDatabasesTranslation();
   const navigate = useNavigate();
+  const trashWithUndo = useTrashWithUndo();
 
   return (
     <DropdownMenu>
@@ -49,7 +53,10 @@ export function RecordActionsMenu({
           {t.duplicate}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onSelect={() => void trashPage(recordId)}>
+        <DropdownMenuItem
+          variant="destructive"
+          onSelect={() => void trashWithUndo(recordId, title)}
+        >
           <Trash2 />
           {t.moveToTrash}
         </DropdownMenuItem>

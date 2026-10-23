@@ -3,6 +3,7 @@ import { Check, Trash2 } from 'lucide-react';
 import { deleteOption, updateOption } from '@/lib/data/databases';
 import { cn } from '@/lib/utils';
 import { OPTION_COLORS, type SelectOption } from '@/schemas/database.schema';
+import { useConfirm } from '@/stores/confirm.store';
 
 import { useDatabasesTranslation } from '../i18n';
 import { OPTION_STYLE } from '../utils/option-style';
@@ -22,11 +23,17 @@ export function OptionEditor({
   onDone?: () => void;
 }) {
   const t = useDatabasesTranslation();
+  const confirm = useConfirm();
 
-  function onDelete() {
-    if (window.confirm(t.confirmDeleteOption(option.name))) {
-      void deleteOption(databaseId, propertyId, option.id);
-      onDone?.();
+  async function onDelete() {
+    onDone?.();
+    const ok = await confirm({
+      title: t.confirmDeleteOption(option.name),
+      confirmText: t.deleteOption,
+      destructive: true,
+    });
+    if (ok) {
+      await deleteOption(databaseId, propertyId, option.id);
     }
   }
 
@@ -63,7 +70,7 @@ export function OptionEditor({
       </ul>
       <button
         type="button"
-        onClick={onDelete}
+        onClick={() => void onDelete()}
         className="text-destructive hover:bg-hover mt-1 flex h-8 w-full items-center gap-2 rounded-md border-t px-1.5 pt-1 text-sm"
       >
         <Trash2 className="size-4" />

@@ -3,6 +3,7 @@ import { Trash2 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { deleteProperty, renameProperty } from '@/lib/data/databases';
 import type { PropertyDef } from '@/schemas/database.schema';
+import { useConfirm } from '@/stores/confirm.store';
 
 import { useDatabasesTranslation } from '../i18n';
 import { PROPERTY_ICON } from '../utils/property-icon';
@@ -20,10 +21,16 @@ export function PropertyHeader({
 }) {
   const t = useDatabasesTranslation();
   const Icon = PROPERTY_ICON[property.type];
+  const confirm = useConfirm();
 
-  function onDelete() {
-    if (window.confirm(t.confirmDeleteProperty(property.name))) {
-      void deleteProperty(databaseId, property.id);
+  async function onDelete() {
+    const ok = await confirm({
+      title: t.confirmDeleteProperty(property.name),
+      confirmText: t.deleteProperty,
+      destructive: true,
+    });
+    if (ok) {
+      await deleteProperty(databaseId, property.id);
     }
   }
 
@@ -43,7 +50,7 @@ export function PropertyHeader({
         />
         <button
           type="button"
-          onClick={onDelete}
+          onClick={() => void onDelete()}
           className="text-destructive hover:bg-hover flex h-9 w-full items-center gap-2 rounded-md px-2 text-sm lg:h-8"
         >
           <Trash2 className="size-4" />

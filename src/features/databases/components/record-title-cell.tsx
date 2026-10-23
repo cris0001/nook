@@ -32,6 +32,7 @@ export function RecordTitleCell({ record }: { record: Page }) {
       </Link>
       <RecordActionsMenu
         recordId={record.id}
+        title={record.title}
         className="mr-1 lg:opacity-0 lg:group-hover/title:opacity-100 lg:data-[state=open]:opacity-100"
       />
     </div>

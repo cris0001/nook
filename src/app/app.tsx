@@ -1,9 +1,18 @@
 import { RouterProvider } from '@tanstack/react-router';
 
+import { ConfirmDialog } from '@/components/confirm-dialog';
+import { Toaster } from '@/components/toaster';
+
 import { router } from './router';
 
-// Root application component. Providers (toasts, confirm dialog, …) will compose
-// around the router here as the app grows.
+// Root application component: the router, plus the app-wide toast host and the single
+// dialog behind useConfirm().
 export function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster />
+      <ConfirmDialog />
+    </>
+  );
 }
