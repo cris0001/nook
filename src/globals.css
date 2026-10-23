@@ -29,24 +29,16 @@
 
 /* Motion for the wordmark intro (see components/brand). Plain :root vars and
    top-level keyframes rather than @theme: they're referenced from inline styles,
-   which Tailwind can't see, so it would tree-shake them away. The keyframes animate
-   the individual `translate` / `scale` properties so they compose with the pupil
-   tracking and blinking instead of overwriting a shared `transform`. */
+   which Tailwind can't see, so it would tree-shake them away. eye-open animates the
+   individual `scale` property so it composes with blinking and pupil tracking
+   instead of overwriting a shared `transform`. */
 :root {
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-pop: cubic-bezier(0.3, 1.8, 0.5, 1);
+  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@keyframes letter-in {
-  0% {
+@keyframes fade-in {
+  from {
     opacity: 0;
-    translate: 0 0.55em;
-    scale: 0.6;
-    filter: blur(12px);
-  }
-  55% {
-    opacity: 1;
-    filter: blur(0);
   }
 }
 

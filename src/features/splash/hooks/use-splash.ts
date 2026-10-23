@@ -5,7 +5,7 @@ import { prefersReducedMotion } from '@/utils/motion';
 // sessionStorage, not localStorage: the splash greets every new visit (new tab or
 // window) but stays out of the way on reloads and navigation within one.
 const SPLASH_KEY = 'nook-splash-seen';
-const VISIBLE_MS = 3600;
+const VISIBLE_MS = 3200;
 const VISIBLE_REDUCED_MS = 1200;
 export const SPLASH_LOGO_OUT_MS = 500;
 // A beat of empty white between the wordmark leaving and the app fading in.
@@ -32,9 +32,10 @@ function markSplashSeen(): void {
   }
 }
 
-// Splash lifecycle. Leaves on its own after a beat, or straight away on click / any
-// key via `skip`; each later phase is a timer chained off the previous one.
-export function useSplash() {
+// Splash lifecycle. Leaves on its own after a beat — counted from `ready`, i.e. once
+// the wordmark can actually be shown — or straight away on click / any key via
+// `skip`; each later phase is a timer chained off the previous one.
+export function useSplash(ready: boolean) {
   const [phase, setPhase] = useState<SplashPhase>(() => (hasSeenSplash() ? 'done' : 'visible'));
 
   const skip = useCallback(() => {
@@ -62,13 +63,17 @@ export function useSplash() {
       return () => window.clearTimeout(timer);
     }
 
-    const timer = window.setTimeout(skip, prefersReducedMotion() ? VISIBLE_REDUCED_MS : VISIBLE_MS);
     window.addEventListener('keydown', skip);
+    if (!ready) {
+      return () => window.removeEventListener('keydown', skip);
+    }
+
+    const timer = window.setTimeout(skip, prefersReducedMotion() ? VISIBLE_REDUCED_MS : VISIBLE_MS);
     return () => {
       window.clearTimeout(timer);
       window.removeEventListener('keydown', skip);
     };
-  }, [phase, skip]);
+  }, [phase, ready, skip]);
 
   return { phase, skip };
 }

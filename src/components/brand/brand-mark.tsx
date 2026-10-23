@@ -7,33 +7,25 @@ import { prefersReducedMotion } from '@/utils/motion';
 
 import { BrandEye } from './brand-eye';
 
-// Splash entrance, in ms. Letters pop in one by one (blurred, small, from below, with
-// a springy overshoot); the eyes arrive shut as thin slits and open once the word has
-// landed. `backwards` fill hides each piece until its delay is up without pinning
-// `scale` afterwards, so blinking still works once the intro is over.
-const LETTER_IN_MS = 760;
-const EYE_OPEN_MS = 460;
+// Splash entrance, in ms. After a beat of white the whole wordmark fades in in place
+// (nothing moves or scales, so nothing jumps), with the eyes still shut as thin slits;
+// once it's fully visible they ease open. `backwards` fill keeps everything hidden /
+// shut until its delay is up without pinning `scale` afterwards, so blinking still
+// works once the intro is over.
 const START_MS = 250;
-const STAGGER_MS = 110;
-const EYES_OPEN_AT_MS = 1250;
+const FADE_IN_MS = 450;
+const EYES_OPEN_AT_MS = START_MS + FADE_IN_MS + 150;
+const EYE_OPEN_MS = 380;
 
-function letterIn(index: number): CSSProperties {
-  const delay = START_MS + index * STAGGER_MS;
-  return { animation: `letter-in ${LETTER_IN_MS}ms var(--ease-spring) ${delay}ms backwards` };
-}
-
-// While both run, eye-open (listed last) owns `scale`, so the eye rises in as a slit.
-function eyeIn(index: number, eye: number): CSSProperties {
-  const letter = letterIn(index).animation ?? '';
-  const delay = EYES_OPEN_AT_MS + eye * 60;
-  return { animation: `${letter}, eye-open ${EYE_OPEN_MS}ms var(--ease-pop) ${delay}ms backwards` };
+function eyeOpen(lagMs: number): CSSProperties {
+  const delay = EYES_OPEN_AT_MS + lagMs;
+  return { animation: `eye-open ${EYE_OPEN_MS}ms var(--ease-out-soft) ${delay}ms backwards` };
 }
 
 const INTRO = {
-  n: letterIn(0),
-  leftEye: eyeIn(1, 0),
-  rightEye: eyeIn(2, 1),
-  k: letterIn(3),
+  mark: { animation: `fade-in ${FADE_IN_MS}ms ease-out ${START_MS}ms backwards` },
+  leftEye: eyeOpen(0),
+  rightEye: eyeOpen(50),
 } satisfies Record<string, CSSProperties>;
 
 // The nOOk wordmark, where the double O is a pair of eyes. `animated` turns on cursor
@@ -56,19 +48,16 @@ export function BrandMark({
     <span
       role="img"
       aria-label="nOOk"
+      style={playIntro ? INTRO.mark : undefined}
       className={cn(
         'font-heading inline-block leading-none font-extrabold tracking-tight whitespace-nowrap select-none',
         className,
       )}
     >
-      <span aria-hidden className="inline-block" style={playIntro ? INTRO.n : undefined}>
-        n
-      </span>
+      <span aria-hidden>n</span>
       <BrandEye eyeRef={left} closed={blinking} style={playIntro ? INTRO.leftEye : undefined} />
       <BrandEye eyeRef={right} closed={blinking} style={playIntro ? INTRO.rightEye : undefined} />
-      <span aria-hidden className="inline-block" style={playIntro ? INTRO.k : undefined}>
-        k
-      </span>
+      <span aria-hidden>k</span>
     </span>
   );
 }
