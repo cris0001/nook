@@ -5,7 +5,7 @@ import { pupilOffset, type Point } from '@/utils/pupil-offset';
 
 // Without pointer movement for this long, the eyes stop following and look around.
 const IDLE_AFTER_MS = 2500;
-// First glance lands just after the splash intro opens the eyes, so a freshly mounted
+// First glance lands just after the splash wordmark has faded in, so a freshly mounted
 // logo (and touch devices, which never send a hover) shows signs of life early.
 const FIRST_GLANCE_MS = 1600;
 const GLANCE_EVERY_MS = 1400;

@@ -1,4 +1,4 @@
-import { type CSSProperties, type Ref } from 'react';
+import { type Ref } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -13,21 +13,12 @@ const PUPIL_TRAVEL = 13;
 // `scale` — a separate property, so blinking and looking never fight. Token colors go
 // through classes, not fill="var(…)": not every browser resolves var() in SVG
 // presentation attributes, and an unresolved fill falls back to solid black.
-export function BrandEye({
-  eyeRef,
-  closed,
-  style,
-}: {
-  eyeRef: Ref<SVGSVGElement>;
-  closed: boolean;
-  style?: CSSProperties | undefined;
-}) {
+export function BrandEye({ eyeRef, closed }: { eyeRef: Ref<SVGSVGElement>; closed: boolean }) {
   return (
     <svg
       ref={eyeRef}
       viewBox="0 0 100 100"
       aria-hidden
-      style={style}
       className={cn(
         'mx-[0.01em] inline-block size-[0.66em] overflow-visible transition-[scale] duration-100',
         closed && 'scale-y-[0.08]',
