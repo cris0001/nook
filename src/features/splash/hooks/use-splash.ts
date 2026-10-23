@@ -8,12 +8,9 @@ const SPLASH_KEY = 'nook-splash-seen';
 const VISIBLE_MS = 3200;
 const VISIBLE_REDUCED_MS = 1200;
 export const SPLASH_LOGO_OUT_MS = 500;
-// A beat of empty white between the wordmark leaving and the app fading in.
 const HOLD_WHITE_MS = 350;
 export const SPLASH_REVEAL_MS = 750;
 
-// visible → leaving (wordmark exits, white stays) → revealing (white fades, app
-// shows through) → done (unmounted).
 export type SplashPhase = 'visible' | 'leaving' | 'revealing' | 'done';
 
 function hasSeenSplash(): boolean {
@@ -32,9 +29,6 @@ function markSplashSeen(): void {
   }
 }
 
-// Splash lifecycle. Leaves on its own after a beat — counted from `ready`, i.e. once
-// the wordmark can actually be shown — or straight away on click / any key via
-// `skip`; each later phase is a timer chained off the previous one.
 export function useSplash(ready: boolean) {
   const [phase, setPhase] = useState<SplashPhase>(() => (hasSeenSplash() ? 'done' : 'visible'));
 

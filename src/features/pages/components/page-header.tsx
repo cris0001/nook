@@ -15,9 +15,6 @@ import { usePagesTranslation } from '../i18n';
 import { ancestorsOf } from '../utils/page-lists';
 import { PageActionsMenu } from './page-actions-menu';
 
-// Slim bar above a page: breadcrumbs on the left (ancestors are links, the page itself
-// is plain text), the favorite star and the actions menu on the right. Breadcrumbs
-// truncate rather than wrap so the bar keeps one line on phones.
 export function PageHeader({ page, readOnly }: { page: Page; readOnly: boolean }) {
   const t = usePagesTranslation();
   const common = useCommonTranslation();

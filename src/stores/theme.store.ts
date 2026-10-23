@@ -21,7 +21,6 @@ export function systemPrefersDark(): boolean {
   return window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
-// Resolve the preference to a concrete light/dark and apply it to <html>.
 export function applyTheme(theme: Theme): void {
   const dark = theme === 'dark' || (theme === 'system' && systemPrefersDark());
   document.documentElement.classList.toggle('dark', dark);

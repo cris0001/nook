@@ -14,7 +14,6 @@ import type { PropertyDef, View } from '@/schemas/database.schema';
 import { useBoardUiStore } from '../stores/board-ui.store';
 import { NO_GROUP, orderForDrop, type BoardColumn, type CardTarget } from '../utils/board';
 
-// What a droppable is: a card (drop before/after it) or a column's free space (append).
 export type BoardDropData =
   { kind: 'card'; columnKey: string; recordId: string } | { kind: 'column'; columnKey: string };
 

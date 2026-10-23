@@ -10,9 +10,6 @@ import { PropertyCell } from './property-cell';
 import { PropertyHeader } from './property-header';
 import { RecordTitleCell } from './record-title-cell';
 
-// Spreadsheet-style view: a Name column plus one column per visible property, every cell
-// editable in place. Columns stretch to fill the width; only when their minimum widths
-// don't fit (phones, many columns) does the table scroll sideways inside its own box.
 export function TableView({
   database,
   view,

@@ -10,8 +10,6 @@ import { useDatabasesTranslation } from '../i18n';
 import { DOT_STYLE } from '../utils/option-style';
 import { OptionEditor } from './option-editor';
 
-// A column's tag doubles as its menu: edit the option, or nudge the column left/right
-// (swapping options, since option order is column order).
 export function BoardColumnMenu({
   databaseId,
   property,

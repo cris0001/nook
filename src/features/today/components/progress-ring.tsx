@@ -1,4 +1,3 @@
-// A small ring showing a 0–1 ratio, lime on a muted track, with the percentage beside it.
 export function ProgressRing({ ratio, label }: { ratio: number; label: string }) {
   const percent = Math.round(ratio * 100);
   return (

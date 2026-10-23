@@ -4,7 +4,6 @@ import { monthGrid } from './month-grid';
 
 describe('monthGrid', () => {
   it('starts on the configured weekday and spans 42 days', () => {
-    // October 2026 starts on a Thursday.
     const monday = monthGrid(new Date(2026, 9, 15), 1);
     expect(monday).toHaveLength(42);
     expect(monday[0]).toBe('2026-09-28');

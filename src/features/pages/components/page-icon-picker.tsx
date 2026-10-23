@@ -7,8 +7,6 @@ import { setPageIcon } from '@/lib/data/pages';
 import { usePagesTranslation } from '../i18n';
 import { PAGE_EMOJIS } from '../utils/page-emojis';
 
-// Emoji picker for a page icon, opened from whatever trigger the caller passes (the
-// big icon itself, or an "Add icon" button). Picking closes it straight away.
 export function PageIconPicker({
   pageId,
   hasIcon,

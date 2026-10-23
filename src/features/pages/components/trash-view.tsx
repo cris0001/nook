@@ -11,8 +11,6 @@ import { useTrash } from '../hooks/use-trash';
 import { usePagesTranslation } from '../i18n';
 import { PAGE_TYPE_ICON } from '../utils/page-icon';
 
-// The trash: one row per trashed batch, with restore and delete-forever. Restored
-// pages reappear in the sidebar on their own thanks to the live queries.
 export function TrashView() {
   const t = usePagesTranslation();
   const locale = useLocaleStore((s) => s.locale);

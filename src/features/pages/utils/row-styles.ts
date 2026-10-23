@@ -1,6 +1,3 @@
-// Sidebar row look: quiet by default; the open page is lifted onto the panel colour with
-// a hairline ring, and a short lime bar appears just outside its left edge. Two forms:
-// for a link that carries data-status itself, and for a row that contains such a link.
 const LIME_BAR =
   'before:absolute before:top-2 before:bottom-2 before:-left-1.5 before:w-[2.5px] before:rounded-full before:bg-primary before:opacity-0';
 

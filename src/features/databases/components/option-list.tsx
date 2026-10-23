@@ -23,8 +23,6 @@ import { useDatabasesTranslation } from '../i18n';
 import { OptionEditButton } from './option-edit-button';
 import { OptionTag } from './option-tag';
 
-// A select property's options, reorderable by their grip and editable via "⋯". The
-// order set here is the board's column order.
 export function OptionList({
   databaseId,
   property,

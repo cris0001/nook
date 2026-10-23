@@ -3,9 +3,6 @@ import { cn } from '@/lib/utils';
 import { useDatabaseProgress } from '../hooks/use-database-progress';
 import { usePagesTranslation } from '../i18n';
 
-// A tiny ring with the done percentage at the end of a database row in the sidebar, so
-// progress is visible without opening the board. Renders nothing for databases with
-// no records or no status column; turns fully lime once everything is done.
 export function DatabaseProgress({
   databaseId,
   className,

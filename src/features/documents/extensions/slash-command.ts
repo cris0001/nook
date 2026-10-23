@@ -4,10 +4,6 @@ import Suggestion, { type SuggestionProps } from '@tiptap/suggestion';
 import { useSlashMenuStore } from '../stores/slash-menu.store';
 import type { SlashItem } from '../utils/slash-items';
 
-// Typing "/" opens the block menu. The suggestion plugin only tracks the "/query" and
-// the caret position; filtering and rendering happen in the React SlashMenu, which
-// reads them from the store. Arrow keys / Enter / Escape are handled here so the
-// editor doesn't also act on them while the menu is open.
 export const SlashCommand = Extension.create({
   name: 'slashCommand',
 

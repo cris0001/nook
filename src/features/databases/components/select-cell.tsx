@@ -9,9 +9,6 @@ import { useDatabasesTranslation } from '../i18n';
 import { OptionEditButton } from './option-edit-button';
 import { OptionTag } from './option-tag';
 
-// Select / multi-select cell: shows the chosen tags; the popover filters options as you
-// type and offers to create a new one when nothing matches exactly. Single select
-// closes after a pick; multi-select stays open for more.
 export function SelectCell({
   databaseId,
   recordId,

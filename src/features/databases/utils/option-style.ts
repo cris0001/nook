@@ -14,7 +14,6 @@ export const OPTION_STYLE: Record<OptionColor, string> = {
   red: 'bg-(--tag-red-bg) text-(--tag-red-fg)',
 };
 
-// Solid status dots per option color (board column headers, record sources).
 export const DOT_STYLE: Record<OptionColor, string> = {
   gray: 'bg-(--dot-gray)',
   brown: 'bg-(--dot-brown)',

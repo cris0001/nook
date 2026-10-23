@@ -14,9 +14,6 @@ import { SortMenu } from './sort-menu';
 import { TableView } from './table-view';
 import { ViewTabs } from './view-tabs';
 
-// The body of a database page: view tabs, the view's toolbar (filter, sort, columns,
-// new record), then the active view fed with filtered + sorted records. Which tab is
-// open is local state — switching views shouldn't touch stored data.
 export function DatabaseView({ databaseId }: { databaseId: string }) {
   const t = useDatabasesTranslation();
   const state = useDatabase(databaseId);

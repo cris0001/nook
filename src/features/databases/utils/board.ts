@@ -4,7 +4,6 @@ import type { PropertyDef, SelectOption } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
 import { todayKey } from '@/utils/dates';
 
-// Column key for records with no value in the grouping property.
 export const NO_GROUP = '__none__';
 
 export interface BoardColumn {
@@ -13,8 +12,6 @@ export interface BoardColumn {
   records: Page[];
 }
 
-// Where a dragged card would land: a column, and the card it goes in front of
-// (null = the end of the column).
 export interface CardTarget {
   columnKey: string;
   beforeId: string | null;
@@ -26,8 +23,6 @@ function groupKeyOf(record: Page, property: PropertyDef): string {
   return typeof id === 'string' && property.options.some((o) => o.id === id) ? id : NO_GROUP;
 }
 
-// Splits (already filtered and sorted) records into one column per option, in option
-// order. The "no value" column leads, but only when something is actually in it.
 export function groupRecords(records: Page[], property: PropertyDef): BoardColumn[] {
   const columns: BoardColumn[] = property.options.map((option) => ({
     key: option.id,
@@ -43,8 +38,6 @@ export function groupRecords(records: Page[], property: PropertyDef): BoardColum
   return none.records.length ? [none, ...columns] : columns;
 }
 
-// The fractional key for a card dropped at `target`, between its new neighbours. The
-// dragged card itself is ignored when finding neighbours.
 export function orderForDrop(column: BoardColumn, target: CardTarget, draggedId: string): string {
   const cards = column.records.filter((record) => record.id !== draggedId);
   const index = target.beforeId ? cards.findIndex((r) => r.id === target.beforeId) : -1;

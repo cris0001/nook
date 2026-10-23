@@ -11,7 +11,6 @@ interface SlashMenuState {
   rect: DOMRect | null;
   index: number;
   pick: ((item: SlashItem) => void) | null;
-  // The menu's current filtered list, published by the menu for keyboard handling.
   items: SlashItem[];
   setItems: (items: SlashItem[]) => void;
   show: (patch: { query: string; rect: DOMRect | null; pick: (item: SlashItem) => void }) => void;

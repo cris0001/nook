@@ -1,6 +1,5 @@
 import { createTranslation } from './create-translation';
 
-// Copy for shared, feature-agnostic chrome (app shell, toggles).
 const en = {
   openMenu: 'Open menu',
   closeMenu: 'Close menu',

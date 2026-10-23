@@ -8,9 +8,6 @@ import { usePages } from './use-pages';
 export type PageTreeState =
   { status: 'loading' } | { status: 'ready'; tree: PageNode[]; pages: Page[] };
 
-// The live page list shaped into the sidebar tree. Database records are left out —
-// they live inside their database's views, not in the navigation. The flat list rides
-// along for lookups the tree is awkward for (drag-and-drop planning).
 export function usePageTree(): PageTreeState {
   const state = usePages();
   const all = state.status === 'ready' ? state.pages : null;

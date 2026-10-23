@@ -8,8 +8,6 @@ import { PROPERTY_TYPES } from '@/schemas/database.schema';
 import { useDatabasesTranslation } from '../i18n';
 import { PROPERTY_ICON } from '../utils/property-icon';
 
-// "+" at the end of the header row: name the property (optional — it defaults to the
-// type's name) and pick a type to add it.
 export function AddPropertyButton({ databaseId }: { databaseId: string }) {
   const t = useDatabasesTranslation();
   const [open, setOpen] = useState(false);

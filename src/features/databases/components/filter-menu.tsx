@@ -10,8 +10,6 @@ import { SELECT_CLASS, viewFields } from '../utils/view-fields';
 import { FilterValueInput } from './filter-value-input';
 import { ToolbarButton } from './toolbar-button';
 
-// Filter rules of a view (all must match). Changing a rule's property resets its
-// operator and value, since they rarely carry over between types.
 export function FilterMenu({ database, view }: { database: Database; view: View }) {
   const t = useDatabasesTranslation();
   const fields = viewFields(database, t.name);

@@ -3,7 +3,6 @@ import { listPages } from '@/lib/data/pages';
 
 import type { AgendaSource } from '../utils/agenda';
 
-// Every live database with its columns and records — the raw material for Today.
 export async function loadAgendaSources(): Promise<AgendaSource[]> {
   const pages = (await listPages()).filter((page) => page.type === 'database');
   const sources = await Promise.all(

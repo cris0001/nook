@@ -8,7 +8,6 @@ export interface ViewField {
   type: PropertyType;
 }
 
-// Everything a view can sort or filter by: the record name first, then the columns.
 export function viewFields(database: Database, titleLabel: string): ViewField[] {
   return [
     { id: TITLE_ID, name: titleLabel, type: 'text' },

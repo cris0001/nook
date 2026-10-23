@@ -5,14 +5,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Design tokens. Neutrals are placeholders until the design pass; the brand color is
-   settled. Components only reference these names, so changing a value here restyles
-   the whole app (and the wordmark's irises) without touching markup.
-
-   Primary is lime — rare among productivity apps, and clear of the status hues
-   (red = danger, green = success, orange = warning). Lime is too light for white
-   text or for text on white, hence a dark foreground on primary fills and a deeper
-   --primary-text for links and accents on light surfaces. */
 :root {
   --background: #ffffff;
   --foreground: #1b1a17;
@@ -33,7 +25,6 @@
   --ring: #84cc16;
   --destructive: #dc2626;
 
-  /* Select-option tags: a soft fill + readable text per named color. */
   --tag-gray-bg: #ededeb;
   --tag-gray-fg: #4b4b47;
   --tag-brown-bg: #eee0da;
@@ -53,7 +44,6 @@
   --tag-red-bg: #fbe0dd;
   --tag-red-fg: #9b2c22;
 
-  /* Status dots: vivid single colors per option, used where a tag would be too loud. */
   --dot-gray: #a19e94;
   --dot-brown: #a0765c;
   --dot-orange: #f08c2e;
@@ -89,7 +79,6 @@
   --ring: #a3e635;
   --destructive: #ff8f7e;
 
-  /* Status dots: vivid single colors per option, used where a tag would be too loud. */
   --dot-gray: #8a877e;
   --dot-brown: #b98e74;
   --dot-orange: #f5a04f;
@@ -121,8 +110,6 @@
 }
 
 @theme inline {
-  /* Bricolage Grotesque (variable, with optical sizing) for the wordmark and display
-     type; Geist stays the UI face. */
   --font-heading: 'Bricolage Grotesque Variable', sans-serif;
   --font-sans: 'Geist Variable', sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
@@ -156,8 +143,6 @@
   }
 }
 
-/* Small all-caps mono labels for section headers, column names and counts. One of the
-   few deliberate "voice" choices: it reads like a tool, not a template. */
 @utility eyebrow {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -167,10 +152,6 @@
   color: var(--color-muted-foreground);
 }
 
-/* The main action button: lime, squared-off, with a hairline edge instead of a soft
-   shadow so it stays crisp on both the white page and the paper sidebar. */
-/* The content panel floating on the window background, and raised items on it (the
-   active sidebar row, the selected segment): a hairline ring plus a soft drop. */
 @utility shadow-panel {
   box-shadow:
     0 0 0 1px var(--color-border),

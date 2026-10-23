@@ -14,8 +14,6 @@ import { cn } from '@/lib/utils';
 
 import { useDatabasesTranslation } from '../i18n';
 
-// "⋯" on a table row or board card: open the record, duplicate it in place, or move it
-// to the trash — without leaving the view.
 export function RecordActionsMenu({
   recordId,
   title,

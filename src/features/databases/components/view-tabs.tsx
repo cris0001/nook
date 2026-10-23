@@ -19,13 +19,10 @@ const VIEW_ICON: Record<ViewType, typeof Table2> = {
   calendar: CalendarDays,
 };
 
-// View types offered by "+" (calendar arrives with its own stage).
 const ADDABLE: ViewType[] = ['table', 'board'];
 
 const TAB = 'flex h-7 shrink-0 items-center gap-1.5 rounded-md px-2.5 text-[13px] font-medium';
 
-// The view switcher: a segmented control, one segment per view. Clicking the open tab again opens its settings
-// (rename, delete); "+" adds a new table or board view and switches to it.
 export function ViewTabs({
   databaseId,
   views,

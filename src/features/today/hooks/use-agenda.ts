@@ -9,8 +9,6 @@ import { buildAgenda, type Agenda } from '../utils/agenda';
 export type AgendaState =
   { status: 'loading' } | { status: 'ready'; agenda: Agenda; databases: number };
 
-// Today's agenda across all databases, live: checking a task off anywhere (here, on a
-// board, in a table) moves it out of the list immediately.
 export function useAgenda(): AgendaState {
   const sources = useLiveQuery(loadAgendaSources, []);
   const today = todayKey();
@@ -20,7 +18,6 @@ export function useAgenda(): AgendaState {
     : { status: 'loading' };
 }
 
-// Number of open dated tasks up to the end of the week — the badge next to "Today".
 export function useAgendaCount(): number {
   const state = useAgenda();
   if (state.status !== 'ready') {

@@ -4,11 +4,6 @@ import { cn } from '@/lib/utils';
 import { SPLASH_LOGO_OUT_MS, SPLASH_REVEAL_MS, useSplash } from '../hooks/use-splash';
 import { useWordmarkFont } from '../hooks/use-wordmark-font';
 
-// Full-screen intro (white, or near-black in dark mode) with the animated wordmark, shown once per browser session.
-// It overlays the app (which keeps loading underneath) and stays plain white until the
-// wordmark font is loaded, so the logo fades in once, in its final shape. On the way out the wordmark
-// drifts back and blurs away first, the screen holds empty white for a beat, and only
-// then does the white fade to reveal the app.
 export function SplashScreen() {
   const fontReady = useWordmarkFont();
   const { phase, skip } = useSplash(fontReady);

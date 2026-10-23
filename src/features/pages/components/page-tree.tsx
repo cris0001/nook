@@ -10,9 +10,6 @@ import type { PageNode } from '../utils/page-tree';
 import { PageDragPreview } from './page-drag-preview';
 import { PageTreeItem } from './page-tree-item';
 
-// The nested page list in the sidebar, with drag-and-drop to reorder and re-nest.
-// Renders nothing while IndexedDB loads — it's a few milliseconds, not worth a
-// skeleton flash.
 export function PageTree() {
   const state = usePageTree();
   if (state.status === 'loading') {

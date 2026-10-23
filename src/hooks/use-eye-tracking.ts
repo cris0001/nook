@@ -3,16 +3,12 @@ import { useEffect, useRef, type RefObject } from 'react';
 import { prefersReducedMotion } from '@/utils/motion';
 import { pupilOffset, type Point } from '@/utils/pupil-offset';
 
-// Without pointer movement for this long, the eyes stop following and look around.
 const IDLE_AFTER_MS = 2500;
-// First glance lands just after the splash wordmark has faded in, so a freshly mounted
-// logo (and touch devices, which never send a hover) shows signs of life early.
 const FIRST_GLANCE_MS = 1600;
 const GLANCE_EVERY_MS = 1400;
 const FOLLOW_MS = 90;
 const GLANCE_MS = 320;
 
-// Idle glance targets as fractions of the pupil's travel; {0, 0} looks straight ahead.
 const GLANCES: readonly Point[] = [
   { x: -1, y: 0 },
   { x: 1, y: -0.3 },
@@ -25,8 +21,6 @@ const CENTER: Point = { x: 0, y: 0 };
 
 export type EyeRef = RefObject<SVGSVGElement | null>;
 
-// The cursor pulls the pupil fully to the rim only from a few eye-widths away, so a
-// big splash logo and a small sidebar logo feel equally lively.
 function reachOf(rect: DOMRect): number {
   return Math.max(rect.width * 3, 80);
 }

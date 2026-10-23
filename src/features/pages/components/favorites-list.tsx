@@ -4,7 +4,6 @@ import { favoritesOf } from '../utils/page-lists';
 import { SECTION_LABEL } from '../utils/row-styles';
 import { PageLinkRow } from './page-link-row';
 
-// Starred pages above the tree. Hidden entirely until something is starred.
 export function FavoritesList() {
   const t = usePagesTranslation();
   const state = usePages();

@@ -2,8 +2,6 @@ import { create } from 'zustand';
 
 import type { CardTarget } from '../utils/board';
 
-// Ephemeral board UI state: the card being dragged and where it would land (drives the
-// drop line), plus the card whose title is being typed right after "Add a card".
 interface BoardUiState {
   draggingId: string | null;
   target: CardTarget | null;

@@ -4,18 +4,13 @@ import { cn } from '@/lib/utils';
 
 export type EyeSide = 'left' | 'right';
 
-// Hand-drawn outlines for the two O's (viewBox 0–100). Each is slightly irregular and
-// the two differ, so the eyes read as drawn rather than as generated circles.
 const OUTLINES: Record<EyeSide, string> = {
   left: 'M53 1 C80 4 99 25 97 53 C95 80 74 100 47 98 C20 96 2 76 4 48 C6 21 26 -2 53 1Z',
   right: 'M48 2 C76 0 98 21 98 49 C98 78 79 98 51 99 C23 100 3 80 2 52 C1 24 21 4 48 2Z',
 };
 
-// The white is the same outline shrunk around the center, which leaves a ring roughly
-// as heavy as the letters' stems.
 const SCLERA = 'translate(50 50) scale(0.68) translate(-50 -50)';
 
-// How far the iris may travel from center, in viewBox units — just short of the ring.
 const IRIS_TRAVEL = 14;
 
 // One "O" of the nOOk wordmark drawn as an eye: a hand-drawn ring around the white,
@@ -56,7 +51,6 @@ export function BrandEye({
           <stop offset="30%" className="[stop-color:var(--brand-iris-inner)]" />
           <stop offset="100%" className="[stop-color:var(--brand-iris-outer)]" />
         </radialGradient>
-        {/* Keeps the iris inside the white when it looks all the way to one side. */}
         <clipPath id={scleraId}>
           <path d={outline} transform={SCLERA} />
         </clipPath>

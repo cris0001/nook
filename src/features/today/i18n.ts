@@ -8,7 +8,6 @@ function zadan(n: number): string {
   return ones >= 2 && ones <= 4 && (tens < 12 || tens > 14) ? 'zadania' : 'zadań';
 }
 
-// Today feature copy.
 const en = {
   kicker: 'Today',
   overdue: 'Overdue',

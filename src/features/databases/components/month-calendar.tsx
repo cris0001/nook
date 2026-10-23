@@ -9,8 +9,6 @@ import { useDatabasesTranslation } from '../i18n';
 import { todayKey } from '@/utils/dates';
 import { monthGrid } from '../utils/month-grid';
 
-// A compact month picker: weekday header, a fixed 6-week grid, today ringed and the
-// chosen day filled with the brand color.
 export function MonthCalendar({
   value,
   onPick,

@@ -3,7 +3,6 @@ import type { Page } from '@/schemas/page.schema';
 import { usePagesTranslation } from '../i18n';
 import { PAGE_TYPE_ICON } from '../utils/page-icon';
 
-// The chip that follows the pointer while a page is dragged.
 export function PageDragPreview({ page }: { page: Page }) {
   const t = usePagesTranslation();
   const Icon = PAGE_TYPE_ICON[page.type];

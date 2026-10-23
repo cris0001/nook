@@ -11,8 +11,6 @@ import { useCommonTranslation } from '@/lib/i18n/common';
 import { cn } from '@/lib/utils';
 import { LOCALES, useLocaleStore } from '@/stores/locale.store';
 
-// UI language picker: the trigger shows the current language's flag and code; the menu
-// lists every language by its own name. Applies app-wide immediately.
 export function LanguageToggle({ className }: { className?: string }) {
   const t = useCommonTranslation();
   const locale = useLocaleStore((s) => s.locale);

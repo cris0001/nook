@@ -9,10 +9,8 @@ import type {
 } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
 
-// Sorts and filters address the record name with this id; anything else is a property.
 export const TITLE_ID = 'title';
 
-// Which filter operators make sense per property type ('title' behaves like text).
 export const OPERATORS: Record<PropertyType, FilterOperator[]> = {
   text: ['contains', 'is', 'isEmpty', 'isNotEmpty'],
   url: ['contains', 'is', 'isEmpty', 'isNotEmpty'],
@@ -65,8 +63,6 @@ function matches(record: Page, filter: Filter, type: PropertyType): boolean {
   }
 }
 
-// A filter with nothing to compare against yet (just added, value not picked) is
-// ignored rather than hiding every record.
 function isIncomplete(filter: Filter, type: PropertyType): boolean {
   const needsValue = filter.operator !== 'isEmpty' && filter.operator !== 'isNotEmpty';
   return needsValue && type !== 'checkbox' && isEmpty(filter.value);
@@ -79,7 +75,6 @@ function typeOf(database: Database, propertyId: string): PropertyType | null {
   return database.properties.find((p) => p.id === propertyId)?.type ?? null;
 }
 
-// Keeps records matching every filter (AND). Filters on deleted properties are skipped.
 export function filterRecords(records: Page[], filters: Filter[], database: Database): Page[] {
   const active = filters.flatMap((filter) => {
     const type = typeOf(database, filter.propertyId);
@@ -90,7 +85,6 @@ export function filterRecords(records: Page[], filters: Filter[], database: Data
   );
 }
 
-// Comparable key for sorting: select options sort in their defined order, not by name.
 function sortKey(value: PropertyValue, property: PropertyDef | undefined): string | number | null {
   if (isEmpty(value) && property?.type !== 'checkbox') {
     return null;
@@ -106,8 +100,6 @@ function sortKey(value: PropertyValue, property: PropertyDef | undefined): strin
   return typeof value === 'number' || typeof value === 'string' ? value : null;
 }
 
-// Applies sorts in priority order (first sort wins, later ones break ties). Empty
-// values always go last, whichever the direction — nobody wants blanks on top.
 export function sortRecords(records: Page[], sorts: Sort[], database: Database): Page[] {
   const keys = sorts.flatMap((sort): { sort: Sort; property: PropertyDef | undefined }[] => {
     if (sort.propertyId === TITLE_ID) {

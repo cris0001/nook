@@ -18,13 +18,6 @@ import { PageActionsMenu } from './page-actions-menu';
 
 const INDENT_PX = 14;
 
-// One row of the sidebar tree, plus its children when expanded. Indentation grows with
-// depth; the expand chevron, the actions menu and the "add inside" button sit on the
-// row so they're one tap away. Rows are taller on touch screens (h-10) than on
-// desktop (h-8). On desktop the row buttons take the place of the progress ring on
-// hover or focus, so idle rows give the title the full width. Each row is both
-// draggable and a drop target; the drop indicator (a line above/below, or a tint for
-// "inside") comes from the sidebar UI store.
 export function PageTreeItem({ node, depth }: { node: PageNode; depth: number }) {
   const t = usePagesTranslation();
   const createPage = useCreatePage();

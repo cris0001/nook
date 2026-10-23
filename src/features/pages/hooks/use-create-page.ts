@@ -6,8 +6,6 @@ import { createPage, type CreatePageInput } from '@/lib/data/pages';
 
 import { usePagesTranslation } from '../i18n';
 
-// Creates a page and opens it straight away, like Notion does. Databases go through
-// createDatabase so they start with columns and views.
 export function useCreatePage() {
   const navigate = useNavigate();
   const t = usePagesTranslation();

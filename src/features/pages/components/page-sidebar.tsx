@@ -13,9 +13,6 @@ import { FavoritesList } from './favorites-list';
 import { NewPageMenu } from './new-page-menu';
 import { PageTree } from './page-tree';
 
-// Sidebar contents, sitting on the window background: wordmark with the "new" pill,
-// Today, favorites, the page tree (scrolls on its own), and the trash and settings
-// pinned at the bottom.
 export function PageSidebar({ todayCount = 0 }: { todayCount?: number }) {
   const t = usePagesTranslation();
 

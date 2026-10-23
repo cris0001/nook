@@ -8,8 +8,6 @@ import { PAGE_TYPE_ICON } from '../utils/page-icon';
 import { ACTIVE_SELF, SIDEBAR_ROW } from '../utils/row-styles';
 import { DatabaseProgress } from './database-progress';
 
-// A flat, non-draggable link to a page — favorites in the sidebar, recents on the home
-// screen. Same icon/title treatment as the tree rows.
 export function PageLinkRow({ page, className }: { page: Page; className?: string }) {
   const t = usePagesTranslation();
   const Icon = PAGE_TYPE_ICON[page.type];

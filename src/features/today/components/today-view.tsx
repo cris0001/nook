@@ -12,9 +12,6 @@ import type { AgendaItem } from '../utils/agenda';
 import { AgendaRow } from './agenda-row';
 import { ProgressRing } from './progress-ring';
 
-// The home screen: the date as the title, one sentence of what's ahead, the overall
-// done ratio, and every dated task from every database grouped into Overdue / Today /
-// This week. `aside` (recent pages) is supplied by the route.
 export function TodayView({ aside }: { aside?: ReactNode }) {
   const t = useTodayTranslation();
   const locale = useLocaleStore((s) => s.locale);

@@ -16,8 +16,6 @@ const KINDS = [
   { type: 'database', Icon: Database },
 ] as const;
 
-// The lime "+" pill in the sidebar header: pick what to create at the root.
-// Whiteboards and dashboards join this list in their own stages.
 export function NewPageMenu() {
   const t = usePagesTranslation();
   const createPage = useCreatePage();

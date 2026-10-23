@@ -12,9 +12,6 @@ import { NO_GROUP, type BoardColumn as Column } from '../utils/board';
 import { BoardCard } from './board-card';
 import { BoardColumnMenu } from './board-column-menu';
 
-// One board column: header with the option and a count, the cards, and "Add a card"
-// which creates a record already in this column and puts its title in edit mode.
-// The column's free space is a drop zone, so empty columns accept cards too.
 export function BoardColumn({
   column,
   database,

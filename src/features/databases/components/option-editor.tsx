@@ -8,9 +8,6 @@ import { useConfirm } from '@/stores/confirm.store';
 import { useDatabasesTranslation } from '../i18n';
 import { OPTION_STYLE } from '../utils/option-style';
 
-// Rename, recolor or delete one select option. Rendered inside whatever popover opened
-// it (board column header, property header, select cell). Empty names aren't saved —
-// an option needs a label to be pickable.
 export function OptionEditor({
   databaseId,
   propertyId,

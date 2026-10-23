@@ -10,7 +10,6 @@ import { usePagesTranslation } from '../i18n';
 import { PAGE_TYPE_ICON } from '../utils/page-icon';
 import { recentOf } from '../utils/page-lists';
 
-// Recently opened pages for the home screen's side column, plus a small keyboard tip.
 export function JumpBackIn() {
   const t = usePagesTranslation();
   const locale = useLocaleStore((s) => s.locale);

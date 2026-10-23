@@ -4,12 +4,9 @@ import { useEffect } from 'react';
 import { useCommonTranslation } from '@/lib/i18n/common';
 import { applyTheme, useThemeStore, type Theme } from '@/stores/theme.store';
 
-// Cycle order (system → light → dark → …) and the icon per mode.
 const NEXT: Record<Theme, Theme> = { system: 'light', light: 'dark', dark: 'system' };
 const ICON = { system: Monitor, light: Sun, dark: Moon } as const;
 
-// A single icon button that cycles the theme. While in 'system' mode it also follows
-// OS theme changes live.
 export function ThemeToggle() {
   const t = useCommonTranslation();
   const theme = useThemeStore((s) => s.theme);

@@ -15,13 +15,8 @@ import { movePage } from '@/lib/data/pages';
 import { useSidebarUiStore } from '../stores/sidebar-ui.store';
 import { planDrop, type DropPosition } from '../utils/plan-drop';
 
-// Share of a row's height that counts as its top / bottom edge. Dropping on an edge
-// goes before / after the row; anywhere in between nests inside it.
 const EDGE = 0.3;
 
-// Drag-and-drop wiring for the page tree. Mouse drags start after a few pixels so a
-// click still opens the page; touch drags need a short press so the list can scroll.
-// The drop target is read from the dragged row's center against the row under it.
 export function usePageDnd(pages: readonly Page[]) {
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 6 } }),

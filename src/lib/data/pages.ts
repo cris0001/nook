@@ -12,7 +12,6 @@ export interface CreatePageInput {
   properties?: Page['properties'];
 }
 
-// Every page that isn't in the trash. The sidebar shapes these into a tree.
 export async function listPages(): Promise<Page[]> {
   const pages = await db.pages.toArray();
   return pages.filter((page) => page.deletedAt === null);
@@ -22,13 +21,11 @@ export function getPage(id: string): Promise<Page | undefined> {
   return db.pages.get(id);
 }
 
-// Live children of a parent (null = root), in tree order.
 async function childrenOf(parentId: string | null): Promise<Page[]> {
   const pages = await listPages();
   return pages.filter((page) => page.parentId === parentId).sort(byOrder);
 }
 
-// Appends a new page as the last child of `parentId`.
 export async function createPage({
   parentId,
   type,
@@ -61,12 +58,10 @@ export async function renamePage(id: string, title: string): Promise<void> {
   await db.pages.update(id, { title, updatedAt: Date.now() });
 }
 
-// Sets the page's emoji, or clears it with null (the type icon shows instead).
 export async function setPageIcon(id: string, icon: string | null): Promise<void> {
   await db.pages.update(id, { icon, updatedAt: Date.now() });
 }
 
-// Stars / unstars a page. The timestamp doubles as the favorites order.
 export async function toggleFavorite(id: string): Promise<void> {
   const page = await db.pages.get(id);
   if (page) {
@@ -80,12 +75,10 @@ export async function markPageOpened(id: string): Promise<void> {
   await db.pages.update(id, { lastOpenedAt: Date.now() });
 }
 
-// Re-parents and/or reorders a page. The target spot is worked out by planDrop.
 export async function movePage(id: string, parentId: string | null, order: string): Promise<void> {
   await db.pages.update(id, { parentId, order, updatedAt: Date.now() });
 }
 
-// Ids of a page and everything nested under it.
 async function subtreeIds(id: string): Promise<string[]> {
   const pages = await db.pages.toArray();
   const ids = [id];
@@ -111,8 +104,6 @@ export async function trashPage(id: string): Promise<void> {
   });
 }
 
-// Brings a trashed page back with the descendants trashed together with it. If its old
-// parent is still in the trash (or gone), it comes back at the root instead.
 export async function restorePage(id: string): Promise<void> {
   await db.transaction('rw', db.pages, async () => {
     const page = await db.pages.get(id);
@@ -157,7 +148,6 @@ async function copyDatabaseRows(newIds: Map<string, string>): Promise<void> {
   }
 }
 
-// Page bodies are keyed by page id too; copies get their own.
 async function copyContents(newIds: Map<string, string>): Promise<void> {
   const rows = await db.contents.bulkGet([...newIds.keys()]);
   await db.contents.bulkAdd(
@@ -168,8 +158,6 @@ async function copyContents(newIds: Map<string, string>): Promise<void> {
   );
 }
 
-// Copies a page and everything under it, fresh ids throughout, and places the copy
-// right after the original. Returns the new top page.
 export async function duplicatePage(id: string): Promise<Page | undefined> {
   return db.transaction('rw', [db.pages, db.databases, db.views, db.contents], async () => {
     const original = await db.pages.get(id);
@@ -201,8 +189,6 @@ export async function duplicatePage(id: string): Promise<Page | undefined> {
   });
 }
 
-// What the trash shows: each trashed batch once, by its top page. Pages trashed along
-// with a parent come back (or go) with it, so they aren't listed on their own.
 export async function listTrash(): Promise<Page[]> {
   const pages = await db.pages.toArray();
   const byId = new Map(pages.map((page) => [page.id, page]));
@@ -217,7 +203,6 @@ export async function listTrash(): Promise<Page[]> {
     .sort((a, b) => (b.deletedAt ?? 0) - (a.deletedAt ?? 0));
 }
 
-// Permanently removes a trashed page and the descendants trashed with it.
 export async function deletePageForever(id: string): Promise<void> {
   await db.transaction('rw', [db.pages, db.databases, db.views, db.contents], async () => {
     const page = await db.pages.get(id);
@@ -229,7 +214,6 @@ export async function deletePageForever(id: string): Promise<void> {
     const rows = (await db.pages.bulkGet(ids)).filter((p): p is Page => p?.deletedAt === batch);
     const gone = rows.map((p) => p.id);
     await db.pages.bulkDelete(gone);
-    // Database pages take their columns and views with them.
     await db.databases.bulkDelete(gone);
     await db.views.where('databaseId').anyOf(gone).delete();
     await db.contents.bulkDelete(gone);

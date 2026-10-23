@@ -11,7 +11,6 @@ export interface DropPlan {
   order: string;
 }
 
-// True when `id` is `ancestorId` itself or sits anywhere under it.
 function isWithin(pages: readonly Page[], id: string | null, ancestorId: string): boolean {
   const byId = new Map(pages.map((page) => [page.id, page]));
   for (let current = id; current; current = byId.get(current)?.parentId ?? null) {
@@ -22,10 +21,6 @@ function isWithin(pages: readonly Page[], id: string | null, ancestorId: string)
   return false;
 }
 
-// Where a dragged page lands when dropped before / after / inside a target row: its
-// new parent and a fractional key between the right neighbours. Returns null for
-// drops that make no sense — onto itself, or into its own subtree (which would cut
-// the branch off the tree).
 export function planDrop(
   pages: readonly Page[],
   activeId: string,

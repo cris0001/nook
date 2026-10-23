@@ -9,9 +9,6 @@ import { SelectCell } from './select-cell';
 const INPUT =
   'h-full min-h-9 w-full bg-transparent px-2 text-sm outline-none placeholder:text-muted-foreground/60';
 
-// An editable value of one property on one record, picking the right control for the
-// property type. Text-like inputs are uncontrolled and write on every change —
-// IndexedDB writes are cheap and keep every view of the record in sync live.
 export function PropertyCell({
   databaseId,
   recordId,

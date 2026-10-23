@@ -10,11 +10,6 @@ import { usePagesTranslation } from '../i18n';
 import { PageHeader } from './page-header';
 import { PageIconPicker } from './page-icon-picker';
 
-// A page's main column: header bar, icon and an editable title. Each keystroke is
-// written straight to IndexedDB — local writes are cheap, and the sidebar title updates
-// live with it. A brand-new (empty) page focuses its title, so typing goes straight
-// into it. The body below the title depends on the page type and is supplied by the
-// route (`body`), so this feature doesn't need to know about databases, editors, ….
 export function PageView({
   pageId,
   body,
@@ -84,7 +79,6 @@ export function PageView({
         <input
           ref={titleInput}
           key={page.id}
-          // A fresh page lands with the cursor in its title, ready to type.
           autoFocus={editable && page.title === ''}
           readOnly={!editable}
           defaultValue={page.title}
@@ -92,7 +86,6 @@ export function PageView({
           aria-label={t.titlePlaceholder}
           onChange={(event) => void renamePage(page.id, event.target.value)}
           onKeyDown={(event) => {
-            // Enter / ↓ continue into the page body, like moving to the next line.
             if (event.key !== 'Enter' && event.key !== 'ArrowDown') return;
             const body = event.currentTarget
               .closest('article')

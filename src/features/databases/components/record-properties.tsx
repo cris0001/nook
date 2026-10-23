@@ -4,8 +4,6 @@ import { useDatabase } from '../hooks/use-database';
 import { PROPERTY_ICON } from '../utils/property-icon';
 import { PropertyCell } from './property-cell';
 
-// A record opened as a page: its properties as a label/value list under the title,
-// editable with the same cells the table uses.
 export function RecordProperties({ record }: { record: Page }) {
   const state = useDatabase(record.parentId ?? '');
 

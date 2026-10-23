@@ -6,7 +6,6 @@ import { listTrash } from '@/lib/data/pages';
 
 export type TrashState = { status: 'loading' } | { status: 'ready'; pages: Page[] };
 
-// Trashed pages (one row per trashed batch), live.
 export function useTrash(): TrashState {
   const pages = useLiveQuery(listTrash, []);
   return pages ? { status: 'ready', pages } : { status: 'loading' };

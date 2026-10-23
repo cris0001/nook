@@ -7,7 +7,6 @@ import type { Database, View } from '@/schemas/database.schema';
 import { useDatabasesTranslation } from '../i18n';
 import { ToolbarButton } from './toolbar-button';
 
-// Board-only: which select property makes the columns.
 export function GroupMenu({ database, view }: { database: Database; view: View }) {
   const t = useDatabasesTranslation();
   const selects = database.properties.filter((p) => p.type === 'select');

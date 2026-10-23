@@ -15,8 +15,6 @@ import { SlashMenu } from './slash-menu';
 
 const SAVE_DELAY_MS = 400;
 
-// The block editor under a page title. Loads the stored body once, then owns it:
-// changes are saved shortly after typing pauses, and flushed when leaving the page.
 export function DocumentEditor({
   pageId,
   editable = true,

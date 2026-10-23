@@ -8,14 +8,10 @@ export interface DropTarget {
   position: DropPosition;
 }
 
-// Sidebar UI state. `expanded` is persisted so the tree opens the way it was left;
-// the drag fields are ephemeral and only live during a drag. Kept in one store so a
-// drop "inside" can expand its target in the same update.
 interface SidebarUiState {
   expanded: string[];
   draggingId: string | null;
   dropTarget: DropTarget | null;
-  // The page whose title is being edited in place in the tree.
   renamingId: string | null;
   setRenaming: (id: string | null) => void;
   toggle: (id: string) => void;

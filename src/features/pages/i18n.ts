@@ -1,6 +1,5 @@
 import { createTranslation } from '@/lib/i18n/create-translation';
 
-// Pages feature copy: sidebar, page tree, page view and the workspace home.
 const en = {
   newPage: 'New page',
   newKind: { document: 'Page', database: 'Database' },

@@ -10,8 +10,6 @@ export const PROPERTY_TYPES = [
   'url',
 ] as const;
 
-// Option colors are names, not hex: each maps to a light/dark token pair in CSS, so
-// tags stay readable in both themes and follow a future palette change.
 export const OPTION_COLORS = [
   'gray',
   'brown',
@@ -33,8 +31,6 @@ export const SelectOptionSchema = z.object({
   color: OptionColorSchema,
 });
 
-// A column of a database. Select types carry their options; others leave it empty.
-// The record title is built in (it's the page title), so it isn't a property.
 export const PropertyDefSchema = z.object({
   id: z.string().min(1),
   name: z.string().max(100),
@@ -42,7 +38,6 @@ export const PropertyDefSchema = z.object({
   options: z.array(SelectOptionSchema),
 });
 
-// One row per database page (same id as the page), holding its column definitions.
 export const DatabaseSchema = z.object({
   id: z.uuid(),
   properties: z.array(PropertyDefSchema),
@@ -62,7 +57,6 @@ export const VIEW_TYPES = ['table', 'board', 'calendar'] as const;
 export const ViewTypeSchema = z.enum(VIEW_TYPES);
 
 export const SortSchema = z.object({
-  // 'title' sorts by the record name; anything else is a property id.
   propertyId: z.string().min(1),
   direction: z.enum(['asc', 'desc']),
 });
@@ -76,8 +70,6 @@ export const FilterSchema = z.object({
   value: PropertyValueSchema,
 });
 
-// A saved way of looking at a database. Every view keeps its own sorting, filters and
-// type-specific settings, so "Board by status" and "Table, overdue first" coexist.
 export const ViewSchema = z.object({
   id: z.uuid(),
   databaseId: z.uuid(),

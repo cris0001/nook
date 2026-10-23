@@ -9,9 +9,6 @@ import { useDatabasesTranslation } from '../i18n';
 import { PROPERTY_ICON } from '../utils/property-icon';
 import { OptionList } from './option-list';
 
-// A column header: type icon + name. Clicking opens a small editor to rename or delete
-// the property (a popover rather than a menu, so the name input gets every keystroke).
-// Select properties also list their options here, to reorder and edit them.
 export function PropertyHeader({
   databaseId,
   property,

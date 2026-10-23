@@ -12,8 +12,6 @@ import { useLocaleStore } from '@/stores/locale.store';
 import { useTodayTranslation } from '../i18n';
 import type { AgendaItem } from '../utils/agenda';
 
-// A task in the agenda: a round checkbox that moves it to its database's last status
-// (with Undo), the title linking to the record, where it lives, and the due date.
 export function AgendaRow({ item, late }: { item: AgendaItem; late: boolean }) {
   const t = useTodayTranslation();
   const locale = useLocaleStore((s) => s.locale);

@@ -7,9 +7,6 @@ export interface ConfirmOptions {
   destructive?: boolean;
 }
 
-// Promise-based confirmation backed by one app-wide dialog: `await confirm({...})`
-// resolves true/false when the user answers. Replaces window.confirm, which can't be
-// styled or translated and blocks the page.
 interface ConfirmState {
   options: ConfirmOptions | null;
   resolve: ((ok: boolean) => void) | null;

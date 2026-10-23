@@ -5,9 +5,6 @@ import { db } from '@/lib/db';
 import { markPageOpened } from '@/lib/data/pages';
 import { useSidebarUiStore } from '../stores/sidebar-ui.store';
 
-// Side effects of opening a page: log the visit for "Recently opened", and expand its
-// ancestors in the sidebar so the open page is visible in the tree (e.g. after
-// following a link or a favorite to a deeply nested page).
 export function useOpenPage(pageId: string) {
   useEffect(() => {
     void markPageOpened(pageId);

@@ -9,8 +9,6 @@ import { useDatabasesTranslation } from '../i18n';
 import { todayKey } from '@/utils/dates';
 import { MonthCalendar } from './month-calendar';
 
-// A date value shown the readable way ("1 Oct 2026" / "1 paź 2026") instead of the
-// browser's mm/dd/yyyy control; clicking opens the month picker.
 export function DateCell({
   recordId,
   propertyId,

@@ -4,7 +4,6 @@ import { useCommonTranslation } from '@/lib/i18n/common';
 import { cn } from '@/lib/utils';
 import { useConfirmStore } from '@/stores/confirm.store';
 
-// The single dialog behind useConfirm(). Mounted once in the app root.
 export function ConfirmDialog() {
   const t = useCommonTranslation();
   const options = useConfirmStore((s) => s.options);

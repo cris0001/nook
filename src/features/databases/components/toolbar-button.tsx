@@ -2,8 +2,6 @@ import { forwardRef, type ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
-// A quiet toolbar trigger that turns lime-tinted while its feature is in use (e.g. a
-// filter is active), so a filtered view never looks like the full list.
 export const ToolbarButton = forwardRef<
   HTMLButtonElement,
   ComponentProps<'button'> & { active?: boolean }

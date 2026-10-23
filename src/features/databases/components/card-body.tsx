@@ -10,9 +10,6 @@ import { useDatabasesTranslation } from '../i18n';
 import { isOverdue } from '../utils/board';
 import { OptionTag } from './option-tag';
 
-// What a card shows under its title: every visible, non-empty property except the one
-// the board is grouped by (the column already says it). Past dates on unfinished
-// cards turn red with an "overdue" label.
 export function CardBody({
   record,
   database,

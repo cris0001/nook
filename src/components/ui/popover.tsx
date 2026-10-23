@@ -1,4 +1,3 @@
-// shadcn/ui popover, wired to nOOk's tokens.
 import { Popover as PopoverPrimitive } from 'radix-ui';
 import type { ComponentProps } from 'react';
 

@@ -2,7 +2,6 @@ import { createTranslation } from '@/lib/i18n/create-translation';
 
 import type { SlashItemId } from './utils/slash-items';
 
-// Documents feature copy: editor placeholder, slash menu, block handle.
 const en = {
   placeholder: "Write something, or press '/' for blocks…",
   emptyHeading: 'Heading',

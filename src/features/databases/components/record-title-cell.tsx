@@ -7,8 +7,6 @@ import type { Page } from '@/schemas/page.schema';
 import { useDatabasesTranslation } from '../i18n';
 import { RecordActionsMenu } from './record-actions-menu';
 
-// The Name cell: the record's page title, editable in place, plus "Open" and a "⋯"
-// actions menu (on hover on desktop, always on touch).
 export function RecordTitleCell({ record }: { record: Page }) {
   const t = useDatabasesTranslation();
 

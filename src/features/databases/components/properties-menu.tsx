@@ -24,8 +24,6 @@ import { useDatabasesTranslation } from '../i18n';
 import { PROPERTY_ICON } from '../utils/property-icon';
 import { ToolbarButton } from './toolbar-button';
 
-// Column visibility (per view) and column order (shared by all views of the database).
-// Rows reorder by dragging their grip; the eye toggles visibility in this view only.
 export function PropertiesMenu({ database, view }: { database: Database; view: View }) {
   const t = useDatabasesTranslation();
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));

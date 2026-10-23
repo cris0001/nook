@@ -28,13 +28,10 @@ export type SlashItemId =
 export interface SlashItem {
   id: SlashItemId;
   icon: LucideIcon;
-  // Extra search words (both languages), on top of the translated title.
   keywords: string;
   run: (editor: Editor, range: Range) => void;
 }
 
-// The blocks the "/" menu can insert. Each command first deletes the typed "/query",
-// then turns the current block into the chosen type.
 export const SLASH_ITEMS: SlashItem[] = [
   {
     id: 'text',
@@ -98,7 +95,6 @@ export const SLASH_ITEMS: SlashItem[] = [
   },
 ];
 
-// Case- and accent-insensitive match on the title, description and keywords.
 export function matchesQuery(haystack: string, query: string): boolean {
   const normalize = (s: string) =>
     s

@@ -1,5 +1,3 @@
-// shadcn/ui dropdown-menu, trimmed to the parts nOOk uses and wired to its tokens
-// (bg-background, hover, border) instead of shadcn's default palette.
 import { DropdownMenu as DropdownMenuPrimitive } from 'radix-ui';
 import type { ComponentProps } from 'react';
 

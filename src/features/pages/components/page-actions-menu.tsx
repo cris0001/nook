@@ -15,9 +15,6 @@ import { useTrashPage } from '../hooks/use-trash-page';
 import { usePagesTranslation } from '../i18n';
 import { useSidebarUiStore } from '../stores/sidebar-ui.store';
 
-// The "⋯" menu on a page row (with Rename, which edits the title in place in the tree)
-// and in the page header. The trigger is styled by the caller (it hides until
-// hover on desktop rows but stays visible on touch).
 export function PageActionsMenu({
   pageId,
   className,

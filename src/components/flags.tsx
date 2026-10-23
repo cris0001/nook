@@ -30,8 +30,6 @@ function PlFlag() {
 
 const FLAGS: Record<Locale, () => React.JSX.Element> = { en: GbFlag, pl: PlFlag };
 
-// A flag in a 3:2 frame with a hairline edge, so the white of the Polish flag doesn't
-// melt into a white background.
 export function Flag({ locale, className }: { locale: Locale; className?: string }) {
   const Svg = FLAGS[locale];
   return (

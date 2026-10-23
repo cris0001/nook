@@ -9,8 +9,6 @@ export type DatabaseState =
   | { status: 'missing' }
   | { status: 'ready'; database: Database; views: View[]; records: Page[] };
 
-// A database with its views and records in one live query, so a change to any of the
-// three re-renders the views together instead of in three separate passes.
 export function useDatabase(id: string): DatabaseState {
   const data = useLiveQuery(async () => {
     const [database, views, records] = await Promise.all([

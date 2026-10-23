@@ -3,7 +3,6 @@ import type { SelectOption } from '@/schemas/database.schema';
 
 import { OPTION_STYLE } from '../utils/option-style';
 
-// A select option rendered as a small colored tag.
 export function OptionTag({ option, className }: { option: SelectOption; className?: string }) {
   return (
     <span

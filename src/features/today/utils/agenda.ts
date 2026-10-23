@@ -4,7 +4,6 @@ import type { Database, SelectOption } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
 import { statusPropertyOf } from '@/utils/progress';
 
-// One database with everything the agenda needs from it.
 export interface AgendaSource {
   page: Page;
   database: Database;
@@ -16,8 +15,6 @@ export interface AgendaItem {
   source: Page;
   date: string;
   status: SelectOption | null;
-  // What "check it off" means for this record: the status property and its last
-  // option. Null when the database has no select to mark done with.
   complete: { propertyId: string; optionId: string } | null;
 }
 
@@ -25,12 +22,9 @@ export interface Agenda {
   overdue: AgendaItem[];
   today: AgendaItem[];
   week: AgendaItem[];
-  // Share of records (across databases with a status) sitting in their last option.
   doneRatio: number | null;
 }
 
-// Everything with a date that isn't finished, bucketed relative to `today`: before it,
-// on it, and within the next six days. Each bucket is sorted by date, then title.
 export function buildAgenda(sources: AgendaSource[], today: string): Agenda {
   const weekEnd = format(addDays(parseISO(today), 6), 'yyyy-MM-dd');
   const agenda: Agenda = { overdue: [], today: [], week: [], doneRatio: null };

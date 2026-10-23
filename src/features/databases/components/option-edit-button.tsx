@@ -8,7 +8,6 @@ import type { SelectOption } from '@/schemas/database.schema';
 import { useDatabasesTranslation } from '../i18n';
 import { OptionEditor } from './option-editor';
 
-// "⋯" next to an option in a list, opening its editor in a nested popover.
 export function OptionEditButton({
   databaseId,
   propertyId,

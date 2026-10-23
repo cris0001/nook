@@ -12,10 +12,6 @@ import { groupRecords } from '../utils/board';
 import { BoardColumn } from './board-column';
 import { CardBody } from './card-body';
 
-// Kanban view: records grouped into columns by a select property (the view's choice,
-// else the first select). On wider screens the columns share the available width and
-// only scroll sideways when there are too many to fit; on phones each column takes
-// most of the screen and they swipe with snapping.
 export function BoardView({
   database,
   view,

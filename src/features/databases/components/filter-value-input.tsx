@@ -3,8 +3,6 @@ import type { Filter, PropertyDef, PropertyType } from '@/schemas/database.schem
 import { useDatabasesTranslation } from '../i18n';
 import { SELECT_CLASS } from '../utils/view-fields';
 
-// The value half of a filter row, shaped by the property type: an option picker for
-// selects, yes/no for checkboxes, and a typed input for everything else.
 export function FilterValueInput({
   filter,
   type,

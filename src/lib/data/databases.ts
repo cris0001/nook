@@ -24,9 +24,6 @@ function option(name: string, color: OptionColor): SelectOption {
   return { id: newId(), name, color };
 }
 
-// Every new database starts useful rather than blank: a Status select (so the board
-// view has columns straight away) and a Date (for the calendar later).
-// Names for the starter columns, in the UI language of whoever creates the database.
 export interface DatabaseStarterNames {
   status: string;
   todo: string;
@@ -74,9 +71,6 @@ function makeView(databaseId: string, type: ViewType, name: string, order: strin
   };
 }
 
-// Creates a database page with its column definitions and two starter views: a table
-// and a board grouped by Status. Views start unnamed, so the UI shows their type in
-// the current language until the user names them.
 export async function createDatabase(
   parentId: string | null,
   title = '',
@@ -103,7 +97,6 @@ export async function listViews(databaseId: string): Promise<View[]> {
   return views.sort(byOrder);
 }
 
-// Live records of a database, oldest first (views apply their own sorting on top).
 export async function listRecords(databaseId: string): Promise<Page[]> {
   const rows = await db.pages.where('parentId').equals(databaseId).toArray();
   return rows
@@ -111,7 +104,6 @@ export async function listRecords(databaseId: string): Promise<Page[]> {
     .sort((a, b) => byOrder(a, b));
 }
 
-// Done vs. all records of one database, for the progress ring next to it in the sidebar.
 export async function getDatabaseProgress(databaseId: string): Promise<Progress | null> {
   const [database, records] = await Promise.all([getDatabase(databaseId), listRecords(databaseId)]);
   return database ? progressOf(database, records) : null;
@@ -177,8 +169,6 @@ export async function toggleRecordOption(
   });
 }
 
-// Moves a record on a board: into another group (a select option, or null for "no
-// value") and, when the board is in manual order, to a new spot via `order`.
 export async function moveRecord(
   recordId: string,
   propertyId: string,
@@ -222,7 +212,6 @@ export async function addProperty(
   return property;
 }
 
-// Puts the columns in the given order (ids not listed keep their place at the end).
 export function reorderProperties(databaseId: string, orderedIds: string[]) {
   return updateProperties(databaseId, (properties) => {
     const byId = new Map(properties.map((p) => [p.id, p]));
@@ -237,8 +226,6 @@ export function renameProperty(databaseId: string, propertyId: string, name: str
   );
 }
 
-// Removes a column and everything pointing at it: record values, and any view that
-// sorts, filters, groups or hides by it — so no view is left referencing a ghost.
 export async function deleteProperty(databaseId: string, propertyId: string): Promise<void> {
   await db.transaction('rw', db.pages, db.databases, db.views, async () => {
     await updateProperties(databaseId, (properties) =>
@@ -271,7 +258,6 @@ export async function deleteProperty(databaseId: string, propertyId: string): Pr
   });
 }
 
-// Adds a select option, cycling through the colors so neighbours differ.
 export async function addOption(
   databaseId: string,
   propertyId: string,
@@ -312,7 +298,6 @@ export function updateOption(
   );
 }
 
-// Option order is column order on a board and sort order in tables.
 export function reorderOptions(databaseId: string, propertyId: string, orderedIds: string[]) {
   return updateOptions(databaseId, propertyId, (options) => {
     const byId = new Map(options.map((o) => [o.id, o]));
@@ -321,8 +306,6 @@ export function reorderOptions(databaseId: string, propertyId: string, orderedId
   });
 }
 
-// Removes an option and every use of it: record values (single select is cleared,
-// multi-select drops just that id) and filters comparing against it.
 export async function deleteOption(
   databaseId: string,
   propertyId: string,
@@ -382,7 +365,6 @@ export async function addView(databaseId: string, type: ViewType, name: string):
   return view;
 }
 
-// Deletes a view; a database always keeps at least one.
 export async function deleteView(id: string): Promise<void> {
   await db.transaction('rw', db.views, async () => {
     const view = await db.views.get(id);

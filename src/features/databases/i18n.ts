@@ -7,7 +7,6 @@ import type {
   ViewType,
 } from '@/schemas/database.schema';
 
-// Databases feature copy: views, table, properties, cells.
 const en = {
   name: 'Name',
   untitled: 'Untitled',

@@ -8,7 +8,6 @@ import { useDatabasesTranslation } from '../i18n';
 import { SELECT_CLASS, viewFields } from '../utils/view-fields';
 import { ToolbarButton } from './toolbar-button';
 
-// Sorting rules of a view, applied top to bottom (later rules break ties).
 export function SortMenu({ database, view }: { database: Database; view: View }) {
   const t = useDatabasesTranslation();
   const fields = viewFields(database, t.name);

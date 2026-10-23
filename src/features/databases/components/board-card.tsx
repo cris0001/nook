@@ -14,9 +14,6 @@ import { RecordActionsMenu } from './record-actions-menu';
 
 const CARD = 'bg-background block rounded-[9px] px-3 py-2.5 text-[13.5px] shadow-raised';
 
-// A record on the board. The whole card drags (after a few pixels / a long press) and
-// otherwise opens the record. Right after "Add a card" it shows a title input instead,
-// so the new card can be named without leaving the board.
 export function BoardCard({
   record,
   columnKey,

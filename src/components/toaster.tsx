@@ -2,8 +2,6 @@ import { Toaster as Sonner } from 'sonner';
 
 import { useThemeStore } from '@/stores/theme.store';
 
-// App-wide toasts (e.g. "moved to trash · Undo"), following the chosen theme and styled
-// with the app's tokens rather than sonner's defaults.
 export function Toaster() {
   const theme = useThemeStore((s) => s.theme);
   return (
