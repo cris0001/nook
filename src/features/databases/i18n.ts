@@ -1,4 +1,5 @@
 import { createTranslation } from '@/lib/i18n/create-translation';
+import { polishPlural } from '@/lib/i18n/plural';
 
 import type {
   FilterOperator,
@@ -18,6 +19,12 @@ const en = {
     string
   >,
   comingSoon: 'This view arrives in the next step.',
+  summary: {
+    records: (n: number) => (n === 1 ? '1 record' : `${n} records`),
+    overdue: (n: number) => `${n} overdue`,
+    thisWeek: (n: number) => `${n} due this week`,
+    done: 'done',
+  },
   addProperty: 'Add a property',
   propertyName: 'Property name',
   propertyType: {
@@ -104,6 +111,12 @@ const pl: typeof en = {
   views: 'Widoki',
   viewType: { table: 'Tabela', board: 'Tablica', calendar: 'Kalendarz' },
   comingSoon: 'Ten widok pojawi się w następnym kroku.',
+  summary: {
+    records: (n: number) => `${n} ${polishPlural(n, 'rekord', 'rekordy', 'rekordów')}`,
+    overdue: (n: number) => `${n} po terminie`,
+    thisWeek: (n: number) => `${n} w tym tygodniu`,
+    done: 'zrobione',
+  },
   addProperty: 'Dodaj właściwość',
   propertyName: 'Nazwa właściwości',
   propertyType: {

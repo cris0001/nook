@@ -1,12 +1,8 @@
 import { createTranslation } from '@/lib/i18n/create-translation';
 
-// Polish plural for "task": 1 zadanie, 2–4 zadania, 5+ (and 12–14) zadań.
-function zadan(n: number): string {
-  if (n === 1) return 'zadanie';
-  const tens = n % 100;
-  const ones = n % 10;
-  return ones >= 2 && ones <= 4 && (tens < 12 || tens > 14) ? 'zadania' : 'zadań';
-}
+import { polishPlural } from '@/lib/i18n/plural';
+
+const zadan = (n: number) => polishPlural(n, 'zadanie', 'zadania', 'zadań');
 
 const en = {
   kicker: 'Today',

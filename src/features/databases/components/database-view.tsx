@@ -7,6 +7,7 @@ import { useDatabase } from '../hooks/use-database';
 import { useDatabasesTranslation } from '../i18n';
 import { filterRecords, sortRecords } from '../utils/apply-view';
 import { BoardView } from './board-view';
+import { DatabaseSummary } from './database-summary';
 import { FilterMenu } from './filter-menu';
 import { GroupMenu } from './group-menu';
 import { PropertiesMenu } from './properties-menu';
@@ -43,8 +44,9 @@ export function DatabaseView({ databaseId }: { databaseId: string }) {
   const { database, views } = ready;
 
   return (
-    <section className="mt-6">
-      <div className="border-divider flex flex-wrap items-center gap-2 border-b pb-3">
+    <section className="mt-1">
+      <DatabaseSummary database={database} records={ready.records} />
+      <div className="border-divider mt-6 flex flex-wrap items-center gap-2 border-b pb-3">
         <ViewTabs views={views} activeId={view.id} onSelect={setActiveId} />
         <div className="ml-auto flex items-center gap-0.5">
           {view.type === 'board' ? <GroupMenu database={database} view={view} /> : null}
