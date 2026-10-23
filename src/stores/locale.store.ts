@@ -5,9 +5,10 @@ import { persist } from 'zustand/middleware';
 // exactly as the user typed them.
 export type Locale = 'en' | 'pl';
 
-export const LOCALES: { code: Locale; label: string }[] = [
-  { code: 'en', label: 'EN' },
-  { code: 'pl', label: 'PL' },
+// Language names are written in their own language, so each is findable by its speakers.
+export const LOCALES: { code: Locale; label: string; name: string }[] = [
+  { code: 'en', label: 'EN', name: 'English' },
+  { code: 'pl', label: 'PL', name: 'Polski' },
 ];
 
 interface LocaleState {
