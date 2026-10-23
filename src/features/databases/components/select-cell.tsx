@@ -3,9 +3,11 @@ import { useState } from 'react';
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { addOption, toggleRecordOption } from '@/lib/data/databases';
+import { cn } from '@/lib/utils';
 import type { PropertyDef, PropertyValue } from '@/schemas/database.schema';
 
 import { useDatabasesTranslation } from '../i18n';
+import { DOT_STYLE } from '../utils/option-style';
 import { OptionEditButton } from './option-edit-button';
 import { OptionTag } from './option-tag';
 
@@ -50,9 +52,17 @@ export function SelectCell({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger className="flex h-full min-h-9 w-full flex-wrap items-center gap-1 px-2 py-1 text-left">
-        {chosen.map((option) => (
-          <OptionTag key={option.id} option={option} />
-        ))}
+        {multi ? (
+          chosen.map((option) => <OptionTag key={option.id} option={option} />)
+        ) : chosen[0] ? (
+          <span className="flex items-center gap-2 text-[13px]">
+            <i
+              aria-hidden
+              className={cn('size-[7px] shrink-0 rounded-full', DOT_STYLE[chosen[0].color])}
+            />
+            {chosen[0].name}
+          </span>
+        ) : null}
       </PopoverTrigger>
       <PopoverContent className="w-64 p-1">
         <input

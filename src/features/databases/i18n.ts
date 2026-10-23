@@ -25,6 +25,7 @@ const en = {
     thisWeek: (n: number) => `${n} due this week`,
     done: 'done',
   },
+  footer: { count: 'Count', done: 'Done', late: 'Late' },
   addProperty: 'Add a property',
   propertyName: 'Property name',
   propertyType: {
@@ -117,6 +118,7 @@ const pl: typeof en = {
     thisWeek: (n: number) => `${n} w tym tygodniu`,
     done: 'zrobione',
   },
+  footer: { count: 'Razem', done: 'Zrobione', late: 'Po terminie' },
   addProperty: 'Dodaj właściwość',
   propertyName: 'Nazwa właściwości',
   propertyType: {

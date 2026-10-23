@@ -1,10 +1,10 @@
-import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { setRecordValue } from '@/lib/data/databases';
 
-import { useDateLocale } from '@/hooks/use-date-locale';
+import { useDueLabel } from '@/hooks/use-due-label';
+import { cn } from '@/lib/utils';
 import { useDatabasesTranslation } from '../i18n';
 import { todayKey } from '@/utils/dates';
 import { MonthCalendar } from './month-calendar';
@@ -13,13 +13,16 @@ export function DateCell({
   recordId,
   propertyId,
   value,
+  finished = false,
 }: {
   recordId: string;
   propertyId: string;
   value: string | null;
+  finished?: boolean;
 }) {
   const t = useDatabasesTranslation();
-  const { locale } = useDateLocale();
+  const dueLabel = useDueLabel();
+  const due = value ? dueLabel(value, finished) : null;
   const [open, setOpen] = useState(false);
 
   function pick(day: string | null) {
@@ -29,8 +32,15 @@ export function DateCell({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger className="flex h-full min-h-9 w-full items-center px-2 text-left text-sm tabular-nums">
-        {value ? format(parseISO(value), 'd MMM yyyy', { locale }) : null}
+      <PopoverTrigger
+        className={cn(
+          'flex h-full min-h-9 w-full items-center px-2 text-left font-mono text-[12px]',
+          due?.tone === 'late' && 'text-destructive',
+          due?.tone === 'today' && 'text-primary-text font-semibold',
+          due?.tone === 'plain' && 'text-muted-foreground',
+        )}
+      >
+        {due?.text}
       </PopoverTrigger>
       <PopoverContent className="p-2">
         <MonthCalendar value={value} onPick={pick} />

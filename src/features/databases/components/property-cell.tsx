@@ -14,11 +14,13 @@ export function PropertyCell({
   recordId,
   property,
   value,
+  finished = false,
 }: {
   databaseId: string;
   recordId: string;
   property: PropertyDef;
   value: PropertyValue;
+  finished?: boolean;
 }) {
   const save = (next: PropertyValue) => void setRecordValue(recordId, property.id, next);
   const text = typeof value === 'string' ? value : '';
@@ -51,7 +53,14 @@ export function PropertyCell({
         />
       );
     case 'date':
-      return <DateCell recordId={recordId} propertyId={property.id} value={text || null} />;
+      return (
+        <DateCell
+          recordId={recordId}
+          propertyId={property.id}
+          value={text || null}
+          finished={finished}
+        />
+      );
     case 'url':
       return (
         <div className="flex h-full items-center">

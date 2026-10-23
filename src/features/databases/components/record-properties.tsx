@@ -2,6 +2,9 @@ import type { Page } from '@/schemas/page.schema';
 
 import { useDatabase } from '../hooks/use-database';
 import { PROPERTY_ICON } from '../utils/property-icon';
+import { statusPropertyOf } from '@/utils/progress';
+
+import { isFinished } from '../utils/board';
 import { PropertyCell } from './property-cell';
 
 export function RecordProperties({ record }: { record: Page }) {
@@ -27,6 +30,7 @@ export function RecordProperties({ record }: { record: Page }) {
                 recordId={record.id}
                 property={property}
                 value={record.properties[property.id] ?? null}
+                finished={isFinished(record, statusPropertyOf(state.database))}
               />
             </dd>
           </div>
