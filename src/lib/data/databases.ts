@@ -25,15 +25,36 @@ function option(name: string, color: OptionColor): SelectOption {
 
 // Every new database starts useful rather than blank: a Status select (so the board
 // view has columns straight away) and a Date (for the calendar later).
-function defaultProperties(): PropertyDef[] {
+// Names for the starter columns, in the UI language of whoever creates the database.
+export interface DatabaseStarterNames {
+  status: string;
+  todo: string;
+  inProgress: string;
+  done: string;
+  date: string;
+}
+
+const ENGLISH_NAMES: DatabaseStarterNames = {
+  status: 'Status',
+  todo: 'To do',
+  inProgress: 'In progress',
+  done: 'Done',
+  date: 'Date',
+};
+
+function defaultProperties(names: DatabaseStarterNames): PropertyDef[] {
   return [
     {
       id: newId(),
-      name: 'Status',
+      name: names.status,
       type: 'select',
-      options: [option('To do', 'gray'), option('In progress', 'blue'), option('Done', 'green')],
+      options: [
+        option(names.todo, 'gray'),
+        option(names.inProgress, 'blue'),
+        option(names.done, 'green'),
+      ],
     },
-    { id: newId(), name: 'Date', type: 'date', options: [] },
+    { id: newId(), name: names.date, type: 'date', options: [] },
   ];
 }
 
@@ -55,10 +76,14 @@ function makeView(databaseId: string, type: ViewType, name: string, order: strin
 // Creates a database page with its column definitions and two starter views: a table
 // and a board grouped by Status. Views start unnamed, so the UI shows their type in
 // the current language until the user names them.
-export async function createDatabase(parentId: string | null, title = ''): Promise<Page> {
+export async function createDatabase(
+  parentId: string | null,
+  title = '',
+  names: DatabaseStarterNames = ENGLISH_NAMES,
+): Promise<Page> {
   return db.transaction('rw', db.pages, db.databases, db.views, async () => {
     const page = await createPage({ parentId, type: 'database', title });
-    const properties = defaultProperties();
+    const properties = defaultProperties(names);
     const table = makeView(page.id, 'table', '', generateKeyBetween(null, null));
     const board = makeView(page.id, 'board', '', generateKeyBetween(table.order, null));
     board.groupBy = properties[0]?.id ?? null;
