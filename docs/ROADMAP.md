@@ -53,11 +53,12 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 - [x] Sorting and filtering
 - [x] Views as tabs, each with its own filters and sorting
 
-### Stage 5 — Board view (Kanban) ✅ COMPLETE
+### Stage 5 — Board view (Kanban)
 
 - [x] Group by a select property (e.g. Status)
 - [x] Drag cards between and within columns
-- [x] Add / rename / reorder columns
+- [x] New columns via new select options
+- [ ] Rename / recolor / reorder columns (select options)
 - [x] Card shows chosen properties; overdue marker
 
 ---
