@@ -1,7 +1,8 @@
 import { addDays, format, parseISO } from 'date-fns';
 
-import type { Database, PropertyDef, SelectOption } from '@/schemas/database.schema';
+import type { Database, SelectOption } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
+import { statusPropertyOf } from '@/utils/progress';
 
 // One database with everything the agenda needs from it.
 export interface AgendaSource {
@@ -28,12 +29,6 @@ export interface Agenda {
   doneRatio: number | null;
 }
 
-// The status of a database is its first select property; by convention its last option
-// is the finished stage (To do → … → Done).
-function statusOf(database: Database): PropertyDef | undefined {
-  return database.properties.find((p) => p.type === 'select');
-}
-
 // Everything with a date that isn't finished, bucketed relative to `today`: before it,
 // on it, and within the next six days. Each bucket is sorted by date, then title.
 export function buildAgenda(sources: AgendaSource[], today: string): Agenda {
@@ -44,7 +39,7 @@ export function buildAgenda(sources: AgendaSource[], today: string): Agenda {
 
   for (const { page, database, records } of sources) {
     const dateProperty = database.properties.find((p) => p.type === 'date');
-    const status = statusOf(database);
+    const status = statusPropertyOf(database);
     const last = status?.options.at(-1);
 
     for (const record of records) {

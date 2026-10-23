@@ -14,6 +14,7 @@ import {
 } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
 import { byOrder } from '@/utils/order';
+import { progressOf, type Progress } from '@/utils/progress';
 
 import { createPage } from './pages';
 
@@ -108,6 +109,12 @@ export async function listRecords(databaseId: string): Promise<Page[]> {
   return rows
     .filter((page) => page.type === 'record' && page.deletedAt === null)
     .sort((a, b) => byOrder(a, b));
+}
+
+// Done vs. all records of one database, for the progress ring next to it in the sidebar.
+export async function getDatabaseProgress(databaseId: string): Promise<Progress | null> {
+  const [database, records] = await Promise.all([getDatabase(databaseId), listRecords(databaseId)]);
+  return database ? progressOf(database, records) : null;
 }
 
 export function addRecord(
