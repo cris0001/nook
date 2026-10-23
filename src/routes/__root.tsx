@@ -1,14 +1,21 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
+import { useEffect } from 'react';
 
 import { SplashScreen } from '@/features/splash';
+import { useLocaleStore } from '@/stores/locale.store';
 
-// Root layout for every route. Renders the matched child, with the once-per-session
-// splash on top while the app loads underneath.
+// Root layout for every route. Renders the matched child with the once-per-session
+// splash on top, and keeps <html lang> in sync with the chosen UI language.
 export const Route = createRootRoute({
   component: RootLayout,
 });
 
 function RootLayout() {
+  const locale = useLocaleStore((s) => s.locale);
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
+
   return (
     <>
       <Outlet />
