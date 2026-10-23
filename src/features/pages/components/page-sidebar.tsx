@@ -7,6 +7,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 
 import { useCreatePage } from '../hooks/use-create-page';
 import { usePagesTranslation } from '../i18n';
+import { FavoritesList } from './favorites-list';
 import { PageTree } from './page-tree';
 
 // Sidebar contents: wordmark with a compact "New page" action beside it, the page tree (scrolls on
@@ -33,6 +34,7 @@ export function PageSidebar() {
       </div>
 
       <nav aria-label={t.pages} className="min-h-0 flex-1 overflow-y-auto px-2">
+        <FavoritesList />
         <p className="text-muted-foreground px-2 pb-1 text-xs font-medium">{t.pages}</p>
         <PageTree />
       </nav>

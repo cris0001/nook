@@ -9,6 +9,11 @@ const en = {
   expand: 'Expand',
   collapse: 'Collapse',
   titlePlaceholder: 'Untitled',
+  favorites: 'Favorites',
+  favorite: { add: 'Add to favorites', remove: 'Remove from favorites' },
+  icon: { add: 'Add icon', change: 'Change icon', remove: 'Remove', random: 'Random' },
+  breadcrumbs: 'Breadcrumbs',
+  recent: 'Recently opened',
   actions: { label: 'Page actions', duplicate: 'Duplicate', moveToTrash: 'Move to trash' },
   trash: {
     title: 'Trash',
@@ -39,6 +44,11 @@ const pl: typeof en = {
   expand: 'Rozwiń',
   collapse: 'Zwiń',
   titlePlaceholder: 'Bez tytułu',
+  favorites: 'Ulubione',
+  favorite: { add: 'Dodaj do ulubionych', remove: 'Usuń z ulubionych' },
+  icon: { add: 'Dodaj ikonę', change: 'Zmień ikonę', remove: 'Usuń', random: 'Losowa' },
+  breadcrumbs: 'Ścieżka',
+  recent: 'Ostatnio otwierane',
   actions: { label: 'Akcje strony', duplicate: 'Duplikuj', moveToTrash: 'Przenieś do kosza' },
   trash: {
     title: 'Kosz',
