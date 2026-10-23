@@ -97,7 +97,7 @@ Three layers per resource: **api fn → hook → component**.
 - Components ask `useCan(action)` (or `usePermissions()` for several checks) and
   hide or disable what the role can't do — never check the role name directly
 - Every new feature that writes data adds or reuses an action here
-- No auth yet: the role comes from `role.store` and a switcher in the sidebar.
+- No auth yet: the role comes from `profile.store` and the profile menu in the sidebar.
   With a backend the role comes from the session, and the server enforces the
   same rules — the UI checks are only for UX
 

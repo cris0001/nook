@@ -10,9 +10,14 @@ const en = {
   undo: 'Undo',
   untitled: 'Untitled',
   movedToTrash: (title: string) => `"${title}" moved to the trash`,
+  profile: {
+    label: 'Profile and settings',
+    you: 'You',
+    namePlaceholder: 'Your name',
+    viewAs: 'View as',
+    themeLabel: 'Theme',
+  },
   role: {
-    label: 'Role',
-    hint: 'Preview the workspace as a different role',
     names: { owner: 'Owner', editor: 'Editor', viewer: 'Viewer' },
     descriptions: {
       owner: 'Full access, including database structure',
@@ -39,9 +44,14 @@ const pl: typeof en = {
   undo: 'Cofnij',
   untitled: 'Bez tytułu',
   movedToTrash: (title: string) => `„${title}” przeniesiono do kosza`,
+  profile: {
+    label: 'Profil i ustawienia',
+    you: 'Ty',
+    namePlaceholder: 'Twoje imię',
+    viewAs: 'Widok jako',
+    themeLabel: 'Motyw',
+  },
   role: {
-    label: 'Rola',
-    hint: 'Podejrzyj przestrzeń jako inna rola',
     names: { owner: 'Właściciel', editor: 'Edytor', viewer: 'Czytelnik' },
     descriptions: {
       owner: 'Pełny dostęp, także do struktury baz',
