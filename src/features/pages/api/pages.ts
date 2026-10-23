@@ -54,6 +54,11 @@ export async function renamePage(id: string, title: string): Promise<void> {
   await db.pages.update(id, { title, updatedAt: Date.now() });
 }
 
+// Re-parents and/or reorders a page. The target spot is worked out by planDrop.
+export async function movePage(id: string, parentId: string | null, order: string): Promise<void> {
+  await db.pages.update(id, { parentId, order, updatedAt: Date.now() });
+}
+
 // Ids of a page and everything nested under it.
 async function subtreeIds(id: string): Promise<string[]> {
   const pages = await db.pages.toArray();
