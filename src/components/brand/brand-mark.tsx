@@ -45,8 +45,8 @@ export function BrandMark({
       )}
     >
       <span aria-hidden>n</span>
-      <BrandEye eyeRef={left} closed={blinking} />
-      <BrandEye eyeRef={right} closed={blinking} />
+      <BrandEye side="left" eyeRef={left} closed={blinking} />
+      <BrandEye side="right" eyeRef={right} closed={blinking} />
       <span aria-hidden>k</span>
     </span>
   );

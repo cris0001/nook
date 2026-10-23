@@ -2,23 +2,44 @@ import { useId, type Ref } from 'react';
 
 import { cn } from '@/lib/utils';
 
-// How far the iris may travel from center, in viewBox units (the eye is 100 wide).
-// Sized so the iris just kisses the inner edge of the ring at full look.
-const IRIS_TRAVEL = 15;
+export type EyeSide = 'left' | 'right';
 
-// One "O" of the nOOk wordmark drawn as an eye: white sclera inside a ring a hair lighter
-// than the letters, a brand-colored iris, a black pupil and two catchlights.
-// useEyeTracking only writes --look-x/--look-y (-1…1) onto the svg, and the iris group
-// turns them into a `translate` in viewBox units, so the same values work at any
-// rendered size. Blinking squashes the whole svg via `scale` — a separate property,
-// so blinking and looking never fight. Token colors go through classes, not
-// fill="var(…)": not every browser resolves var() in SVG presentation attributes,
-// and an unresolved fill falls back to solid black.
-export function BrandEye({ eyeRef, closed }: { eyeRef: Ref<SVGSVGElement>; closed: boolean }) {
+// Hand-drawn outlines for the two O's (viewBox 0–100). Each is slightly irregular and
+// the two differ, so the eyes read as drawn rather than as generated circles.
+const OUTLINES: Record<EyeSide, string> = {
+  left: 'M53 1 C80 4 99 25 97 53 C95 80 74 100 47 98 C20 96 2 76 4 48 C6 21 26 -2 53 1Z',
+  right: 'M48 2 C76 0 98 21 98 49 C98 78 79 98 51 99 C23 100 3 80 2 52 C1 24 21 4 48 2Z',
+};
+
+// The white is the same outline shrunk around the center, which leaves a ring roughly
+// as heavy as the letters' stems.
+const SCLERA = 'translate(50 50) scale(0.68) translate(-50 -50)';
+
+// How far the iris may travel from center, in viewBox units — just short of the ring.
+const IRIS_TRAVEL = 14;
+
+// One "O" of the nOOk wordmark drawn as an eye: a hand-drawn ring around the white,
+// a brand-colored iris, a black pupil and two catchlights. useEyeTracking only writes
+// --look-x/--look-y (-1…1) onto the svg, and the iris group turns them into a
+// `translate` in viewBox units, so the same values work at any rendered size. Blinking
+// squashes the whole svg via `scale` — a separate property, so blinking and looking
+// never fight. Token colors go through classes, not fill="var(…)": not every browser
+// resolves var() in SVG presentation attributes, and an unresolved fill falls back to
+// solid black.
+export function BrandEye({
+  side,
+  eyeRef,
+  closed,
+}: {
+  side: EyeSide;
+  eyeRef: Ref<SVGSVGElement>;
+  closed: boolean;
+}) {
   // Gradient and clip ids must be unique per eye — two eyes (or two logos) share a page.
   const id = useId();
   const irisId = `${id}-iris`;
   const scleraId = `${id}-sclera`;
+  const outline = OUTLINES[side];
 
   return (
     <svg
@@ -37,17 +58,11 @@ export function BrandEye({ eyeRef, closed }: { eyeRef: Ref<SVGSVGElement>; close
         </radialGradient>
         {/* Keeps the iris inside the white when it looks all the way to one side. */}
         <clipPath id={scleraId}>
-          <circle cx="50" cy="50" r="34" />
+          <path d={outline} transform={SCLERA} />
         </clipPath>
       </defs>
-      <circle
-        cx="50"
-        cy="50"
-        r="42"
-        className="fill-(--brand-eye-white)"
-        stroke="currentColor"
-        strokeWidth="16"
-      />
+      <path d={outline} fill="currentColor" />
+      <path d={outline} transform={SCLERA} className="fill-(--brand-eye-white)" />
       <g clipPath={`url(#${scleraId})`}>
         <g
           style={{
