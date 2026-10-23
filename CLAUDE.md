@@ -122,6 +122,18 @@ Three layers per resource: **api fn → hook → component**.
 - Splash: once per browser session (sessionStorage), white → wordmark fades in →
   wordmark blurs out → beat of white → app fades in
 
+## Visual direction
+
+nOOk must not look like a generic AI-generated app. Lean on what's ours — the eyes,
+the lime, Bricolage for display type — and keep the rest quiet and precise.
+
+- NO purple/blue gradients, glassmorphism, glowing borders or "sparkle" accents
+- NO identical rounded cards with soft shadows for everything; prefer plain rows,
+  hairline borders and whitespace
+- NO emoji in headings or buttons as decoration (page icons are user content)
+- Lime is an accent, not a fill for every surface — one strong primary per view
+- Small details over big effects (drop lines, focus states, the eyes reacting)
+
 ## What NOT to do
 
 - NO `any`, NO default exports
