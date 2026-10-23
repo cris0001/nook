@@ -31,18 +31,19 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 - [x] Theme store (light / dark / system)
 - [x] App layout: sidebar + content area, mobile drawer
 
-### Stage 3 — Sidebar and pages
+### Stage 3 — Sidebar and pages ✅ COMPLETE
 
 - [x] Page tree with nesting, editable page title
 - [x] Create, rename, delete, duplicate pages
 - [x] Drag to reorder and re-parent (mouse + long-press on touch)
-- [ ] Emoji icon per page
-- [ ] Favorites and recently opened
+- [x] Emoji icon per page
+- [x] Favorites and recently opened
 - [x] Trash with restore and delete forever
-- [ ] Breadcrumbs, routing by page type
+- [x] Breadcrumbs, auto-expand ancestors of the open page
 
 ### Stage 4 — Databases: model + table view
 
+- [ ] Page type picker on create, routing to a view per page type
 - [ ] Database page type with typed properties (text, number, date, select,
       multi-select, checkbox, URL)
 - [ ] Add / edit / reorder / delete properties
