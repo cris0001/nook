@@ -25,7 +25,8 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 
 ### Stage 2 — App shell and data foundation
 
-- [ ] Dexie database + first schema (pages)
+- [x] Dexie database + first schema (pages)
+- [x] Pages data access (create, rename, trash, restore) + tree builder
 - [ ] i18n (EN default, PL) with per-feature dictionaries
 - [ ] Theme store (light / dark / system)
 - [ ] App layout: sidebar + content area, mobile drawer
