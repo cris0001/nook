@@ -10,7 +10,7 @@ export const Route = createFileRoute('/')({
 function HomePage() {
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-4 p-4">
-      <BrandMark animated className="text-6xl" />
+      <BrandMark animated intro className="text-6xl" />
       <p className="text-muted-foreground text-sm">Workspace coming soon.</p>
     </main>
   );

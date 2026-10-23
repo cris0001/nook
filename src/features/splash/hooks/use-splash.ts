@@ -16,7 +16,11 @@ export const SPLASH_REVEAL_MS = 750;
 // shows through) → done (unmounted).
 export type SplashPhase = 'visible' | 'leaving' | 'revealing' | 'done';
 
+// In dev the splash replays on every reload, so tweaking it doesn't need a new tab.
 function hasSeenSplash(): boolean {
+  if (import.meta.env.DEV) {
+    return false;
+  }
   try {
     return sessionStorage.getItem(SPLASH_KEY) === '1';
   } catch {
