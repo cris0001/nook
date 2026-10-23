@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { SPLASH_LOGO_OUT_MS, SPLASH_REVEAL_MS, useSplash } from '../hooks/use-splash';
 import { useWordmarkFont } from '../hooks/use-wordmark-font';
 
-// Full-screen white intro with the animated wordmark, shown once per browser session.
+// Full-screen intro (white, or near-black in dark mode) with the animated wordmark, shown once per browser session.
 // It overlays the app (which keeps loading underneath) and stays plain white until the
 // wordmark font is loaded, so the logo fades in once, in its final shape. On the way out the wordmark
 // drifts back and blurs away first, the screen holds empty white for a beat, and only
@@ -23,7 +23,7 @@ export function SplashScreen() {
       onClick={skip}
       style={{ transitionDuration: `${SPLASH_REVEAL_MS}ms` }}
       className={cn(
-        'fixed inset-0 z-50 flex cursor-default items-center justify-center bg-white text-neutral-950 transition-opacity ease-out',
+        'fixed inset-0 z-50 flex cursor-default items-center justify-center bg-background text-foreground transition-opacity ease-out',
         phase !== 'visible' && 'pointer-events-none',
         phase === 'revealing' && 'opacity-0',
       )}
