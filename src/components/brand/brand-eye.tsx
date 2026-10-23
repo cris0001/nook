@@ -10,7 +10,9 @@ const PUPIL_TRAVEL = 13;
 // letters, and a pupil with a catchlight. useEyeTracking only writes --look-x/--look-y
 // (-1…1) onto the svg, and the pupil turns them into a `translate` in viewBox units, so
 // the same values work at any rendered size. Blinking squashes the whole svg via
-// `scale` — a separate property, so blinking and looking never fight.
+// `scale` — a separate property, so blinking and looking never fight. Token colors go
+// through classes, not fill="var(…)": not every browser resolves var() in SVG
+// presentation attributes, and an unresolved fill falls back to solid black.
 export function BrandEye({
   eyeRef,
   closed,
@@ -35,7 +37,7 @@ export function BrandEye({
         cx="50"
         cy="50"
         r="41"
-        fill="var(--brand-eye-white)"
+        className="fill-(--brand-eye-white)"
         stroke="currentColor"
         strokeWidth="18"
       />
@@ -46,7 +48,7 @@ export function BrandEye({
         }}
       >
         <circle cx="50" cy="50" r="18" fill="currentColor" />
-        <circle cx="43" cy="43" r="5.5" fill="var(--brand-eye-white)" />
+        <circle cx="43" cy="43" r="5.5" className="fill-(--brand-eye-white)" />
       </g>
     </svg>
   );
