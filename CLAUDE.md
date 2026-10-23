@@ -49,6 +49,7 @@ src/
     brand/      # nOOk wordmark + eyes
   hooks/        # shared hooks used by 2+ features
   lib/          # infrastructure (db, utils)
+  schemas/      # Zod schemas for persisted shapes; types via z.infer
   stores/       # shared Zustand stores
   utils/        # shared pure functions
   globals.css   # Tailwind + design tokens
