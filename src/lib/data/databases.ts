@@ -258,6 +258,81 @@ export async function addOption(
   return created;
 }
 
+function updateOptions(
+  databaseId: string,
+  propertyId: string,
+  change: (options: SelectOption[]) => SelectOption[],
+) {
+  return updateProperties(databaseId, (properties) =>
+    properties.map((p) => (p.id === propertyId ? { ...p, options: change(p.options) } : p)),
+  );
+}
+
+export function updateOption(
+  databaseId: string,
+  propertyId: string,
+  optionId: string,
+  changes: Partial<Pick<SelectOption, 'name' | 'color'>>,
+) {
+  return updateOptions(databaseId, propertyId, (options) =>
+    options.map((o) => (o.id === optionId ? { ...o, ...changes } : o)),
+  );
+}
+
+// Option order is column order on a board and sort order in tables.
+export function reorderOptions(databaseId: string, propertyId: string, orderedIds: string[]) {
+  return updateOptions(databaseId, propertyId, (options) => {
+    const byId = new Map(options.map((o) => [o.id, o]));
+    const ordered = orderedIds.flatMap((id) => byId.get(id) ?? []);
+    return [...ordered, ...options.filter((o) => !orderedIds.includes(o.id))];
+  });
+}
+
+// Removes an option and every use of it: record values (single select is cleared,
+// multi-select drops just that id) and filters comparing against it.
+export async function deleteOption(
+  databaseId: string,
+  propertyId: string,
+  optionId: string,
+): Promise<void> {
+  await db.transaction('rw', db.pages, db.databases, db.views, async () => {
+    await updateOptions(databaseId, propertyId, (options) =>
+      options.filter((o) => o.id !== optionId),
+    );
+
+    const records = await db.pages.where('parentId').equals(databaseId).toArray();
+    await db.pages.bulkUpdate(
+      records.flatMap((record) => {
+        const value = record.properties[propertyId];
+        let next: PropertyValue;
+        if (Array.isArray(value) && value.includes(optionId)) {
+          const rest = value.filter((id) => id !== optionId);
+          next = rest.length ? rest : null;
+        } else if (value === optionId) {
+          next = null;
+        } else {
+          return [];
+        }
+        return [
+          { key: record.id, changes: { properties: { ...record.properties, [propertyId]: next } } },
+        ];
+      }),
+    );
+
+    const views = await db.views.where('databaseId').equals(databaseId).toArray();
+    await db.views.bulkUpdate(
+      views.map((view) => ({
+        key: view.id,
+        changes: {
+          filters: view.filters.filter(
+            (f) => !(f.propertyId === propertyId && f.value === optionId),
+          ),
+        },
+      })),
+    );
+  });
+}
+
 export async function updateView(id: string, changes: Partial<Omit<View, 'id'>>): Promise<void> {
   await db.views.update(id, changes);
 }

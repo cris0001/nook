@@ -9,12 +9,15 @@ import {
   addProperty,
   addRecord,
   createDatabase,
+  deleteOption,
   deleteProperty,
   getDatabase,
   listRecords,
   listViews,
+  reorderOptions,
   setRecordValue,
   toggleRecordOption,
+  updateOption,
 } from './databases';
 import { deletePageForever, duplicatePage, trashPage } from './pages';
 
@@ -106,5 +109,40 @@ describe('databases data', () => {
     ]);
     const stored = (await getDatabase(database.id))?.properties.find((p) => p.id === tags.id);
     expect(stored?.options.map((o) => o.name).sort()).toEqual(['design', 'web']);
+  });
+
+  it('renames, recolors and reorders options', async () => {
+    const database = await createDatabase(null);
+    const status = (await getDatabase(database.id))!.properties[0]!;
+    const [todo, doing, done] = status.options;
+
+    await updateOption(database.id, status.id, todo!.id, { name: 'Backlog', color: 'purple' });
+    await reorderOptions(database.id, status.id, [done!.id, doing!.id, todo!.id]);
+
+    const options = (await getDatabase(database.id))!.properties[0]!.options;
+    expect(options.map((o) => o.name)).toEqual(['Done', 'In progress', 'Backlog']);
+    expect(options[2]?.color).toBe('purple');
+  });
+
+  it('deleting an option clears it from records and filters', async () => {
+    const database = await createDatabase(null);
+    const status = (await getDatabase(database.id))!.properties[0]!;
+    const todo = status.options[0]!;
+    const tags = await addProperty(database.id, 'multiSelect', 'Tags');
+    const a = await addOption(database.id, tags.id, 'a');
+    const b = await addOption(database.id, tags.id, 'b');
+    await addRecord(database.id, { [status.id]: todo.id, [tags.id]: [a.id, b.id] });
+    const [table] = await listViews(database.id);
+    await db.views.update(table!.id, {
+      filters: [{ id: 'f', propertyId: status.id, operator: 'is', value: todo.id }],
+    });
+
+    await deleteOption(database.id, status.id, todo.id);
+    await deleteOption(database.id, tags.id, a.id);
+
+    const [record] = await listRecords(database.id);
+    expect(record?.properties[status.id]).toBeNull();
+    expect(record?.properties[tags.id]).toEqual([b.id]);
+    expect((await listViews(database.id))[0]?.filters).toEqual([]);
   });
 });
