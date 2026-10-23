@@ -1,36 +1,27 @@
 import { Link } from '@tanstack/react-router';
-import { Plus, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
 import { BrandMark } from '@/components/brand';
 import { LanguageToggle } from '@/components/language-toggle';
 import { ThemeToggle } from '@/components/theme-toggle';
 
-import { useCreatePage } from '../hooks/use-create-page';
 import { usePagesTranslation } from '../i18n';
 import { FavoritesList } from './favorites-list';
+import { NewPageMenu } from './new-page-menu';
 import { PageTree } from './page-tree';
 
-// Sidebar contents: wordmark with a compact "New page" action beside it, the page tree (scrolls on
-// its own), the trash and settings toggles pinned at the bottom.
+// Sidebar contents: the wordmark with a small "new" pill beside it, the page tree
+// (scrolls on its own), the trash and settings toggles pinned at the bottom.
 export function PageSidebar() {
   const t = usePagesTranslation();
-  const createPage = useCreatePage();
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex h-16 items-center justify-between gap-2 pr-3 pl-4">
+      <div className="flex h-[4.5rem] items-center justify-between gap-2 pr-3 pl-4">
         <Link to="/" aria-label="nOOk">
-          <BrandMark animated className="text-[38px]" />
+          <BrandMark animated className="text-[46px]" />
         </Link>
-        <button
-          type="button"
-          aria-label={t.newPage}
-          title={t.newPage}
-          onClick={() => void createPage({ parentId: null, type: 'document' })}
-          className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center rounded-full transition-[filter] hover:brightness-95 lg:size-9"
-        >
-          <Plus className="size-5" />
-        </button>
+        <NewPageMenu />
       </div>
 
       <nav aria-label={t.pages} className="min-h-0 flex-1 overflow-y-auto px-2">

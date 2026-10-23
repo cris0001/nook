@@ -1,0 +1,43 @@
+import { Database, FileText, Plus } from 'lucide-react';
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
+import { useCreatePage } from '../hooks/use-create-page';
+import { usePagesTranslation } from '../i18n';
+
+const KINDS = [
+  { type: 'document', Icon: FileText },
+  { type: 'database', Icon: Database },
+] as const;
+
+// The lime "+" pill in the sidebar header: pick what to create at the root.
+// Whiteboards and dashboards join this list in their own stages.
+export function NewPageMenu() {
+  const t = usePagesTranslation();
+  const createPage = useCreatePage();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        aria-label={t.newPage}
+        title={t.newPage}
+        className="bg-primary text-primary-foreground flex h-8 w-11 shrink-0 items-center justify-center rounded-full transition-[filter] hover:brightness-95 lg:h-7 lg:w-10"
+      >
+        <Plus className="size-4" strokeWidth={2.5} />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {KINDS.map(({ type, Icon }) => (
+          <DropdownMenuItem key={type} onSelect={() => void createPage({ parentId: null, type })}>
+            <Icon />
+            {t.newKind[type]}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}

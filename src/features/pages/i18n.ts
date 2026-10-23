@@ -3,6 +3,8 @@ import { createTranslation } from '@/lib/i18n/create-translation';
 // Pages feature copy: sidebar, page tree, page view and the workspace home.
 const en = {
   newPage: 'New page',
+  newKind: { document: 'Page', database: 'Database' },
+  newDatabase: 'New database',
   pages: 'Pages',
   untitled: 'Untitled',
   addSubpage: 'Add a page inside',
@@ -38,6 +40,8 @@ const en = {
 
 const pl: typeof en = {
   newPage: 'Nowa strona',
+  newKind: { document: 'Strona', database: 'Baza danych' },
+  newDatabase: 'Nowa baza danych',
   pages: 'Strony',
   untitled: 'Bez tytułu',
   addSubpage: 'Dodaj stronę w środku',

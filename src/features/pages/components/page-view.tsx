@@ -1,6 +1,9 @@
 import { FileQuestion, Smile } from 'lucide-react';
+import type { ReactNode } from 'react';
 
 import { renamePage } from '@/lib/data/pages';
+import { cn } from '@/lib/utils';
+import type { Page } from '@/schemas/page.schema';
 import { useOpenPage } from '../hooks/use-open-page';
 import { usePage } from '../hooks/use-page';
 import { usePagesTranslation } from '../i18n';
@@ -10,8 +13,9 @@ import { PageIconPicker } from './page-icon-picker';
 // A page's main column: header bar, icon and an editable title. Each keystroke is
 // written straight to IndexedDB — local writes are cheap, and the sidebar title updates
 // live with it. A brand-new (empty) page focuses its title, so typing goes straight
-// into it. Content per page type (editor, board, canvas, …) lands in later stages.
-export function PageView({ pageId }: { pageId: string }) {
+// into it. The body below the title depends on the page type and is supplied by the
+// route (`body`), so this feature doesn't need to know about databases, editors, ….
+export function PageView({ pageId, body }: { pageId: string; body?: (page: Page) => ReactNode }) {
   const t = usePagesTranslation();
   const state = usePage(pageId);
   useOpenPage(pageId);
@@ -34,7 +38,13 @@ export function PageView({ pageId }: { pageId: string }) {
   return (
     <>
       <PageHeader page={page} />
-      <article className="group/page mx-auto w-full max-w-3xl px-4 pt-8 pb-16 sm:px-8 lg:pt-14">
+      <article
+        className={cn(
+          'group/page mx-auto w-full px-4 pt-8 pb-16 sm:px-8 lg:pt-14',
+          // Databases get room for their columns; text pages keep a readable measure.
+          page.type === 'database' ? 'max-w-6xl' : 'max-w-3xl',
+        )}
+      >
         <PageIconPicker pageId={page.id} hasIcon={page.icon !== null}>
           {page.icon ? (
             <button
@@ -64,6 +74,7 @@ export function PageView({ pageId }: { pageId: string }) {
           onChange={(event) => void renamePage(page.id, event.target.value)}
           className="font-heading placeholder:text-muted-foreground/50 w-full bg-transparent text-3xl font-bold outline-none sm:text-4xl"
         />
+        {body?.(page)}
       </article>
     </>
   );
