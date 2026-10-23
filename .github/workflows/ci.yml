@@ -32,15 +32,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Generates src/routeTree.gen.ts, which typecheck depends on.
-      - name: Build
-        run: pnpm build
+      # Typecheck first: it generates src/routeTree.gen.ts (not committed).
+      - name: Typecheck
+        run: pnpm typecheck
 
       - name: Lint
         run: pnpm lint
 
-      - name: Typecheck
-        run: pnpm typecheck
+      - name: Build
+        run: pnpm build
 
       - name: Test
         run: pnpm test
