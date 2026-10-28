@@ -1,6 +1,7 @@
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { createPortal } from 'react-dom';
 
+import { useDndAccessibility } from '@/hooks/use-dnd-accessibility';
 import type { Page } from '@/schemas/page.schema';
 
 import { usePageDnd } from '../hooks/use-page-dnd';
@@ -20,11 +21,14 @@ export function PageTree() {
 
 function DraggableTree({ tree, pages }: { tree: PageNode[]; pages: Page[] }) {
   const dnd = usePageDnd(pages);
+  const accessibility = useDndAccessibility(
+    (id) => pages.find((page) => page.id === id)?.title ?? '',
+  );
   const draggingId = useSidebarUiStore((s) => s.draggingId);
   const dragging = draggingId ? pages.find((page) => page.id === draggingId) : undefined;
 
   return (
-    <DndContext {...dnd}>
+    <DndContext {...dnd} accessibility={accessibility}>
       <ul className="flex flex-col">
         {tree.map((node) => (
           <PageTreeItem key={node.page.id} node={node} depth={0} />

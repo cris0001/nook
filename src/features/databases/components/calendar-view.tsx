@@ -13,6 +13,7 @@ import { createPortal } from 'react-dom';
 
 import { useCan } from '@/hooks/use-can';
 import { useDateLocale } from '@/hooks/use-date-locale';
+import { useDndAccessibility } from '@/hooks/use-dnd-accessibility';
 import { cn } from '@/lib/utils';
 import { addRecord, setRecordValue } from '@/lib/data/databases';
 import type { Database, View } from '@/schemas/database.schema';
@@ -51,6 +52,12 @@ export function CalendarView({
     useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 6 } }),
   );
   const dateProperty = calendarDateProperty(database, view);
+  const accessibility = useDndAccessibility((id) => {
+    const key = String(id);
+    if (key === UNDATED) return t.undatedLabel;
+    if (key.startsWith('day:')) return format(parseISO(key.slice(4)), 'EEEE d MMMM', { locale });
+    return records.find((r) => r.id === key)?.title ?? '';
+  });
   const status = statusPropertyOf(database);
   useCalendarKeys(mode, setAnchor);
 
@@ -104,6 +111,7 @@ export function CalendarView({
       />
       <DndContext
         sensors={sensors}
+        accessibility={accessibility}
         onDragStart={({ active }) => setDragging(String(active.id))}
         onDragOver={({ over }) => setOverDay(over ? String(over.id).replace(/^day:/, '') : null)}
         onDragCancel={() => setDragging(null)}

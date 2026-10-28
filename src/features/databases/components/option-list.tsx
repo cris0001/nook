@@ -15,6 +15,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
 
+import { useDndAccessibility } from '@/hooks/use-dnd-accessibility';
 import { reorderOptions } from '@/lib/data/databases';
 import { cn } from '@/lib/utils';
 import type { PropertyDef, SelectOption } from '@/schemas/database.schema';
@@ -33,6 +34,9 @@ export function OptionList({
   const t = useDatabasesTranslation();
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
   const ids = property.options.map((o) => o.id);
+  const accessibility = useDndAccessibility(
+    (id) => property.options.find((o) => o.id === id)?.name ?? '',
+  );
 
   function onDragEnd({ active, over }: DragEndEvent) {
     if (over && active.id !== over.id) {
@@ -48,7 +52,12 @@ export function OptionList({
   return (
     <div className="mt-1 border-t pt-1">
       <p className="text-muted-foreground px-2 py-1 text-xs">{t.options}</p>
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={onDragEnd}
+        accessibility={accessibility}
+      >
         <SortableContext items={ids} strategy={verticalListSortingStrategy}>
           <ul>
             {property.options.map((option) => (

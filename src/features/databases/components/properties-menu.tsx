@@ -16,6 +16,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Eye, EyeOff, GripVertical, SlidersHorizontal } from 'lucide-react';
 
 import { useCan } from '@/hooks/use-can';
+import { useDndAccessibility } from '@/hooks/use-dnd-accessibility';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { reorderProperties, updateView } from '@/lib/data/databases';
 import { cn } from '@/lib/utils';
@@ -29,6 +30,9 @@ export function PropertiesMenu({ database, view }: { database: Database; view: V
   const t = useDatabasesTranslation();
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
   const ids = database.properties.map((p) => p.id);
+  const accessibility = useDndAccessibility(
+    (id) => database.properties.find((p) => p.id === id)?.name ?? '',
+  );
 
   function onDragEnd({ active, over }: DragEndEvent) {
     if (over && active.id !== over.id) {
@@ -53,7 +57,12 @@ export function PropertiesMenu({ database, view }: { database: Database; view: V
         </ToolbarButton>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-64 p-1">
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={onDragEnd}
+          accessibility={accessibility}
+        >
           <SortableContext items={ids} strategy={verticalListSortingStrategy}>
             <ul>
               {database.properties.map((property) => (

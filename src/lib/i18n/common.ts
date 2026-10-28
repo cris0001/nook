@@ -3,6 +3,16 @@ import { createTranslation } from './create-translation';
 const en = {
   openMenu: 'Open menu',
   sidebar: 'Sidebar',
+  dnd: {
+    instructions:
+      'Drag with the mouse, or press and hold on touch screens. The item menu moves it with the keyboard.',
+    picked: (item: string) => `Picked up ${item}.`,
+    over: (item: string, target: string) => `${item} is over ${target}.`,
+    away: (item: string) => `${item} is not over a drop area.`,
+    dropped: (item: string, target: string) => `${item} dropped on ${target}.`,
+    droppedNowhere: (item: string) => `${item} dropped.`,
+    cancelled: (item: string) => `Moving ${item} cancelled.`,
+  },
   closeMenu: 'Close menu',
   language: 'Language',
   theme: { system: 'System theme', light: 'Light theme', dark: 'Dark theme' },
@@ -88,6 +98,16 @@ const en = {
 const pl: typeof en = {
   openMenu: 'Otwórz menu',
   sidebar: 'Pasek boczny',
+  dnd: {
+    instructions:
+      'Przeciągnij myszą albo przytrzymaj na ekranie dotykowym. Menu elementu pozwala przenieść go klawiaturą.',
+    picked: (item: string) => `Podniesiono: ${item}.`,
+    over: (item: string, target: string) => `${item} nad: ${target}.`,
+    away: (item: string) => `${item} poza obszarem upuszczenia.`,
+    dropped: (item: string, target: string) => `${item} upuszczono na: ${target}.`,
+    droppedNowhere: (item: string) => `${item} upuszczono.`,
+    cancelled: (item: string) => `Anulowano przenoszenie: ${item}.`,
+  },
   closeMenu: 'Zamknij menu',
   language: 'Język',
   theme: { system: 'Motyw systemowy', light: 'Motyw jasny', dark: 'Motyw ciemny' },

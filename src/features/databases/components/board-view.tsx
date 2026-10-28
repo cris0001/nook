@@ -2,6 +2,7 @@ import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
+import { useDndAccessibility } from '@/hooks/use-dnd-accessibility';
 import type { Database, View } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
 
@@ -46,11 +47,19 @@ function Board({
   const t = useDatabasesTranslation();
   const columns = useMemo(() => groupRecords(records, group), [records, group]);
   const dnd = useBoardDnd(columns, view, group);
+  const accessibility = useDndAccessibility((id) => {
+    const [kind, key] = String(id).includes(':') ? String(id).split(':') : ['card', String(id)];
+    if (kind === 'column') {
+      const column = columns.find((c) => c.key === key);
+      return column?.option?.name ?? t.noValue(group.name);
+    }
+    return records.find((r) => r.id === key)?.title ?? '';
+  });
   const draggingId = useBoardUiStore((s) => s.draggingId);
   const dragging = draggingId ? records.find((r) => r.id === draggingId) : undefined;
 
   return (
-    <DndContext {...dnd}>
+    <DndContext {...dnd} accessibility={accessibility}>
       <div className="flex snap-x gap-3 overflow-x-auto pt-3 pb-6">
         {columns.map((column) => (
           <BoardColumn
