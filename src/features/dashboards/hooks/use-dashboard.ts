@@ -1,5 +1,4 @@
-import { useLiveQuery } from 'dexie-react-hooks';
-
+import { useKeyedLiveQuery } from '@/hooks/use-keyed-live-query';
 import { getDashboard } from '@/lib/data/dashboards';
 import { getDatabase, listRecords } from '@/lib/data/databases';
 import { listPages } from '@/lib/data/pages';
@@ -15,13 +14,13 @@ export type DashboardState =
     };
 
 export function useDashboard(id: string): DashboardState {
-  const data = useLiveQuery(async () => {
+  const data = useKeyedLiveQuery(id, async () => {
     const [dashboard, pages] = await Promise.all([getDashboard(id), listPages()]);
     const sources = pages.filter((page) => page.type === 'database');
     const page = sources.find((p) => p.id === dashboard?.sourceId);
     if (!page) return { sources, source: null };
     const [database, records] = await Promise.all([getDatabase(page.id), listRecords(page.id)]);
     return { sources, source: database ? { page, database, records } : null };
-  }, [id]);
+  });
   return data ? { status: 'ready', ...data } : { status: 'loading' };
 }

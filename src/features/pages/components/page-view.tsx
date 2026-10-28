@@ -11,6 +11,16 @@ import { Backlinks } from './backlinks';
 import { PageHeader } from './page-header';
 import { PageIconPicker } from './page-icon-picker';
 
+const FOCUS_TRIES = 60;
+
+// The body editor is a lazy chunk; on a brand-new page it can appear a few frames after
+// Enter is pressed in the title, so keep looking for it briefly.
+function focusBody(article: HTMLElement, tries = FOCUS_TRIES) {
+  const body = article.querySelector('[contenteditable=true]');
+  if (body instanceof HTMLElement) body.focus();
+  else if (tries > 0) requestAnimationFrame(() => focusBody(article, tries - 1));
+}
+
 export function PageView({
   pageId,
   body,
@@ -91,13 +101,10 @@ export function PageView({
           onBlur={() => rename.flush()}
           onKeyDown={(event) => {
             if (event.key !== 'Enter' && event.key !== 'ArrowDown') return;
-            const body = event.currentTarget
-              .closest('article')
-              ?.querySelector('[contenteditable=true]');
-            if (body instanceof HTMLElement) {
-              event.preventDefault();
-              body.focus();
-            }
+            const article = event.currentTarget.closest('article');
+            if (!article || page.type === 'database' || page.type === 'whiteboard') return;
+            event.preventDefault();
+            focusBody(article);
           }}
           className="font-heading placeholder:text-muted-foreground/50 w-full bg-transparent text-[30px] leading-tight font-bold tracking-tight outline-none [font-variation-settings:'opsz'_96] sm:text-[36px]"
         />

@@ -1,7 +1,6 @@
-import { useLiveQuery } from 'dexie-react-hooks';
-
 import type { Page } from '@/schemas/page.schema';
 
+import { useKeyedLiveQuery } from '@/hooks/use-keyed-live-query';
 import { getPage } from '@/lib/data/pages';
 
 export type PageState =
@@ -11,10 +10,10 @@ export type PageState =
 // mapped to null to tell "not there" apart from "not loaded yet". Trashed pages count
 // as missing — they shouldn't be editable from a stale link.
 export function usePage(id: string): PageState {
-  const page = useLiveQuery(async () => {
+  const page = useKeyedLiveQuery(id, async () => {
     const row = await getPage(id);
     return row?.deletedAt === null ? row : null;
-  }, [id]);
+  });
 
   if (page === undefined) {
     return { status: 'loading' };

@@ -1,7 +1,6 @@
-import { useLiveQuery } from 'dexie-react-hooks';
-
+import { useKeyedLiveQuery } from '@/hooks/use-keyed-live-query';
 import { listBacklinks } from '@/lib/data/links';
 
 export function useBacklinks(pageId: string) {
-  return useLiveQuery(() => listBacklinks(pageId), [pageId]) ?? [];
+  return useKeyedLiveQuery(pageId, () => listBacklinks(pageId)) ?? [];
 }

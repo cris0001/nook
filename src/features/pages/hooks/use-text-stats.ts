@@ -1,8 +1,7 @@
-import { useLiveQuery } from 'dexie-react-hooks';
-
+import { useKeyedLiveQuery } from '@/hooks/use-keyed-live-query';
 import { getContent } from '@/lib/data/contents';
 import { textStats } from '@/utils/text-stats';
 
 export function useTextStats(pageId: string) {
-  return useLiveQuery(async () => textStats(await getContent(pageId)), [pageId]);
+  return useKeyedLiveQuery(pageId, async () => textStats(await getContent(pageId)));
 }
