@@ -5,7 +5,6 @@ import { useMemo, useState } from 'react';
 import { BrandMark } from '@/components/brand';
 
 import { usePages } from '../hooks/use-pages';
-import { usePaletteShortcut } from '../hooks/use-palette-shortcut';
 import { usePagesTranslation } from '../i18n';
 import { useCommandPaletteStore } from '../stores/command-palette.store';
 import { recentOf } from '../utils/page-lists';
@@ -17,7 +16,6 @@ const GROUP =
   '[&_[cmdk-group-heading]]:eyebrow [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:pt-3 [&_[cmdk-group-heading]]:pb-1.5';
 
 export function CommandPalette() {
-  usePaletteShortcut();
   const t = usePagesTranslation();
   const navigate = useNavigate();
   const open = useCommandPaletteStore((s) => s.open);

@@ -1,17 +1,37 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-import { DashboardView } from '@/features/dashboards';
-import { DatabaseView, RecordProperties } from '@/features/databases';
-import { DocumentEditor } from '@/features/documents';
+import { lazy, Suspense, type ReactNode } from 'react';
+
 import { PageView } from '@/features/pages';
-import { WhiteboardView } from '@/features/whiteboard';
 import type { Page } from '@/schemas/page.schema';
+
+// Each page type's body is its own chunk: opening a document doesn't download the
+// whiteboard, the charts or the database views.
+const DocumentEditor = lazy(() =>
+  import('@/features/documents').then((m) => ({ default: m.DocumentEditor })),
+);
+const DatabaseView = lazy(() =>
+  import('@/features/databases').then((m) => ({ default: m.DatabaseView })),
+);
+const RecordProperties = lazy(() =>
+  import('@/features/databases').then((m) => ({ default: m.RecordProperties })),
+);
+const DashboardView = lazy(() =>
+  import('@/features/dashboards').then((m) => ({ default: m.DashboardView })),
+);
+const WhiteboardView = lazy(() =>
+  import('@/features/whiteboard').then((m) => ({ default: m.WhiteboardView })),
+);
 
 export const Route = createFileRoute('/_workspace/p/$pageId')({
   component: PageRoute,
 });
 
-function pageBody(page: Page, editable: boolean) {
+function pageBody(page: Page, editable: boolean): ReactNode {
+  return <Suspense fallback={null}>{body(page, editable)}</Suspense>;
+}
+
+function body(page: Page, editable: boolean) {
   switch (page.type) {
     case 'database':
       return <DatabaseView databaseId={page.id} />;
