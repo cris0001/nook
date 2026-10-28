@@ -1,5 +1,7 @@
 import { TaskItem, TaskList } from '@tiptap/extension-list';
 import { Placeholder } from '@tiptap/extensions';
+import { Highlight } from '@tiptap/extension-highlight';
+import { Color, TextStyle } from '@tiptap/extension-text-style';
 import { EditorContent, useEditor, type JSONContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useEffect, useMemo, useState } from 'react';
@@ -71,6 +73,9 @@ function Editor({
       }),
       SlashCommand,
       LinkShortcut,
+      TextStyle,
+      Color,
+      Highlight.configure({ multicolor: true }),
     ],
     editable,
     content: initial ?? '',

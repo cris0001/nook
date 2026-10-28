@@ -10,7 +10,7 @@ export const LinkShortcut = Extension.create({
     return {
       'Mod-k': () => {
         if (this.editor.state.selection.empty || this.editor.isActive('codeBlock')) return false;
-        useFormatBarStore.getState().setEditingLink(true);
+        useFormatBarStore.getState().setMode('link');
         return true;
       },
     };

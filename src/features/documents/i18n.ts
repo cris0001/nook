@@ -1,4 +1,5 @@
 import { createTranslation } from '@/lib/i18n/create-translation';
+import type { OptionColor } from '@/schemas/database.schema';
 
 import type { SlashItemId } from './utils/slash-items';
 
@@ -17,6 +18,23 @@ const en = {
     linkPlaceholder: 'Paste or type a link…',
     applyLink: 'Apply link',
     removeLink: 'Remove link',
+    turnInto: 'Turn into',
+    color: 'Color',
+    textColor: 'Text color',
+    highlight: 'Highlight',
+    default: 'Default',
+    noHighlight: 'No highlight',
+    colors: {
+      gray: 'Gray',
+      brown: 'Brown',
+      orange: 'Orange',
+      yellow: 'Yellow',
+      green: 'Green',
+      blue: 'Blue',
+      purple: 'Purple',
+      pink: 'Pink',
+      red: 'Red',
+    } satisfies Record<OptionColor, string>,
   },
   blocks: {
     text: ['Text', 'Plain paragraph'],
@@ -47,6 +65,23 @@ const pl: typeof en = {
     linkPlaceholder: 'Wklej lub wpisz link…',
     applyLink: 'Zastosuj link',
     removeLink: 'Usuń link',
+    turnInto: 'Zamień w',
+    color: 'Kolor',
+    textColor: 'Kolor tekstu',
+    highlight: 'Zakreślenie',
+    default: 'Domyślny',
+    noHighlight: 'Bez zakreślenia',
+    colors: {
+      gray: 'Szary',
+      brown: 'Brązowy',
+      orange: 'Pomarańczowy',
+      yellow: 'Żółty',
+      green: 'Zielony',
+      blue: 'Niebieski',
+      purple: 'Fioletowy',
+      pink: 'Różowy',
+      red: 'Czerwony',
+    },
   },
   blocks: {
     text: ['Tekst', 'Zwykły akapit'],

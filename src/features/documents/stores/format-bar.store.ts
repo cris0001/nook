@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 
+export type FormatBarMode = 'marks' | 'link' | 'color' | 'turnInto';
+
 interface FormatBarState {
-  editingLink: boolean;
-  setEditingLink: (editing: boolean) => void;
+  mode: FormatBarMode;
+  setMode: (mode: FormatBarMode) => void;
 }
 
 export const useFormatBarStore = create<FormatBarState>()((set) => ({
-  editingLink: false,
-  setEditingLink: (editingLink) => set({ editingLink }),
+  mode: 'marks',
+  setMode: (mode) => set({ mode }),
 }));

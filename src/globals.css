@@ -283,6 +283,11 @@
     @apply border-primary;
   }
 
+  .nook-prose mark {
+    @apply rounded-[3px] px-0.5 text-inherit;
+    box-decoration-break: clone;
+  }
+
   .nook-prose a {
     @apply text-primary-text underline underline-offset-2;
   }
