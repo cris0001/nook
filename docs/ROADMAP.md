@@ -91,7 +91,7 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 ### Stage 10 — Polish and ship
 
 - [ ] Keyboard shortcuts
-- [ ] Sample workspace on first launch
+- [x] Sample workspace on first launch
 - [ ] Mobile pass
 - [ ] Unit tests for data + utils, 2–3 Playwright flows
 - [ ] README with GIF and architecture notes
