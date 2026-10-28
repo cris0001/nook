@@ -2,7 +2,7 @@ import { FileQuestion, Smile } from 'lucide-react';
 import { useEffect, useRef, type ReactNode } from 'react';
 
 import { usePermissions } from '@/hooks/use-can';
-import { renamePage } from '@/lib/data/pages';
+import { useDebouncedRename } from '@/hooks/use-debounced-rename';
 import type { Page } from '@/schemas/page.schema';
 import { useOpenPage } from '../hooks/use-open-page';
 import { usePage } from '../hooks/use-page';
@@ -18,6 +18,7 @@ export function PageView({
   body?: (page: Page, editable: boolean) => ReactNode;
 }) {
   const allowed = usePermissions();
+  const rename = useDebouncedRename(pageId);
   const t = usePagesTranslation();
   const state = usePage(pageId);
   useOpenPage(pageId);
@@ -84,7 +85,8 @@ export function PageView({
           defaultValue={page.title}
           placeholder={t.titlePlaceholder}
           aria-label={t.titlePlaceholder}
-          onChange={(event) => void renamePage(page.id, event.target.value)}
+          onChange={(event) => rename(event.target.value)}
+          onBlur={() => rename.flush()}
           onKeyDown={(event) => {
             if (event.key !== 'Enter' && event.key !== 'ArrowDown') return;
             const body = event.currentTarget

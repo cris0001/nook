@@ -26,6 +26,13 @@ const en = {
     },
   },
   readOnly: 'View only',
+  errors: {
+    saveFailed: 'A change could not be saved. Try again, or reload the page.',
+    storageFull: 'Browser storage is full — free some space so changes can be saved.',
+    screenTitle: 'Something broke on this screen',
+    screenBody: 'Your workspace is stored safely in this browser. Reloading usually fixes it.',
+    reload: 'Reload',
+  },
   due: {
     today: 'Today',
     tomorrow: 'Tomorrow',
@@ -60,6 +67,14 @@ const pl: typeof en = {
     },
   },
   readOnly: 'Tylko podgląd',
+  errors: {
+    saveFailed: 'Nie udało się zapisać zmiany. Spróbuj ponownie albo odśwież stronę.',
+    storageFull: 'Pamięć przeglądarki jest pełna — zwolnij miejsce, żeby zapisywać zmiany.',
+    screenTitle: 'Coś się zepsuło na tym ekranie',
+    screenBody:
+      'Twoja przestrzeń jest bezpiecznie zapisana w przeglądarce. Odświeżenie zwykle pomaga.',
+    reload: 'Odśwież',
+  },
   due: {
     today: 'Dziś',
     tomorrow: 'Jutro',

@@ -118,7 +118,7 @@ hand-drawn look (matches the eyes in the logo), perfect-freehand for the pen.
 - [x] Roles across pages, documents, databases and Today
 - [x] Formatting toolbar on text selection
 - [x] Command palette (Ctrl/Cmd+K)
-- [ ] Debounced title writes, persistent storage, visible write errors
+- [x] Debounced title writes, persistent storage, visible write errors
 - [ ] Workspace export / import (JSON)
 
 ---

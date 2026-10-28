@@ -4,7 +4,7 @@ import { Link } from '@tanstack/react-router';
 import { DoneCircle } from '@/components/done-circle';
 import { useCan } from '@/hooks/use-can';
 import { setRecordValue } from '@/lib/data/databases';
-import { renamePage } from '@/lib/data/pages';
+import { useDebouncedRename } from '@/hooks/use-debounced-rename';
 import { cn } from '@/lib/utils';
 import type { Database, PropertyDef, View } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
@@ -49,6 +49,7 @@ export function BoardCard({
   const editing = useBoardUiStore((s) => s.editingId === record.id);
   const setEditing = useBoardUiStore((s) => s.setEditing);
   const done = isFinished(record, group);
+  const rename = useDebouncedRename(record.id);
 
   function toggleDone() {
     const target = done ? group.options[0] : group.options.at(-1);
@@ -73,10 +74,16 @@ export function BoardCard({
             autoFocus
             defaultValue={record.title}
             placeholder={t.untitled}
-            onChange={(event) => void renamePage(record.id, event.target.value)}
-            onBlur={() => setEditing(null)}
+            onChange={(event) => rename(event.target.value)}
+            onBlur={() => {
+              rename.flush();
+              setEditing(null);
+            }}
             onKeyDown={(event) => {
-              if (event.key === 'Enter' || event.key === 'Escape') setEditing(null);
+              if (event.key === 'Enter' || event.key === 'Escape') {
+                rename.flush();
+                setEditing(null);
+              }
             }}
             className="w-full bg-transparent font-medium outline-none"
           />

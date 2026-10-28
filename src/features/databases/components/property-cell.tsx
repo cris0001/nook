@@ -1,6 +1,7 @@
 import { ExternalLink } from 'lucide-react';
 
 import { useCan } from '@/hooks/use-can';
+import { normalizeUrl } from '@/utils/safe-url';
 import { setRecordValue } from '@/lib/data/databases';
 import type { PropertyDef, PropertyValue } from '@/schemas/database.schema';
 
@@ -26,6 +27,7 @@ export function PropertyCell({
   const readOnly = !useCan('record.edit');
   const save = (next: PropertyValue) => void setRecordValue(recordId, property.id, next);
   const text = typeof value === 'string' ? value : '';
+  const safeHref = property.type === 'url' ? normalizeUrl(text) : null;
 
   switch (property.type) {
     case 'select':
@@ -82,9 +84,9 @@ export function PropertyCell({
             onChange={(event) => save(event.target.value || null)}
             className={INPUT}
           />
-          {text ? (
+          {safeHref ? (
             <a
-              href={text}
+              href={safeHref}
               target="_blank"
               rel="noreferrer"
               className="text-muted-foreground hover:text-foreground px-2"

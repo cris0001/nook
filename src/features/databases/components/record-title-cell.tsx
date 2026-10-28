@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { Maximize2 } from 'lucide-react';
 
 import { useCan } from '@/hooks/use-can';
-import { renamePage } from '@/lib/data/pages';
+import { useDebouncedRename } from '@/hooks/use-debounced-rename';
 import type { Page } from '@/schemas/page.schema';
 
 import { useDatabasesTranslation } from '../i18n';
@@ -11,6 +11,7 @@ import { RecordActionsMenu } from './record-actions-menu';
 export function RecordTitleCell({ record }: { record: Page }) {
   const t = useDatabasesTranslation();
   const canEdit = useCan('record.edit');
+  const rename = useDebouncedRename(record.id);
 
   return (
     <div className="group/title flex h-full min-h-9 items-center">
@@ -19,7 +20,8 @@ export function RecordTitleCell({ record }: { record: Page }) {
         defaultValue={record.title}
         placeholder={t.untitled}
         readOnly={!canEdit}
-        onChange={(event) => void renamePage(record.id, event.target.value)}
+        onChange={(event) => rename(event.target.value)}
+        onBlur={() => rename.flush()}
         className="placeholder:text-muted-foreground/60 h-full min-h-9 min-w-0 flex-1 bg-transparent px-2 text-sm font-medium outline-none"
       />
       <Link
