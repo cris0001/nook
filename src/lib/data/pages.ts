@@ -151,6 +151,17 @@ async function copyDatabaseRows(newIds: Map<string, string>): Promise<void> {
   }
 }
 
+async function copyDashboards(newIds: Map<string, string>): Promise<void> {
+  const rows = await db.dashboards.bulkGet([...newIds.keys()]);
+  await db.dashboards.bulkAdd(
+    rows.flatMap((row) => {
+      const id = row && newIds.get(row.id);
+      const sourceId = row?.sourceId ? (newIds.get(row.sourceId) ?? row.sourceId) : null;
+      return row && id ? [{ id, sourceId }] : [];
+    }),
+  );
+}
+
 async function copyContents(newIds: Map<string, string>): Promise<void> {
   const rows = await db.contents.bulkGet([...newIds.keys()]);
   await db.contents.bulkAdd(
@@ -168,7 +179,7 @@ async function copyContents(newIds: Map<string, string>): Promise<void> {
 export async function duplicatePage(id: string): Promise<Page | undefined> {
   return db.transaction(
     'rw',
-    [db.pages, db.databases, db.views, db.contents, db.links],
+    [db.pages, db.databases, db.views, db.contents, db.links, db.dashboards],
     async () => {
       const original = await db.pages.get(id);
       if (original?.deletedAt !== null) {
@@ -196,6 +207,7 @@ export async function duplicatePage(id: string): Promise<Page | undefined> {
       await db.pages.bulkAdd(copies);
       await copyDatabaseRows(newIds);
       await copyContents(newIds);
+      await copyDashboards(newIds);
       return copies[0];
     },
   );
@@ -218,7 +230,7 @@ export async function listTrash(): Promise<Page[]> {
 export async function deletePageForever(id: string): Promise<void> {
   await db.transaction(
     'rw',
-    [db.pages, db.databases, db.views, db.contents, db.links],
+    [db.pages, db.databases, db.views, db.contents, db.links, db.dashboards],
     async () => {
       const page = await db.pages.get(id);
       if (!page?.deletedAt) {
@@ -233,6 +245,7 @@ export async function deletePageForever(id: string): Promise<void> {
       await db.views.where('databaseId').anyOf(gone).delete();
       await db.contents.bulkDelete(gone);
       await db.links.where('sourceId').anyOf(gone).delete();
+      await db.dashboards.bulkDelete(gone);
     },
   );
 }

@@ -14,7 +14,7 @@ import {
 } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
 import { byOrder } from '@/utils/order';
-import { progressOf, type Progress } from '@/utils/progress';
+import { progressOf, statusPropertyOf, type Progress } from '@/utils/progress';
 
 import { createPage } from './pages';
 
@@ -111,12 +111,40 @@ export async function getDatabaseProgress(databaseId: string): Promise<Progress 
   return database ? progressOf(database, records) : null;
 }
 
-export function addRecord(
+export async function addRecord(
   databaseId: string,
   properties: Page['properties'] = {},
   title = '',
 ): Promise<Page> {
-  return createPage({ parentId: databaseId, type: 'record', title, properties });
+  const record = await createPage({ parentId: databaseId, type: 'record', title });
+  if (Object.keys(properties).length === 0) return record;
+  await db.transaction('rw', db.pages, db.databases, () => writeRecord(record, { properties }));
+  return { ...record, properties };
+}
+
+// For imports and the sample workspace: history the app can't produce on its own.
+export async function setRecordHistory(
+  recordId: string,
+  history: { createdAt?: number; doneAt?: number | null },
+): Promise<void> {
+  await db.pages.update(recordId, history);
+}
+
+// Keeps `doneAt` in step with the status column: set when a record enters the done
+// stage, cleared when it leaves. Call inside a transaction over pages + databases.
+async function writeRecord(record: Page, changes: Partial<Page>): Promise<void> {
+  const properties = changes.properties ?? record.properties;
+  const database = record.parentId ? await db.databases.get(record.parentId) : undefined;
+  const status = database && statusPropertyOf(database);
+  const done = status?.options.at(-1)?.id;
+  let doneAt = record.doneAt ?? null;
+  if (status && done) {
+    const was = record.properties[status.id] === done;
+    const is = properties[status.id] === done;
+    if (!was && is) doneAt = Date.now();
+    if (was && !is) doneAt = null;
+  }
+  await db.pages.update(record.id, { ...changes, doneAt, updatedAt: Date.now() });
 }
 
 export async function setRecordValue(
@@ -124,13 +152,10 @@ export async function setRecordValue(
   propertyId: string,
   value: PropertyValue,
 ): Promise<void> {
-  await db.transaction('rw', db.pages, async () => {
+  await db.transaction('rw', db.pages, db.databases, async () => {
     const record = await db.pages.get(recordId);
     if (record) {
-      await db.pages.update(recordId, {
-        properties: { ...record.properties, [propertyId]: value },
-        updatedAt: Date.now(),
-      });
+      await writeRecord(record, { properties: { ...record.properties, [propertyId]: value } });
     }
   });
 }
@@ -144,7 +169,7 @@ export async function toggleRecordOption(
   optionId: string,
   multi: boolean,
 ): Promise<void> {
-  await db.transaction('rw', db.pages, async () => {
+  await db.transaction('rw', db.pages, db.databases, async () => {
     const record = await db.pages.get(recordId);
     if (!record) {
       return;
@@ -164,10 +189,7 @@ export async function toggleRecordOption(
     } else {
       next = selected[0] === optionId ? null : optionId;
     }
-    await db.pages.update(recordId, {
-      properties: { ...record.properties, [propertyId]: next },
-      updatedAt: Date.now(),
-    });
+    await writeRecord(record, { properties: { ...record.properties, [propertyId]: next } });
   });
 }
 
@@ -177,15 +199,14 @@ export async function moveRecord(
   optionId: string | null,
   order: string | null,
 ): Promise<void> {
-  await db.transaction('rw', db.pages, async () => {
+  await db.transaction('rw', db.pages, db.databases, async () => {
     const record = await db.pages.get(recordId);
     if (!record) {
       return;
     }
-    await db.pages.update(recordId, {
+    await writeRecord(record, {
       properties: { ...record.properties, [propertyId]: optionId },
       ...(order ? { order } : {}),
-      updatedAt: Date.now(),
     });
   });
 }

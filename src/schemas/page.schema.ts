@@ -19,6 +19,9 @@ export const PageSchema = z.object({
   favoritedAt: z.number().nullable(),
   lastOpenedAt: z.number().nullable(),
   deletedAt: z.number().nullable(),
+  // When a record last reached the done stage; null once it leaves it. Missing on rows
+  // from before it was tracked.
+  doneAt: z.number().nullable().optional(),
   createdAt: z.number(),
   updatedAt: z.number(),
 });

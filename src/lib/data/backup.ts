@@ -6,11 +6,12 @@ import { rebuildLinks } from './links';
 export type ImportResult = { ok: true; pages: number } | { ok: false; reason: 'invalid' };
 
 export async function exportWorkspace(): Promise<Backup> {
-  const [pages, databases, views, contents] = await Promise.all([
+  const [pages, databases, views, contents, dashboards] = await Promise.all([
     db.pages.toArray(),
     db.databases.toArray(),
     db.views.toArray(),
     db.contents.toArray(),
+    db.dashboards.toArray(),
   ]);
   return {
     format: 'nook',
@@ -20,6 +21,7 @@ export async function exportWorkspace(): Promise<Backup> {
     databases,
     views,
     contents,
+    dashboards,
   };
 }
 
@@ -33,19 +35,21 @@ export async function importWorkspace(input: unknown): Promise<ImportResult> {
   const backup = parsed.data;
   await db.transaction(
     'rw',
-    [db.pages, db.databases, db.views, db.contents, db.links],
+    [db.pages, db.databases, db.views, db.contents, db.links, db.dashboards],
     async () => {
       await Promise.all([
         db.pages.clear(),
         db.databases.clear(),
         db.views.clear(),
         db.contents.clear(),
+        db.dashboards.clear(),
       ]);
       await Promise.all([
         db.pages.bulkAdd(backup.pages),
         db.databases.bulkAdd(backup.databases),
         db.views.bulkAdd(backup.views),
         db.contents.bulkAdd(backup.contents),
+        db.dashboards.bulkAdd(backup.dashboards),
       ]);
       await rebuildLinks();
     },

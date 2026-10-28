@@ -3,6 +3,7 @@ import { Dexie, type EntityTable } from 'dexie';
 import { generateKeyBetween } from 'fractional-indexing';
 
 import type { Content } from '@/schemas/content.schema';
+import type { Dashboard } from '@/schemas/dashboard.schema';
 import type { Database, View } from '@/schemas/database.schema';
 import type { Link } from '@/schemas/link.schema';
 import type { Page } from '@/schemas/page.schema';
@@ -19,6 +20,7 @@ export const db = new Dexie('nook') as Dexie & {
   views: EntityTable<View, 'id'>;
   contents: EntityTable<Content, 'id'>;
   links: EntityTable<Link, 'id'>;
+  dashboards: EntityTable<Dashboard, 'id'>;
 };
 
 db.version(1).stores({
@@ -95,3 +97,8 @@ db.version(5)
       });
     }
   });
+
+// v6: dashboards — which database each dashboard page charts.
+db.version(6).stores({
+  dashboards: 'id',
+});

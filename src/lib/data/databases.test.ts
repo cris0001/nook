@@ -20,7 +20,7 @@ import {
   toggleRecordOption,
   updateOption,
 } from './databases';
-import { deletePageForever, duplicatePage, trashPage } from './pages';
+import { deletePageForever, duplicatePage, getPage, trashPage } from './pages';
 
 beforeEach(async () => {
   await Promise.all([db.pages.clear(), db.databases.clear(), db.views.clear()]);
@@ -155,5 +155,28 @@ describe('databases data', () => {
     await deleteView(board!.id);
     await deleteView(table!.id);
     expect((await listViews(database.id)).map((v) => v.id)).toEqual([table!.id]);
+  });
+});
+
+describe('done tracking', () => {
+  it('stamps doneAt when a record enters the last status and clears it on leaving', async () => {
+    const database = await createDatabase(null);
+    const status = (await getDatabase(database.id))?.properties[0];
+    const [todo, , done] = status?.options ?? [];
+    const record = await addRecord(database.id, {}, 'Task');
+
+    await setRecordValue(record.id, status!.id, done!.id);
+    const finished = await getPage(record.id);
+    expect(finished?.doneAt).toBeTypeOf('number');
+
+    await setRecordValue(record.id, status!.id, todo!.id);
+    expect((await getPage(record.id))?.doneAt).toBeNull();
+  });
+
+  it('stamps records created straight into done', async () => {
+    const database = await createDatabase(null);
+    const status = (await getDatabase(database.id))?.properties[0];
+    const record = await addRecord(database.id, { [status!.id]: status!.options[2]!.id });
+    expect((await getPage(record.id))?.doneAt).toBeTypeOf('number');
   });
 });
