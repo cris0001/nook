@@ -11,6 +11,7 @@ import { useLocaleStore } from '@/stores/locale.store';
 
 import { toggleFavorite } from '@/lib/data/pages';
 import { usePages } from '../hooks/use-pages';
+import { useTextStats } from '../hooks/use-text-stats';
 import { usePagesTranslation } from '../i18n';
 import { ancestorsOf } from '../utils/page-lists';
 import { PageActionsMenu } from './page-actions-menu';
@@ -22,6 +23,7 @@ export function PageHeader({ page, readOnly }: { page: Page; readOnly: boolean }
   const ancestors = state.status === 'ready' ? ancestorsOf(state.pages, page.id) : [];
   const starred = page.favoritedAt !== null;
   const locale = useLocaleStore((s) => s.locale);
+  const stats = useTextStats(page.id);
 
   return (
     <div className="bg-background/90 border-divider sticky top-0 z-20 flex h-12 shrink-0 items-center gap-1 border-b px-3 backdrop-blur sm:px-4">
@@ -55,6 +57,11 @@ export function PageHeader({ page, readOnly }: { page: Page; readOnly: boolean }
         <span className="bg-well text-muted-foreground mr-1 flex h-6 items-center gap-1 rounded-full px-2 text-xs whitespace-nowrap">
           <Eye className="size-3.5" />
           {common.readOnly}
+        </span>
+      ) : null}
+      {stats?.words ? (
+        <span className="text-muted-foreground mr-3 hidden font-mono text-[11px] whitespace-nowrap md:inline">
+          {t.stats(stats.words, stats.minutes)}
         </span>
       ) : null}
       <span className="text-muted-foreground mr-1 hidden text-xs whitespace-nowrap sm:inline">
