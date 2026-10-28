@@ -76,11 +76,12 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 - [x] `@` mentions of pages and records (with live status), create a page from `@`
 - [x] Backlinks section under every page
 
-### Stage 8 — Calendar view
+### Stage 8 — Calendar view ✅ COMPLETE
 
-- [ ] Month / week grid by a date property
-- [ ] Drag a record to another day to change its date
-- [ ] Create a record by clicking a day
+- [x] Month / week grid by a date property (pick which one)
+- [x] Drag a record to another day to change its date
+- [x] Create a record by clicking a day
+- [x] Phones: status dots per day, tap a day for its records
 
 ### Stage 9 — Dashboard
 

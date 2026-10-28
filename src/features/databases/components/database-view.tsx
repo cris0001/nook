@@ -8,7 +8,9 @@ import { useDatabase } from '../hooks/use-database';
 import { useDatabasesTranslation } from '../i18n';
 import { filterRecords, sortRecords } from '../utils/apply-view';
 import { BoardView } from './board-view';
+import { CalendarView } from './calendar-view';
 import { DatabaseSummary } from './database-summary';
+import { DateMenu } from './date-menu';
 import { FilterMenu } from './filter-menu';
 import { GroupMenu } from './group-menu';
 import { PropertiesMenu } from './properties-menu';
@@ -54,6 +56,7 @@ export function DatabaseView({ databaseId }: { databaseId: string }) {
           {allowed('page.edit') ? (
             <>
               {view.type === 'board' ? <GroupMenu database={database} view={view} /> : null}
+              {view.type === 'calendar' ? <DateMenu database={database} view={view} /> : null}
               <FilterMenu database={database} view={view} />
               <SortMenu database={database} view={view} />
               <PropertiesMenu database={database} view={view} />
@@ -77,7 +80,7 @@ export function DatabaseView({ databaseId }: { databaseId: string }) {
       ) : view.type === 'board' ? (
         <BoardView database={database} view={view} records={visible} />
       ) : (
-        <p className="text-muted-foreground py-10 text-center text-sm">{t.comingSoon}</p>
+        <CalendarView database={database} view={view} records={visible} />
       )}
     </section>
   );
