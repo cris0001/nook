@@ -57,6 +57,7 @@ export function SelectCell({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         disabled={readOnly}
+        aria-label={`${property.name}: ${chosen.map((o) => o.name).join(', ') || '—'}`}
         className="flex h-full min-h-9 w-full flex-wrap items-center gap-1 px-2 py-1 text-left"
       >
         {multi ? (

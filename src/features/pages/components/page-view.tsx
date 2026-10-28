@@ -78,6 +78,7 @@ export function PageView({
         ) : page.icon ? (
           <p className="mb-2 text-5xl leading-tight">{page.icon}</p>
         ) : null}
+        <h1 className="sr-only">{page.title || t.untitled}</h1>
         <input
           ref={titleInput}
           key={page.id}

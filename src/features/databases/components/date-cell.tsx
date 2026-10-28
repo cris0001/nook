@@ -15,12 +15,14 @@ export function DateCell({
   value,
   finished = false,
   readOnly = false,
+  label,
 }: {
   recordId: string;
   propertyId: string;
   value: string | null;
   finished?: boolean;
   readOnly?: boolean;
+  label: string;
 }) {
   const t = useDatabasesTranslation();
   const dueLabel = useDueLabel();
@@ -36,6 +38,7 @@ export function DateCell({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         disabled={readOnly}
+        aria-label={due ? `${label}: ${due.text}` : label}
         className={cn(
           'flex h-full min-h-9 w-full items-center px-2 text-left font-mono text-[12px]',
           due?.tone === 'late' && 'text-destructive',

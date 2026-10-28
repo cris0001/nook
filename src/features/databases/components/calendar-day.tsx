@@ -62,7 +62,7 @@ export function CalendarDay({
           className={cn(
             'flex h-6 min-w-6 items-center justify-center rounded-full px-1 font-mono text-[11.5px]',
             day === today && 'bg-primary text-primary-foreground font-semibold',
-            day !== today && !inMonth && 'text-muted-foreground/60',
+            day !== today && !inMonth && 'text-muted-foreground',
             day !== today && inMonth && 'text-muted-foreground',
           )}
         >

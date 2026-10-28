@@ -50,7 +50,7 @@ export function ViewTabs({
                   TAB,
                   view.id === activeId
                     ? 'bg-background text-foreground shadow-raised'
-                    : 'text-muted-foreground hover:text-foreground',
+                    : 'text-foreground/70 hover:text-foreground',
                 )}
               >
                 <Icon className="size-4" />

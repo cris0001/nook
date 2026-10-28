@@ -82,7 +82,7 @@ function Editor({
     ],
     editable,
     content: initial ?? '',
-    editorProps: { attributes: { class: 'nook-prose' } },
+    editorProps: { attributes: { class: 'nook-prose', 'aria-label': t.editorLabel } },
     onUpdate: ({ editor: e }) => save(e.getJSON()),
   });
 

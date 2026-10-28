@@ -28,10 +28,7 @@ export function StatusBars({
           </span>
           <span className="text-muted-foreground text-right font-mono text-xs tabular-nums">
             {count}
-            <span className="text-muted-foreground/60">
-              {' '}
-              · {total ? Math.round((count / total) * 100) : 0}%
-            </span>
+            <span> · {total ? Math.round((count / total) * 100) : 0}%</span>
           </span>
         </li>
       ))}

@@ -42,9 +42,9 @@ export function CalendarHeader({
 
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-2 pb-3">
-      <h3 className="font-heading min-w-0 text-lg font-bold first-letter:uppercase [font-variation-settings:'opsz'_96]">
+      <h2 className="font-heading min-w-0 text-lg font-bold first-letter:uppercase [font-variation-settings:'opsz'_96]">
         {title}
-      </h3>
+      </h2>
       <div className="flex items-center">
         <button type="button" aria-label={t.previous} onClick={() => onStep(-1)} className={NAV}>
           <ChevronLeft className="size-4" />
@@ -85,7 +85,7 @@ export function CalendarHeader({
             onClick={() => onMode(option)}
             className={cn(
               SEGMENT,
-              mode === option ? 'bg-background shadow-raised' : 'text-muted-foreground',
+              mode === option ? 'bg-background shadow-raised' : 'text-foreground/70',
             )}
           >
             {t.calendarMode[option]}

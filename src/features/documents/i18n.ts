@@ -9,6 +9,7 @@ const en = {
   noMatches: 'No matching blocks',
   dragBlock: 'Drag to move',
   blocksLabel: 'Blocks',
+  editorLabel: 'Page content',
   untitledPage: 'Untitled',
   mention: {
     label: 'Link to a page',
@@ -64,6 +65,7 @@ const pl: typeof en = {
   noMatches: 'Brak pasujących bloków',
   dragBlock: 'Przeciągnij, aby przenieść',
   blocksLabel: 'Bloki',
+  editorLabel: 'Treść strony',
   untitledPage: 'Bez tytułu',
   mention: {
     label: 'Link do strony',

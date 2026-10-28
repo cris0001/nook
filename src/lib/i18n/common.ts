@@ -2,6 +2,7 @@ import { createTranslation } from './create-translation';
 
 const en = {
   openMenu: 'Open menu',
+  sidebar: 'Sidebar',
   closeMenu: 'Close menu',
   language: 'Language',
   theme: { system: 'System theme', light: 'Light theme', dark: 'Dark theme' },
@@ -86,6 +87,7 @@ const en = {
 
 const pl: typeof en = {
   openMenu: 'Otwórz menu',
+  sidebar: 'Pasek boczny',
   closeMenu: 'Zamknij menu',
   language: 'Język',
   theme: { system: 'Motyw systemowy', light: 'Motyw jasny', dark: 'Motyw ciemny' },

@@ -19,6 +19,7 @@ export function RecordTitleCell({ record }: { record: Page }) {
       <input
         defaultValue={record.title}
         placeholder={t.untitled}
+        aria-label={t.name}
         readOnly={!canEdit}
         onChange={(event) => rename(event.target.value)}
         onBlur={() => rename.flush()}

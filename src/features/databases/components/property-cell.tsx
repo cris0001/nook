@@ -48,6 +48,7 @@ export function PropertyCell({
             type="checkbox"
             checked={value === true}
             disabled={readOnly}
+            aria-label={property.name}
             onChange={(event) => save(event.target.checked)}
             className="accent-primary size-4"
           />
@@ -60,6 +61,7 @@ export function PropertyCell({
           inputMode="decimal"
           defaultValue={typeof value === 'number' ? value : ''}
           readOnly={readOnly}
+          aria-label={property.name}
           onChange={(event) => save(event.target.value === '' ? null : Number(event.target.value))}
           className={`${INPUT} text-right tabular-nums`}
         />
@@ -72,6 +74,7 @@ export function PropertyCell({
           value={text || null}
           finished={finished}
           readOnly={readOnly}
+          label={property.name}
         />
       );
     case 'url':
@@ -81,6 +84,7 @@ export function PropertyCell({
             type="url"
             defaultValue={text}
             readOnly={readOnly}
+            aria-label={property.name}
             onChange={(event) => save(event.target.value || null)}
             className={INPUT}
           />
@@ -101,6 +105,7 @@ export function PropertyCell({
         <input
           defaultValue={text}
           readOnly={readOnly}
+          aria-label={property.name}
           onChange={(event) => save(event.target.value || null)}
           className={INPUT}
         />

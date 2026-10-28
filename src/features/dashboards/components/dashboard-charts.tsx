@@ -12,7 +12,7 @@ import { StatusBars } from './status-bars';
 function Panel({ title, note, children }: { title: string; note: string; children: ReactNode }) {
   return (
     <section className="border-divider min-w-0 rounded-xl border p-4 sm:p-5">
-      <h3 className="font-semibold">{title}</h3>
+      <h2 className="font-semibold">{title}</h2>
       <p className="text-muted-foreground mb-4 text-xs">{note}</p>
       {children}
     </section>

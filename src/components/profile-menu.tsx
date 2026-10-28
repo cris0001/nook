@@ -91,7 +91,7 @@ export function ProfileMenu() {
                 className={cn(
                   SEGMENT,
                   'font-mono',
-                  code === locale ? 'bg-background shadow-raised' : 'text-muted-foreground',
+                  code === locale ? 'bg-background shadow-raised' : 'text-foreground/70',
                 )}
               >
                 <Flag locale={code} />
@@ -113,7 +113,7 @@ export function ProfileMenu() {
                 onClick={() => setTheme(option)}
                 className={cn(
                   SEGMENT,
-                  option === theme ? 'bg-background shadow-raised' : 'text-muted-foreground',
+                  option === theme ? 'bg-background shadow-raised' : 'text-foreground/70',
                 )}
               >
                 <Icon className="size-3.5" />
