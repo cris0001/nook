@@ -82,30 +82,44 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 - [ ] Drag a record to another day to change its date
 - [ ] Create a record by clicking a day
 
-### Stage 9 — Whiteboard
-
-- [ ] Canvas tools: pen, rectangle, ellipse, arrow, line, text, eraser
-- [ ] Color and stroke width
-- [ ] Select, move, resize, delete
-- [ ] Zoom / pan, infinite canvas
-- [ ] Undo / redo, export to PNG
-
-### Stage 10 — Dashboard
+### Stage 9 — Dashboard
 
 - [ ] Records per status, done per week, burndown (Recharts)
 - [ ] Stat tiles (total, overdue, done this week)
 - [ ] Pick the source database
 
-### Stage 11 — Polish and ship
+### Stage 10 — Polish and ship
 
-- [ ] Command palette (Ctrl/Cmd+K)
 - [ ] Keyboard shortcuts
 - [ ] Sample workspace on first launch
 - [ ] Mobile pass
-- [ ] Workspace export / import (JSON)
 - [ ] Unit tests for data + utils, 2–3 Playwright flows
 - [ ] README with GIF and architecture notes
 - [ ] Deploy to Vercel
+
+### Stage 11 — Whiteboard (own Excalidraw-style canvas)
+
+Built in-house rather than embedding `@excalidraw/excalidraw`: Rough.js for the
+hand-drawn look (matches the eyes in the logo), perfect-freehand for the pen.
+
+- [ ] New page type with an infinite canvas: zoom / pan
+- [ ] Tools: pen, rectangle, ellipse, arrow, line, text, eraser
+- [ ] Color and stroke width
+- [ ] Select, move, resize, delete
+- [ ] Undo / redo, export to PNG
+- [ ] Scene stored as JSON in IndexedDB, like document bodies
+
+---
+
+## Polish of stages 1–6 (in progress)
+
+- [x] Dark mode contrast, sidebar progress rings, eye moods
+- [x] Board and table refresh (relative dates, quick-done, summary, footer)
+- [x] Roles across pages, documents, databases and Today
+- [ ] Formatting toolbar on text selection
+- [ ] Command palette (Ctrl/Cmd+K)
+- [ ] Debounced title writes, persistent storage, visible write errors
+- [ ] Workspace export / import (JSON)
 
 ---
 
