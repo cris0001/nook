@@ -12,10 +12,12 @@ import {
 } from '@/lib/data/databases';
 import { createDashboard } from '@/lib/data/dashboards';
 import { createPage, setPageIcon, toggleFavorite } from '@/lib/data/pages';
+import { saveScene } from '@/lib/data/scenes';
 import type { OptionColor, PropertyValue } from '@/schemas/database.schema';
 
 import type { SampleCopy } from '../i18n';
 import { bullets, doc, h, p, quote, todos } from '../utils/doc';
+import { sitemapSketch } from '../utils/sketch';
 
 const PRIORITY_COLORS: OptionColor[] = ['red', 'orange', 'gray'];
 
@@ -128,4 +130,7 @@ export async function seedSampleWorkspace(copy: SampleCopy): Promise<void> {
   const dashboard = await createDashboard(null, copy.dashboard);
   await setPageIcon(dashboard.id, '📊');
   await seedReading(copy);
+  const sketch = await createPage({ parentId: null, type: 'whiteboard', title: copy.sketch.title });
+  await setPageIcon(sketch.id, '🗺️');
+  await saveScene(sketch.id, sitemapSketch(copy.sketch));
 }

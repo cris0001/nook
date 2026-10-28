@@ -9,6 +9,7 @@ import {
   Languages,
   Monitor,
   Moon,
+  PenTool,
   Sun,
   Trash2,
   type LucideIcon,
@@ -58,6 +59,12 @@ export function PaletteActions({ className, onDone }: { className: string; onDon
             label: t.palette.newDatabase,
             Icon: Database,
             run: () => void createPage({ parentId: null, type: 'database' }),
+          },
+          {
+            id: 'new-whiteboard',
+            label: t.palette.newWhiteboard,
+            Icon: PenTool,
+            run: () => void createPage({ parentId: null, type: 'whiteboard' }),
           },
           {
             id: 'new-dashboard',

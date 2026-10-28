@@ -4,6 +4,7 @@ import { DashboardView } from '@/features/dashboards';
 import { DatabaseView, RecordProperties } from '@/features/databases';
 import { DocumentEditor } from '@/features/documents';
 import { PageView } from '@/features/pages';
+import { WhiteboardView } from '@/features/whiteboard';
 import type { Page } from '@/schemas/page.schema';
 
 export const Route = createFileRoute('/_workspace/p/$pageId')({
@@ -22,6 +23,8 @@ function pageBody(page: Page, editable: boolean) {
           <DocumentEditor pageId={page.id} editable={editable} />
         </>
       );
+    case 'whiteboard':
+      return <WhiteboardView pageId={page.id} title={page.title} editable={editable} />;
     case 'dashboard':
       return <DashboardView pageId={page.id} editable={editable} />;
     case 'document':

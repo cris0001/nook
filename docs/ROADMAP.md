@@ -99,17 +99,18 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 - [ ] README with GIF and architecture notes
 - [ ] Deploy to Vercel
 
-### Stage 11 — Whiteboard (own Excalidraw-style canvas)
+### Stage 11 — Whiteboard (own Excalidraw-style canvas) ✅ COMPLETE
 
 Built in-house rather than embedding `@excalidraw/excalidraw`: Rough.js for the
 hand-drawn look (matches the eyes in the logo), perfect-freehand for the pen.
 
-- [ ] New page type with an infinite canvas: zoom / pan
-- [ ] Tools: pen, rectangle, ellipse, arrow, line, text, eraser
-- [ ] Color and stroke width
-- [ ] Select, move, resize, delete
-- [ ] Undo / redo, export to PNG
-- [ ] Scene stored as JSON in IndexedDB, like document bodies
+- [x] New page type with an infinite canvas: zoom / pan (wheel, ⌘/Ctrl + wheel, space + drag)
+- [x] Tools: pen, rectangle, ellipse, arrow, line, text, eraser (with key shortcuts)
+- [x] Stroke color, hachure fill, stroke width
+- [x] Select (click, shift, marquee), move, resize, delete
+- [x] Undo / redo, export to PNG, fit to drawing
+- [x] Scene stored as JSON in IndexedDB, like document bodies
+- [ ] Two-finger pinch zoom on touch screens
 
 ---
 

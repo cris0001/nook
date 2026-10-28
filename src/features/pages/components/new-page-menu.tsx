@@ -1,4 +1,4 @@
-import { ChartColumn, Database, FileText, Plus } from 'lucide-react';
+import { ChartColumn, Database, FileText, PenTool, Plus } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -14,6 +14,7 @@ import { usePagesTranslation } from '../i18n';
 const KINDS = [
   { type: 'document', Icon: FileText },
   { type: 'database', Icon: Database },
+  { type: 'whiteboard', Icon: PenTool },
   { type: 'dashboard', Icon: ChartColumn },
 ] as const;
 
