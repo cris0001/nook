@@ -4,6 +4,7 @@ import { useWhiteboardTranslation } from '../i18n';
 import { useSceneSync } from '../hooks/use-scene-sync';
 import { useWhiteboardStore } from '../stores/whiteboard.store';
 import { exportPng } from '../utils/export-png';
+import { fitCamera } from '../utils/fit';
 import { Board } from './board';
 import { BoardToolbar } from './board-toolbar';
 import { StylePanel } from './style-panel';
@@ -37,6 +38,15 @@ export function WhiteboardView({
   useEffect(() => {
     if (!editable) useWhiteboardStore.getState().setTool('hand');
   }, [editable]);
+
+  const measured = size.width > 0;
+  useEffect(() => {
+    if (!ready || !measured || !container) return;
+    const { elements, setCamera } = useWhiteboardStore.getState();
+    setCamera(
+      fitCamera(elements, { width: container.clientWidth, height: container.clientHeight }),
+    );
+  }, [ready, measured, container]);
 
   return (
     <div

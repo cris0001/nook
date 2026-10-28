@@ -29,8 +29,9 @@ export function TextEditor({ element }: { element: Extract<BoardElement, { type:
   }
 
   function finish() {
-    const { elements, preview, commit, setEditingText } = useWhiteboardStore.getState();
+    const { elements, preview, commit, setEditingText, setTool } = useWhiteboardStore.getState();
     setEditingText(null);
+    setTool('select');
     const current = elements.find((e) => e.id === element.id);
     if (current?.type === 'text' && current.text.trim()) {
       commit(before.current);

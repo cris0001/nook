@@ -13,6 +13,7 @@ import {
   normalize,
   resizeElement,
   toWorld,
+  zoomAt,
   type Box,
   type Camera,
   type Handle,
@@ -25,7 +26,8 @@ type Gesture =
   | { kind: 'move'; wx: number; wy: number; before: BoardElement[]; moved: boolean }
   | { kind: 'resize'; handle: Handle; from: Box; original: BoardElement; before: BoardElement[] }
   | { kind: 'erase'; before: BoardElement[]; removed: boolean }
-  | { kind: 'marquee'; wx: number; wy: number };
+  | { kind: 'marquee'; wx: number; wy: number }
+  | { kind: 'pinch'; distance: number; mid: [number, number]; camera: Camera };
 
 const store = useWhiteboardStore.getState;
 
@@ -35,6 +37,7 @@ function topHit(elements: BoardElement[], wx: number, wy: number, zoom: number) 
 
 export function useBoardPointer(editable: boolean, spaceDown: () => boolean) {
   const gesture = useRef<Gesture | null>(null);
+  const touches = useRef(new Map<number, [number, number]>());
   const [marquee, setMarquee] = useState<Box | null>(null);
 
   function local(event: MouseEvent<SVGSVGElement>): [number, number] {
@@ -42,10 +45,30 @@ export function useBoardPointer(editable: boolean, spaceDown: () => boolean) {
     return [event.clientX - rect.left, event.clientY - rect.top];
   }
 
+  function startPinch() {
+    const [a, b] = [...touches.current.values()];
+    if (!a || !b) return;
+    const current = gesture.current;
+    if (current && 'before' in current) store().preview(current.before);
+    gesture.current = {
+      kind: 'pinch',
+      distance: Math.hypot(a[0] - b[0], a[1] - b[1]),
+      mid: [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2],
+      camera: store().camera,
+    };
+  }
+
   function onPointerDown(event: PointerEvent<SVGSVGElement>) {
-    if (store().editingTextId) return;
+    // Finish an open text edit first (its blur commits it), then handle this click.
+    if (store().editingTextId && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     event.currentTarget.setPointerCapture(event.pointerId);
     const [sx, sy] = local(event);
+    if (event.pointerType === 'touch') {
+      touches.current.set(event.pointerId, [sx, sy]);
+      if (touches.current.size === 2) return startPinch();
+    }
     const { tool, camera, elements, selected, style } = store();
     const [wx, wy] = toWorld(camera, sx, sy);
     const pressure = event.pointerType === 'pen' ? event.pressure : 0.5;
@@ -109,8 +132,22 @@ export function useBoardPointer(editable: boolean, spaceDown: () => boolean) {
 
   function onPointerMove(event: PointerEvent<SVGSVGElement>) {
     const current = gesture.current;
-    if (!current) return;
     const [sx, sy] = local(event);
+    if (touches.current.has(event.pointerId)) touches.current.set(event.pointerId, [sx, sy]);
+    if (!current) return;
+    if (current.kind === 'pinch') {
+      const [a, b] = [...touches.current.values()];
+      if (!a || !b) return;
+      const mid: [number, number] = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+      const zoom = current.camera.zoom * (Math.hypot(a[0] - b[0], a[1] - b[1]) / current.distance);
+      const zoomed = zoomAt(current.camera, current.mid[0], current.mid[1], zoom);
+      store().setCamera({
+        ...zoomed,
+        x: zoomed.x + mid[0] - current.mid[0],
+        y: zoomed.y + mid[1] - current.mid[1],
+      });
+      return;
+    }
     const { camera, elements, selected } = store();
     const [wx, wy] = toWorld(camera, sx, sy);
 
@@ -152,10 +189,11 @@ export function useBoardPointer(editable: boolean, spaceDown: () => boolean) {
     }
   }
 
-  function onPointerUp() {
+  function onPointerUp(event: PointerEvent<SVGSVGElement>) {
+    touches.current.delete(event.pointerId);
     const current = gesture.current;
     gesture.current = null;
-    if (!current) return;
+    if (!current || current.kind === 'pinch') return;
     const { elements, tool } = store();
     if (current.kind === 'draw') {
       const element = elements.find((e) => e.id === current.id);

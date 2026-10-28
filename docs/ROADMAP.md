@@ -110,7 +110,7 @@ hand-drawn look (matches the eyes in the logo), perfect-freehand for the pen.
 - [x] Select (click, shift, marquee), move, resize, delete
 - [x] Undo / redo, export to PNG, fit to drawing
 - [x] Scene stored as JSON in IndexedDB, like document bodies
-- [ ] Two-finger pinch zoom on touch screens
+- [x] Two-finger pinch zoom on touch screens
 
 ---
 
