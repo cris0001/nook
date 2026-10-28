@@ -1,18 +1,22 @@
 import { Link } from '@tanstack/react-router';
-import { House, Trash2 } from 'lucide-react';
+import { House, Search, Trash2 } from 'lucide-react';
 
 import { BrandMark } from '@/components/brand';
 import { ProfileMenu } from '@/components/profile-menu';
 import { cn } from '@/lib/utils';
 
 import { usePagesTranslation } from '../i18n';
+import { useCommandPaletteStore } from '../stores/command-palette.store';
 import { ACTIVE_SELF, SECTION_LABEL, SIDEBAR_ROW } from '../utils/row-styles';
 import { FavoritesList } from './favorites-list';
 import { NewPageMenu } from './new-page-menu';
 import { PageTree } from './page-tree';
 
+const SHORTCUT = /mac|iphone|ipad/i.test(navigator.userAgent) ? '⌘K' : 'Ctrl K';
+
 export function PageSidebar({ todayCount = 0 }: { todayCount?: number }) {
   const t = usePagesTranslation();
+  const openPalette = useCommandPaletteStore((s) => s.setOpen);
 
   return (
     <div className="flex h-full min-h-0 flex-col px-2.5 pt-2.5 pb-2">
@@ -23,10 +27,21 @@ export function PageSidebar({ todayCount = 0 }: { todayCount?: number }) {
         <NewPageMenu />
       </div>
 
+      <button
+        type="button"
+        onClick={() => openPalette(true)}
+        className={cn(SIDEBAR_ROW, 'mt-3 gap-2 pr-2 pl-2 text-left')}
+      >
+        <Search className="size-4 shrink-0" />
+        <span className="flex-1">{t.search}</span>
+        <kbd className="text-muted-foreground bg-background/60 rounded border px-1.5 font-mono text-[10.5px]">
+          {SHORTCUT}
+        </kbd>
+      </button>
       <Link
         to="/"
         activeOptions={{ exact: true }}
-        className={cn(SIDEBAR_ROW, ACTIVE_SELF, 'mt-3 gap-2 pr-2.5 pl-2')}
+        className={cn(SIDEBAR_ROW, ACTIVE_SELF, 'gap-2 pr-2.5 pl-2')}
       >
         <House className="size-4 shrink-0" />
         <span className="flex-1">{t.today}</span>

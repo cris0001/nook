@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { saveContent } from '@/lib/data/contents';
 import { debounce } from '@/utils/debounce';
 
+import { LinkShortcut } from '../extensions/link-shortcut';
 import { SlashCommand } from '../extensions/slash-command';
 import { usePageContent } from '../hooks/use-page-content';
 import { useDocumentsTranslation } from '../i18n';
@@ -69,6 +70,7 @@ function Editor({
         },
       }),
       SlashCommand,
+      LinkShortcut,
     ],
     editable,
     content: initial ?? '',

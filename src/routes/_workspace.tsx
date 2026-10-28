@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 
 import { AppShell } from '@/components/app-shell';
-import { PageSidebar } from '@/features/pages';
+import { CommandPalette, PageSidebar } from '@/features/pages';
 import { useAgendaCount } from '@/features/today';
 
 export const Route = createFileRoute('/_workspace')({
@@ -13,6 +13,7 @@ function WorkspaceLayout() {
   return (
     <AppShell sidebar={<PageSidebar todayCount={todayCount} />}>
       <Outlet />
+      <CommandPalette />
     </AppShell>
   );
 }

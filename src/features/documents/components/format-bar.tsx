@@ -1,11 +1,11 @@
 import { useEditorState, type Editor } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import { Bold, Code, Italic, Link2, Strikethrough, Underline, type LucideIcon } from 'lucide-react';
-import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
 import { useDocumentsTranslation } from '../i18n';
+import { useFormatBarStore } from '../stores/format-bar.store';
 import { LinkInput } from './link-input';
 
 type Mark = 'bold' | 'italic' | 'underline' | 'strike' | 'code';
@@ -23,7 +23,8 @@ const BUTTON =
 
 export function FormatBar({ editor }: { editor: Editor }) {
   const t = useDocumentsTranslation();
-  const [editingLink, setEditingLink] = useState(false);
+  const editingLink = useFormatBarStore((s) => s.editingLink);
+  const setEditingLink = useFormatBarStore((s) => s.setEditingLink);
   const active = useEditorState({
     editor,
     selector: ({ editor: e }) => ({
@@ -66,7 +67,7 @@ export function FormatBar({ editor }: { editor: Editor }) {
           <button
             type="button"
             aria-label={t.format.link}
-            title={t.format.link}
+            title={`${t.format.link} ⌘K`}
             aria-pressed={active.link}
             onClick={() => setEditingLink(true)}
             className={cn(
