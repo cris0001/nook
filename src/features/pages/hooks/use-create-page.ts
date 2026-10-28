@@ -1,6 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useCallback } from 'react';
 
+import { createDashboard } from '@/lib/data/dashboards';
 import { createDatabase } from '@/lib/data/databases';
 import { createPage, type CreatePageInput } from '@/lib/data/pages';
 
@@ -14,7 +15,9 @@ export function useCreatePage() {
       const page =
         input.type === 'database'
           ? await createDatabase(input.parentId, input.title, t.starterColumns)
-          : await createPage(input);
+          : input.type === 'dashboard'
+            ? await createDashboard(input.parentId, input.title)
+            : await createPage(input);
       await navigate({ to: '/p/$pageId', params: { pageId: page.id } });
       return page;
     },

@@ -3,7 +3,7 @@ import { polishPlural } from '@/lib/i18n/plural';
 
 const en = {
   newPage: 'New page',
-  newKind: { document: 'Page', database: 'Database' },
+  newKind: { document: 'Page', database: 'Database', dashboard: 'Dashboard' },
   newDatabase: 'New database',
   starterColumns: {
     status: 'Status',
@@ -26,6 +26,7 @@ const en = {
     actions: 'Actions',
     newPage: 'New page',
     newDatabase: 'New database',
+    newDashboard: 'New dashboard',
     goToday: 'Go to Today',
     goTrash: 'Open the trash',
     shortcuts: 'Keyboard shortcuts',
@@ -83,7 +84,7 @@ const en = {
 
 const pl: typeof en = {
   newPage: 'Nowa strona',
-  newKind: { document: 'Strona', database: 'Baza danych' },
+  newKind: { document: 'Strona', database: 'Baza danych', dashboard: 'Dashboard' },
   newDatabase: 'Nowa baza danych',
   starterColumns: {
     status: 'Status',
@@ -106,6 +107,7 @@ const pl: typeof en = {
     actions: 'Akcje',
     newPage: 'Nowa strona',
     newDatabase: 'Nowa baza danych',
+    newDashboard: 'Nowy dashboard',
     goToday: 'Przejdź do Dziś',
     goTrash: 'Otwórz kosz',
     shortcuts: 'Skróty klawiszowe',

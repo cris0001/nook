@@ -1,6 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { Command } from 'cmdk';
 import {
+  ChartColumn,
   Database,
   FilePlus,
   House,
@@ -57,6 +58,12 @@ export function PaletteActions({ className, onDone }: { className: string; onDon
             label: t.palette.newDatabase,
             Icon: Database,
             run: () => void createPage({ parentId: null, type: 'database' }),
+          },
+          {
+            id: 'new-dashboard',
+            label: t.palette.newDashboard,
+            Icon: ChartColumn,
+            run: () => void createPage({ parentId: null, type: 'dashboard' }),
           },
         ]
       : []),

@@ -18,7 +18,9 @@ The name is written **nOOk** — the double O is a pair of animated eyes (see Br
 - Tailwind CSS v4 with CSS-variable design tokens
 - shadcn/ui for component primitives (added as needed)
 - React Hook Form + Zod for forms; Zod schemas for persisted shapes
-- dnd-kit (drag and drop), Tiptap (editor), Recharts (charts), date-fns
+- dnd-kit (drag and drop), Tiptap (editor), date-fns
+- Charts are small in-house SVG components (`features/dashboards`): colors through
+  token classes, no chart library
 - Vitest (+ Testing Library) for unit tests, Playwright for a few e2e flows
 - pnpm, ESLint 9 flat config, Prettier, Husky + lint-staged
 

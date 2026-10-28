@@ -83,11 +83,12 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 - [x] Create a record by clicking a day
 - [x] Phones: status dots per day, tap a day for its records
 
-### Stage 9 — Dashboard
+### Stage 9 — Dashboard ✅ COMPLETE
 
-- [ ] Records per status, done per week, burndown (Recharts)
-- [ ] Stat tiles (total, overdue, done this week)
-- [ ] Pick the source database
+- [x] Records per status, done per week, burndown (own SVG charts, hover tooltips)
+- [x] Stat tiles (total, open, overdue, due this week, done this week) + % done
+- [x] Pick the source database
+- [x] Records remember when they were done (`doneAt`)
 
 ### Stage 10 — Polish and ship
 

@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 
+import { DashboardView } from '@/features/dashboards';
 import { DatabaseView, RecordProperties } from '@/features/databases';
 import { DocumentEditor } from '@/features/documents';
 import { PageView } from '@/features/pages';
@@ -21,6 +22,8 @@ function pageBody(page: Page, editable: boolean) {
           <DocumentEditor pageId={page.id} editable={editable} />
         </>
       );
+    case 'dashboard':
+      return <DashboardView pageId={page.id} editable={editable} />;
     case 'document':
       return <DocumentEditor pageId={page.id} editable={editable} />;
     default:

@@ -1,4 +1,4 @@
-import { addDays, format } from 'date-fns';
+import { addDays, format, setHours } from 'date-fns';
 
 import { saveContent } from '@/lib/data/contents';
 import {
@@ -7,8 +7,10 @@ import {
   addRecord,
   createDatabase,
   getDatabase,
+  setRecordHistory,
   updateOption,
 } from '@/lib/data/databases';
+import { createDashboard } from '@/lib/data/dashboards';
 import { createPage, setPageIcon, toggleFavorite } from '@/lib/data/pages';
 import type { OptionColor, PropertyValue } from '@/schemas/database.schema';
 
@@ -18,6 +20,8 @@ import { bullets, doc, h, p, quote, todos } from '../utils/doc';
 const PRIORITY_COLORS: OptionColor[] = ['red', 'orange', 'gray'];
 
 const dayFromToday = (days: number) => format(addDays(new Date(), days), 'yyyy-MM-dd');
+const noonOf = (days: number) => setHours(addDays(new Date(), days), 12).getTime();
+const daysAgo = (days: number) => addDays(new Date(), -days).getTime();
 
 async function starterDatabase(
   title: string,
@@ -63,6 +67,10 @@ async function seedRelaunch(copy: SampleCopy) {
       [priority.id]: levels[level] ?? null,
     };
     const record = await addRecord(page.id, values, title);
+    await setRecordHistory(record.id, {
+      createdAt: daysAgo(30),
+      doneAt: stage === 2 ? noonOf(due) : null,
+    });
     first ||= record.id;
   }
   if (first) await saveContent(first, doc(p(copy.relaunch.taskNote)));
@@ -117,5 +125,7 @@ export async function seedSampleWorkspace(copy: SampleCopy): Promise<void> {
     ),
   );
   await seedRelaunch(copy);
+  const dashboard = await createDashboard(null, copy.dashboard);
+  await setPageIcon(dashboard.id, '📊');
   await seedReading(copy);
 }
