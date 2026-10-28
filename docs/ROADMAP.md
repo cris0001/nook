@@ -116,7 +116,7 @@ hand-drawn look (matches the eyes in the logo), perfect-freehand for the pen.
 - [x] Dark mode contrast, sidebar progress rings, eye moods
 - [x] Board and table refresh (relative dates, quick-done, summary, footer)
 - [x] Roles across pages, documents, databases and Today
-- [ ] Formatting toolbar on text selection
+- [x] Formatting toolbar on text selection
 - [ ] Command palette (Ctrl/Cmd+K)
 - [ ] Debounced title writes, persistent storage, visible write errors
 - [ ] Workspace export / import (JSON)

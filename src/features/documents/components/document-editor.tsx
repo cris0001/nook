@@ -10,7 +10,10 @@ import { debounce } from '@/utils/debounce';
 import { SlashCommand } from '../extensions/slash-command';
 import { usePageContent } from '../hooks/use-page-content';
 import { useDocumentsTranslation } from '../i18n';
+import { normalizeUrl } from '@/utils/safe-url';
+
 import { BlockHandle } from './block-handle';
+import { FormatBar } from './format-bar';
 import { SlashMenu } from './slash-menu';
 
 const SAVE_DELAY_MS = 400;
@@ -47,7 +50,15 @@ function Editor({
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
+      StarterKit.configure({
+        heading: { levels: [1, 2, 3] },
+        link: {
+          openOnClick: false,
+          autolink: true,
+          defaultProtocol: 'https',
+          isAllowedUri: (url) => normalizeUrl(url) !== null,
+        },
+      }),
       TaskList,
       TaskItem.configure({ nested: true }),
       Placeholder.configure({
@@ -82,6 +93,7 @@ function Editor({
       {editable ? (
         <>
           <BlockHandle editor={editor} container={container} />
+          <FormatBar editor={editor} />
           <SlashMenu />
         </>
       ) : null}
