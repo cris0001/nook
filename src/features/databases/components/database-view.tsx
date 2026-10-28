@@ -1,6 +1,7 @@
 import { Plus } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
+import { usePermissions } from '@/hooks/use-can';
 import { addRecord } from '@/lib/data/databases';
 
 import { useDatabase } from '../hooks/use-database';
@@ -19,6 +20,7 @@ export function DatabaseView({ databaseId }: { databaseId: string }) {
   const t = useDatabasesTranslation();
   const state = useDatabase(databaseId);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const allowed = usePermissions();
 
   const ready = state.status === 'ready' ? state : null;
   const view =
@@ -49,18 +51,24 @@ export function DatabaseView({ databaseId }: { databaseId: string }) {
       <div className="border-divider mt-6 flex flex-wrap items-center gap-2 border-b pb-3">
         <ViewTabs views={views} activeId={view.id} onSelect={setActiveId} />
         <div className="ml-auto flex items-center gap-0.5">
-          {view.type === 'board' ? <GroupMenu database={database} view={view} /> : null}
-          <FilterMenu database={database} view={view} />
-          <SortMenu database={database} view={view} />
-          <PropertiesMenu database={database} view={view} />
-          <button
-            type="button"
-            onClick={() => void addRecord(database.id)}
-            className="btn-primary ml-1.5 h-7 shrink-0 px-2.5 text-[13px]"
-          >
-            <Plus className="size-4" />
-            {t.newRecord}
-          </button>
+          {allowed('page.edit') ? (
+            <>
+              {view.type === 'board' ? <GroupMenu database={database} view={view} /> : null}
+              <FilterMenu database={database} view={view} />
+              <SortMenu database={database} view={view} />
+              <PropertiesMenu database={database} view={view} />
+            </>
+          ) : null}
+          {allowed('record.edit') ? (
+            <button
+              type="button"
+              onClick={() => void addRecord(database.id)}
+              className="btn-primary ml-1.5 h-7 shrink-0 px-2.5 text-[13px]"
+            >
+              <Plus className="size-4" />
+              {t.newRecord}
+            </button>
+          ) : null}
         </div>
       </div>
 

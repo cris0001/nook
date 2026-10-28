@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { usePermissions } from '@/hooks/use-can';
 import { useTrashWithUndo } from '@/hooks/use-trash-with-undo';
 import { duplicatePage } from '@/lib/data/pages';
 import { cn } from '@/lib/utils';
@@ -26,6 +27,7 @@ export function RecordActionsMenu({
   const t = useDatabasesTranslation();
   const navigate = useNavigate();
   const trashWithUndo = useTrashWithUndo();
+  const allowed = usePermissions();
 
   return (
     <DropdownMenu>
@@ -46,18 +48,24 @@ export function RecordActionsMenu({
           <Maximize2 />
           {t.open}
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => void duplicatePage(recordId)}>
-          <Copy />
-          {t.duplicate}
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          variant="destructive"
-          onSelect={() => void trashWithUndo(recordId, title)}
-        >
-          <Trash2 />
-          {t.moveToTrash}
-        </DropdownMenuItem>
+        {allowed('record.edit') ? (
+          <DropdownMenuItem onSelect={() => void duplicatePage(recordId)}>
+            <Copy />
+            {t.duplicate}
+          </DropdownMenuItem>
+        ) : null}
+        {allowed('page.trash') ? (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              variant="destructive"
+              onSelect={() => void trashWithUndo(recordId, title)}
+            >
+              <Trash2 />
+              {t.moveToTrash}
+            </DropdownMenuItem>
+          </>
+        ) : null}
       </DropdownMenuContent>
     </DropdownMenu>
   );

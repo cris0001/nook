@@ -15,6 +15,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { Eye, EyeOff, GripVertical, SlidersHorizontal } from 'lucide-react';
 
+import { useCan } from '@/hooks/use-can';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { reorderProperties, updateView } from '@/lib/data/databases';
 import { cn } from '@/lib/utils';
@@ -81,8 +82,10 @@ function PropertyRow({
   onToggle: () => void;
 }) {
   const t = useDatabasesTranslation();
+  const canReorder = useCan('database.editSchema');
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: property.id,
+    disabled: !canReorder,
   });
   const Icon = PROPERTY_ICON[property.type];
 
@@ -98,15 +101,19 @@ function PropertyRow({
         isDragging && 'relative z-10 shadow-md',
       )}
     >
-      <button
-        type="button"
-        aria-label={t.dragToReorder}
-        {...attributes}
-        {...listeners}
-        className="text-muted-foreground flex h-full w-6 cursor-grab touch-none items-center justify-center"
-      >
-        <GripVertical className="size-4" />
-      </button>
+      {canReorder ? (
+        <button
+          type="button"
+          aria-label={t.dragToReorder}
+          {...attributes}
+          {...listeners}
+          className="text-muted-foreground flex h-full w-6 cursor-grab touch-none items-center justify-center"
+        >
+          <GripVertical className="size-4" />
+        </button>
+      ) : (
+        <span className="w-2" />
+      )}
       <Icon className="text-muted-foreground size-4 shrink-0" />
       <span className={cn('min-w-0 flex-1 truncate text-sm', hidden && 'text-muted-foreground')}>
         {property.name}

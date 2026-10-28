@@ -1,5 +1,6 @@
 import { ExternalLink } from 'lucide-react';
 
+import { useCan } from '@/hooks/use-can';
 import { setRecordValue } from '@/lib/data/databases';
 import type { PropertyDef, PropertyValue } from '@/schemas/database.schema';
 
@@ -22,6 +23,7 @@ export function PropertyCell({
   value: PropertyValue;
   finished?: boolean;
 }) {
+  const readOnly = !useCan('record.edit');
   const save = (next: PropertyValue) => void setRecordValue(recordId, property.id, next);
   const text = typeof value === 'string' ? value : '';
 
@@ -29,7 +31,13 @@ export function PropertyCell({
     case 'select':
     case 'multiSelect':
       return (
-        <SelectCell databaseId={databaseId} recordId={recordId} property={property} value={value} />
+        <SelectCell
+          databaseId={databaseId}
+          recordId={recordId}
+          property={property}
+          value={value}
+          readOnly={readOnly}
+        />
       );
     case 'checkbox':
       return (
@@ -37,6 +45,7 @@ export function PropertyCell({
           <input
             type="checkbox"
             checked={value === true}
+            disabled={readOnly}
             onChange={(event) => save(event.target.checked)}
             className="accent-primary size-4"
           />
@@ -48,6 +57,7 @@ export function PropertyCell({
           type="number"
           inputMode="decimal"
           defaultValue={typeof value === 'number' ? value : ''}
+          readOnly={readOnly}
           onChange={(event) => save(event.target.value === '' ? null : Number(event.target.value))}
           className={`${INPUT} text-right tabular-nums`}
         />
@@ -59,6 +69,7 @@ export function PropertyCell({
           propertyId={property.id}
           value={text || null}
           finished={finished}
+          readOnly={readOnly}
         />
       );
     case 'url':
@@ -67,6 +78,7 @@ export function PropertyCell({
           <input
             type="url"
             defaultValue={text}
+            readOnly={readOnly}
             onChange={(event) => save(event.target.value || null)}
             className={INPUT}
           />
@@ -86,6 +98,7 @@ export function PropertyCell({
       return (
         <input
           defaultValue={text}
+          readOnly={readOnly}
           onChange={(event) => save(event.target.value || null)}
           className={INPUT}
         />

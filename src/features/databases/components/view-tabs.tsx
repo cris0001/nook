@@ -1,5 +1,6 @@
 import { CalendarDays, ChevronDown, Kanban, Table2 } from 'lucide-react';
 
+import { useCan } from '@/hooks/use-can';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { updateView } from '@/lib/data/databases';
 import { cn } from '@/lib/utils';
@@ -25,6 +26,7 @@ export function ViewTabs({
   onSelect: (id: string) => void;
 }) {
   const t = useDatabasesTranslation();
+  const canConfigure = useCan('page.edit');
 
   return (
     <div className="flex min-w-0 items-center gap-1">
@@ -36,15 +38,20 @@ export function ViewTabs({
         {views.map((view) => {
           const Icon = VIEW_ICON[view.type];
           const label = view.name || t.viewType[view.type];
-          if (view.id !== activeId) {
+          if (view.id !== activeId || !canConfigure) {
             return (
               <button
                 key={view.id}
                 type="button"
                 role="tab"
-                aria-selected={false}
+                aria-selected={view.id === activeId}
                 onClick={() => onSelect(view.id)}
-                className={cn(TAB, 'text-muted-foreground hover:text-foreground')}
+                className={cn(
+                  TAB,
+                  view.id === activeId
+                    ? 'bg-background text-foreground shadow-raised'
+                    : 'text-muted-foreground hover:text-foreground',
+                )}
               >
                 <Icon className="size-4" />
                 {label}

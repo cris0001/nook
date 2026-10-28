@@ -32,7 +32,15 @@ export function BoardCard({
   group: PropertyDef;
 }) {
   const t = useDatabasesTranslation();
-  const { setNodeRef: setDragRef, listeners, isDragging } = useDraggable({ id: record.id });
+  const canEdit = useCan('record.edit');
+  const {
+    setNodeRef: setDragRef,
+    listeners,
+    isDragging,
+  } = useDraggable({
+    id: record.id,
+    disabled: !canEdit,
+  });
   const data: BoardDropData = { kind: 'card', columnKey, recordId: record.id };
   const { setNodeRef: setDropRef } = useDroppable({ id: `card:${record.id}`, data });
   const lineAbove = useBoardUiStore(
@@ -40,7 +48,6 @@ export function BoardCard({
   );
   const editing = useBoardUiStore((s) => s.editingId === record.id);
   const setEditing = useBoardUiStore((s) => s.setEditing);
-  const canEdit = useCan('record.edit');
   const done = isFinished(record, group);
 
   function toggleDone() {

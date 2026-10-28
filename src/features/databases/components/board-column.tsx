@@ -1,6 +1,7 @@
 import { useDroppable } from '@dnd-kit/core';
 import { Plus } from 'lucide-react';
 
+import { useCan } from '@/hooks/use-can';
 import { BrandMark } from '@/components/brand';
 import { addRecord } from '@/lib/data/databases';
 import { cn } from '@/lib/utils';
@@ -34,6 +35,7 @@ export function BoardColumn({
     (s) => s.target?.columnKey === column.key && s.target.beforeId === null,
   );
   const setEditing = useBoardUiStore((s) => s.setEditing);
+  const canAdd = useCan('record.edit');
 
   async function addCard() {
     const value = column.key === NO_GROUP ? {} : { [group.id]: column.key };
@@ -58,15 +60,17 @@ export function BoardColumn({
         <span className="text-muted-foreground font-mono text-[11.5px] tabular-nums">
           {column.records.length}
         </span>
-        <button
-          type="button"
-          aria-label={t.addCard}
-          title={t.addCard}
-          onClick={() => void addCard()}
-          className="text-muted-foreground hover:bg-hover ml-auto flex size-7 items-center justify-center rounded-md"
-        >
-          <Plus className="size-4" />
-        </button>
+        {canAdd ? (
+          <button
+            type="button"
+            aria-label={t.addCard}
+            title={t.addCard}
+            onClick={() => void addCard()}
+            className="text-muted-foreground hover:bg-hover ml-auto flex size-7 items-center justify-center rounded-md"
+          >
+            <Plus className="size-4" />
+          </button>
+        ) : null}
       </header>
       <div aria-hidden className="bg-well mx-1.5 mt-0.5 h-0.5 overflow-hidden rounded-full">
         <div
@@ -82,7 +86,7 @@ export function BoardColumn({
         {column.records.length === 0 && !lineAtEnd ? (
           <li className="text-muted-foreground flex min-h-36 flex-1 flex-col items-center justify-center gap-2.5 rounded-[9px] border-[1.5px] border-dashed text-[12.5px]">
             <BrandMark eyesOnly mood="asleep" className="text-[34px]" />
-            {t.emptyColumn}
+            {canAdd ? t.emptyColumn : t.emptyColumnReadOnly}
           </li>
         ) : null}
         {column.records.map((record) => (
@@ -101,14 +105,16 @@ export function BoardColumn({
         />
       </ul>
 
-      <button
-        type="button"
-        onClick={() => void addCard()}
-        className="text-muted-foreground hover:bg-hover hover:text-foreground mt-1 flex h-9 items-center gap-1.5 rounded-md px-1.5 text-sm"
-      >
-        <Plus className="size-4" />
-        {t.addCard}
-      </button>
+      {canAdd ? (
+        <button
+          type="button"
+          onClick={() => void addCard()}
+          className="text-muted-foreground hover:bg-hover hover:text-foreground mt-1 flex h-9 items-center gap-1.5 rounded-md px-1.5 text-sm"
+        >
+          <Plus className="size-4" />
+          {t.addCard}
+        </button>
+      ) : null}
     </section>
   );
 }

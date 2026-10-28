@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
+import { useCan } from '@/hooks/use-can';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { reorderOptions } from '@/lib/data/databases';
@@ -20,6 +21,7 @@ export function BoardColumnMenu({
   option: SelectOption;
 }) {
   const t = useDatabasesTranslation();
+  const canEditSchema = useCan('database.editSchema');
   const [open, setOpen] = useState(false);
   const ids = property.options.map((o) => o.id);
   const index = ids.indexOf(option.id);
@@ -37,8 +39,9 @@ export function BoardColumnMenu({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
+        disabled={!canEditSchema}
         aria-label={t.editOption}
-        className="hover:bg-hover flex min-w-0 items-center gap-2 rounded-md px-1 py-0.5 text-[13px] font-semibold"
+        className="enabled:hover:bg-hover flex min-w-0 items-center gap-2 rounded-md px-1 py-0.5 text-[13px] font-semibold"
       >
         <i
           aria-hidden

@@ -1,6 +1,7 @@
 import { Check, Plus } from 'lucide-react';
 import { useState } from 'react';
 
+import { useCan } from '@/hooks/use-can';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { addOption, toggleRecordOption } from '@/lib/data/databases';
 import { cn } from '@/lib/utils';
@@ -16,15 +17,18 @@ export function SelectCell({
   recordId,
   property,
   value,
+  readOnly = false,
 }: {
   databaseId: string;
   recordId: string;
   property: PropertyDef;
   value: PropertyValue;
+  readOnly?: boolean;
 }) {
   const t = useDatabasesTranslation();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const canEditSchema = useCan('database.editSchema');
   const multi = property.type === 'multiSelect';
   const selected = Array.isArray(value) ? value : typeof value === 'string' ? [value] : [];
   const chosen = property.options.filter((o) => selected.includes(o.id));
@@ -51,7 +55,10 @@ export function SelectCell({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger className="flex h-full min-h-9 w-full flex-wrap items-center gap-1 px-2 py-1 text-left">
+      <PopoverTrigger
+        disabled={readOnly}
+        className="flex h-full min-h-9 w-full flex-wrap items-center gap-1 px-2 py-1 text-left"
+      >
         {multi ? (
           chosen.map((option) => <OptionTag key={option.id} option={option} />)
         ) : chosen[0] ? (
@@ -71,7 +78,7 @@ export function SelectCell({
           placeholder={t.searchOrCreate}
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={(event) => {
-            if (event.key === 'Enter' && needle && !exact) void create();
+            if (event.key === 'Enter' && canEditSchema && needle && !exact) void create();
           }}
           className="mb-1 h-9 w-full rounded-md border bg-transparent px-2 text-sm outline-none"
         />
@@ -86,15 +93,17 @@ export function SelectCell({
                 <OptionTag option={option} />
                 {selected.includes(option.id) ? <Check className="ml-auto size-4" /> : null}
               </button>
-              <OptionEditButton
-                databaseId={databaseId}
-                propertyId={property.id}
-                option={option}
-                className="lg:opacity-0 lg:group-hover/option:opacity-100 lg:data-[state=open]:opacity-100"
-              />
+              {canEditSchema ? (
+                <OptionEditButton
+                  databaseId={databaseId}
+                  propertyId={property.id}
+                  option={option}
+                  className="lg:opacity-0 lg:group-hover/option:opacity-100 lg:data-[state=open]:opacity-100"
+                />
+              ) : null}
             </li>
           ))}
-          {needle && !exact ? (
+          {canEditSchema && needle && !exact ? (
             <li>
               <button
                 type="button"

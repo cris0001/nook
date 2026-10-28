@@ -1,5 +1,6 @@
 import { Trash2 } from 'lucide-react';
 
+import { useCan } from '@/hooks/use-can';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { deleteProperty, renameProperty } from '@/lib/data/databases';
 import type { PropertyDef } from '@/schemas/database.schema';
@@ -17,6 +18,7 @@ export function PropertyHeader({
   property: PropertyDef;
 }) {
   const t = useDatabasesTranslation();
+  const canEditSchema = useCan('database.editSchema');
   const Icon = PROPERTY_ICON[property.type];
   const confirm = useConfirm();
 
@@ -33,7 +35,10 @@ export function PropertyHeader({
 
   return (
     <Popover>
-      <PopoverTrigger className="text-muted-foreground hover:bg-hover flex h-9 w-full items-center gap-1.5 px-2 text-left font-normal">
+      <PopoverTrigger
+        disabled={!canEditSchema}
+        className="text-muted-foreground enabled:hover:bg-hover flex h-9 w-full items-center gap-1.5 px-2 text-left font-normal"
+      >
         <Icon className="size-3.5 shrink-0" />
         <span className="eyebrow truncate">{property.name}</span>
       </PopoverTrigger>

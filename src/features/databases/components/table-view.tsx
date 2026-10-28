@@ -1,5 +1,6 @@
 import { Plus } from 'lucide-react';
 
+import { usePermissions } from '@/hooks/use-can';
 import { addRecord } from '@/lib/data/databases';
 import type { Database, View } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
@@ -26,6 +27,7 @@ export function TableView({
   const t = useDatabasesTranslation();
   const columns = database.properties.filter((p) => !view.hiddenProperties.includes(p.id));
   const status = statusPropertyOf(database);
+  const allowed = usePermissions();
 
   return (
     <div className="overflow-x-auto">
@@ -41,7 +43,9 @@ export function TableView({
               </th>
             ))}
             <th className="w-10 border-divider border-l p-0">
-              <AddPropertyButton databaseId={database.id} />
+              {allowed('database.editSchema') ? (
+                <AddPropertyButton databaseId={database.id} />
+              ) : null}
             </th>
           </tr>
         </thead>
@@ -65,18 +69,20 @@ export function TableView({
               <td className="border-divider border-l" />
             </tr>
           ))}
-          <tr>
-            <td colSpan={columns.length + 2} className="border-divider border-b p-0">
-              <button
-                type="button"
-                onClick={() => void addRecord(database.id)}
-                className="text-muted-foreground hover:bg-hover hover:text-foreground flex h-10 w-full items-center gap-2 px-2 text-sm lg:h-9"
-              >
-                <Plus className="size-4" />
-                {t.newRecord}
-              </button>
-            </td>
-          </tr>
+          {allowed('record.edit') ? (
+            <tr>
+              <td colSpan={columns.length + 2} className="border-divider border-b p-0">
+                <button
+                  type="button"
+                  onClick={() => void addRecord(database.id)}
+                  className="text-muted-foreground hover:bg-hover hover:text-foreground flex h-10 w-full items-center gap-2 px-2 text-sm lg:h-9"
+                >
+                  <Plus className="size-4" />
+                  {t.newRecord}
+                </button>
+              </td>
+            </tr>
+          ) : null}
         </tbody>
         <TableFooter database={database} columns={columns} records={records} />
       </table>
