@@ -36,3 +36,4 @@ test-results/
 # in the typecheck script). Not committed, so it never shows up as a stray change.
 src/routeTree.gen.ts
 docs/SYSTEM_DESIGN.md
+docs/DECISIONS.md
