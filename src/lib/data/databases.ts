@@ -82,8 +82,10 @@ export async function createDatabase(
     const table = makeView(page.id, 'table', '', generateKeyBetween(null, null));
     const board = makeView(page.id, 'board', '', generateKeyBetween(table.order, null));
     board.groupBy = properties[0]?.id ?? null;
+    const calendar = makeView(page.id, 'calendar', '', generateKeyBetween(board.order, null));
+    calendar.dateProperty = properties[1]?.id ?? null;
     await db.databases.add({ id: page.id, properties });
-    await db.views.bulkAdd([table, board]);
+    await db.views.bulkAdd([table, board, calendar]);
     return page;
   });
 }

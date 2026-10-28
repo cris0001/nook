@@ -1,5 +1,6 @@
 import type { JSONContent } from '@tiptap/react';
 import { Dexie, type EntityTable } from 'dexie';
+import { generateKeyBetween } from 'fractional-indexing';
 
 import type { Content } from '@/schemas/content.schema';
 import type { Database, View } from '@/schemas/database.schema';
@@ -62,5 +63,35 @@ db.version(4)
           await links.put({ id: `${sourceId}>${targetId}`, sourceId, targetId });
         }
       }
+    }
+  });
+
+// v5: calendar. Every database gets the calendar view next to table and board, dated by
+// its first date column.
+db.version(5)
+  .stores({})
+  .upgrade(async (tx) => {
+    const views = tx.table<View>('views');
+    const existing = await views.toArray();
+    for (const database of await tx.table<Database>('databases').toArray()) {
+      const own = existing.filter((view) => view.databaseId === database.id);
+      if (own.some((view) => view.type === 'calendar')) continue;
+      const last =
+        own
+          .map((view) => view.order)
+          .sort()
+          .at(-1) ?? null;
+      await views.add({
+        id: crypto.randomUUID(),
+        databaseId: database.id,
+        name: '',
+        type: 'calendar',
+        order: generateKeyBetween(last, null),
+        sorts: [],
+        filters: [],
+        groupBy: null,
+        dateProperty: database.properties.find((p) => p.type === 'date')?.id ?? null,
+        hiddenProperties: [],
+      });
     }
   });

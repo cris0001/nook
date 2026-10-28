@@ -27,7 +27,7 @@ beforeEach(async () => {
 });
 
 describe('databases data', () => {
-  it('creates a database with Status + Date and a table and board view', async () => {
+  it('creates a database with Status + Date and table, board and calendar views', async () => {
     const page = await createDatabase(null, 'Tasks');
     const database = await getDatabase(page.id);
     const status = database?.properties.find((p) => p.name === 'Status');
@@ -35,8 +35,9 @@ describe('databases data', () => {
     expect(database?.properties.map((p) => p.type)).toEqual(['select', 'date']);
     expect(status?.options.map((o) => o.name)).toEqual(['To do', 'In progress', 'Done']);
     const views = await listViews(page.id);
-    expect(views.map((v) => v.type)).toEqual(['table', 'board']);
+    expect(views.map((v) => v.type)).toEqual(['table', 'board', 'calendar']);
     expect(views[1]?.groupBy).toBe(status?.id);
+    expect(views[2]?.dateProperty).toBe(database?.properties[1]?.id);
   });
 
   it('adds records and stores cell values by property id', async () => {
@@ -77,7 +78,7 @@ describe('databases data', () => {
     const copy = await duplicatePage(database.id);
 
     expect((await getDatabase(copy?.id ?? ''))?.properties).toHaveLength(2);
-    expect(await listViews(copy?.id ?? '')).toHaveLength(2);
+    expect(await listViews(copy?.id ?? '')).toHaveLength(3);
     expect((await listRecords(copy?.id ?? '')).map((r) => r.title)).toEqual(['One']);
   });
 
@@ -149,7 +150,8 @@ describe('databases data', () => {
 
   it('deletes views but always keeps the last one', async () => {
     const database = await createDatabase(null);
-    const [table, board] = await listViews(database.id);
+    const [table, board, calendar] = await listViews(database.id);
+    await deleteView(calendar!.id);
     await deleteView(board!.id);
     await deleteView(table!.id);
     expect((await listViews(database.id)).map((v) => v.id)).toEqual([table!.id]);

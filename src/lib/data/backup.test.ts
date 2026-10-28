@@ -30,7 +30,7 @@ describe('workspace backup', () => {
 
     expect(await importWorkspace(backup)).toEqual({ ok: true, pages: 3 });
     expect((await listPages()).map((p) => p.title).sort()).toEqual(['Notes', 'Ship it', 'Tasks']);
-    expect(await db.views.count()).toBe(2);
+    expect(await db.views.count()).toBe(3);
     expect(await db.contents.count()).toBe(1);
   });
 
