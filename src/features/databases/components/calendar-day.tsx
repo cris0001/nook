@@ -34,6 +34,7 @@ export function CalendarDay({
   const t = useDatabasesTranslation();
   const { setNodeRef } = useDroppable({ id: `day:${day}` });
   const over = useCalendarUiStore((s) => s.overDay === day);
+  const weekend = [0, 6].includes(parseISO(day).getDay());
   const limit = mode === 'month' ? MONTH_LIMIT : Infinity;
   const shown = records.slice(0, limit);
   const hidden = records.slice(limit);
@@ -52,6 +53,7 @@ export function CalendarDay({
         'group/day border-divider relative flex min-w-0 flex-col gap-1 border-t border-l p-1 sm:p-1.5',
         mode === 'month' ? 'min-h-24 sm:min-h-28' : 'min-h-64',
         !inMonth && 'bg-surface/60',
+        inMonth && weekend && 'bg-surface/30',
         over && 'bg-primary-tint/50 ring-primary ring-1 ring-inset',
       )}
     >

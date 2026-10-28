@@ -54,6 +54,9 @@ const en = {
     titleToBody: 'From the title into the page',
     rename: 'Rename in the sidebar',
     doubleClick: 'Double-click',
+    calendar: 'Calendar',
+    calendarStep: 'Previous / next month or week',
+    calendarToday: 'Back to today',
   },
   backup: {
     title: 'Workspace',
@@ -135,6 +138,9 @@ const pl: typeof en = {
     titleToBody: 'Z tytułu do treści strony',
     rename: 'Zmiana nazwy w sidebarze',
     doubleClick: 'Dwuklik',
+    calendar: 'Kalendarz',
+    calendarStep: 'Poprzedni / następny miesiąc lub tydzień',
+    calendarToday: 'Wróć do dziś',
   },
   backup: {
     title: 'Przestrzeń',

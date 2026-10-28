@@ -15,6 +15,8 @@ export function CalendarHeader({
   week,
   mode,
   undated,
+  trayOpen,
+  onToggleTray,
   onMode,
   onStep,
   onToday,
@@ -23,6 +25,8 @@ export function CalendarHeader({
   week: string[];
   mode: CalendarMode;
   undated: number;
+  trayOpen: boolean;
+  onToggleTray: () => void;
   onMode: (mode: CalendarMode) => void;
   onStep: (step: -1 | 1) => void;
   onToday: () => void;
@@ -57,7 +61,19 @@ export function CalendarHeader({
         </button>
       </div>
       {undated ? (
-        <span className="text-muted-foreground font-mono text-[11px]">{t.undated(undated)}</span>
+        <button
+          type="button"
+          aria-expanded={trayOpen}
+          onClick={onToggleTray}
+          className={cn(
+            'h-7 rounded-md px-2 font-mono text-[11px]',
+            trayOpen
+              ? 'bg-primary-tint text-primary-tint-foreground'
+              : 'text-muted-foreground hover:bg-hover',
+          )}
+        >
+          {t.undated(undated)}
+        </button>
       ) : null}
       <div role="radiogroup" className="bg-well ml-auto flex rounded-lg p-0.5">
         {(['month', 'week'] as const).map((option) => (

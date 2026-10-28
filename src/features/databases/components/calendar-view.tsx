@@ -20,6 +20,7 @@ import type { Page } from '@/schemas/page.schema';
 import { todayKey } from '@/utils/dates';
 import { statusPropertyOf } from '@/utils/progress';
 
+import { useCalendarKeys } from '../hooks/use-calendar-keys';
 import { useDatabasesTranslation } from '../i18n';
 import { useCalendarUiStore } from '../stores/calendar-ui.store';
 import { calendarDateProperty, recordsByDay, weekDays, type CalendarMode } from '../utils/calendar';
@@ -27,6 +28,7 @@ import { monthGrid } from '../utils/month-grid';
 import { CHIP } from './calendar-chip';
 import { CalendarDay } from './calendar-day';
 import { CalendarHeader } from './calendar-header';
+import { UNDATED, UndatedTray } from './undated-tray';
 
 export function CalendarView({
   database,
@@ -42,6 +44,7 @@ export function CalendarView({
   const canEdit = useCan('record.edit');
   const [mode, setMode] = useState<CalendarMode>('month');
   const [anchor, setAnchor] = useState(() => new Date());
+  const [trayOpen, setTrayOpen] = useState(false);
   const { draggingId, setDragging, setOverDay, setEditing } = useCalendarUiStore();
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
@@ -49,6 +52,8 @@ export function CalendarView({
   );
   const dateProperty = calendarDateProperty(database, view);
   const status = statusPropertyOf(database);
+  useCalendarKeys(mode, setAnchor);
+
   const byDay = useMemo(
     () => (dateProperty ? recordsByDay(records, dateProperty.id) : new Map<string, Page[]>()),
     [records, dateProperty],
@@ -63,7 +68,7 @@ export function CalendarView({
   const month = format(anchor, 'yyyy-MM');
   const today = todayKey();
   const dragging = draggingId ? records.find((r) => r.id === draggingId) : undefined;
-  const undated = records.filter((r) => typeof r.properties[dateProperty.id] !== 'string').length;
+  const undated = records.filter((r) => typeof r.properties[dateProperty.id] !== 'string');
 
   async function add(day: string) {
     if (!dateProperty) return;
@@ -73,9 +78,11 @@ export function CalendarView({
 
   function onDragEnd({ active, over }: DragEndEvent) {
     setDragging(null);
-    const day = typeof over?.id === 'string' ? over.id.replace(/^day:/, '') : null;
+    const target = typeof over?.id === 'string' ? over.id : null;
     const record = records.find((r) => r.id === active.id);
-    if (dateProperty && record && day && record.properties[dateProperty.id] !== day) {
+    if (!dateProperty || !record || !target) return;
+    const day = target === UNDATED ? null : target.replace(/^day:/, '');
+    if ((record.properties[dateProperty.id] ?? null) !== day) {
       void setRecordValue(record.id, dateProperty.id, day);
     }
   }
@@ -86,7 +93,9 @@ export function CalendarView({
         anchor={anchor}
         week={week}
         mode={mode}
-        undated={undated}
+        undated={undated.length}
+        trayOpen={trayOpen}
+        onToggleTray={() => setTrayOpen((open) => !open)}
         onMode={setMode}
         onStep={(step) =>
           setAnchor((a) => (mode === 'month' ? addMonths(a, step) : addWeeks(a, step)))
@@ -100,6 +109,7 @@ export function CalendarView({
         onDragCancel={() => setDragging(null)}
         onDragEnd={onDragEnd}
       >
+        {trayOpen && undated.length ? <UndatedTray records={undated} status={status} /> : null}
         <div className="border-divider overflow-hidden rounded-lg border-r border-b">
           <div className="grid grid-cols-7">
             {week.map((day) => (

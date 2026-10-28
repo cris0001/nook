@@ -4,13 +4,7 @@ import { useEffect } from 'react';
 import { useCommonTranslation } from '@/lib/i18n/common';
 import { useShortcutsStore } from '@/stores/shortcuts.store';
 import { MOD, SHIFT } from '@/utils/platform';
-
-function typingTarget(target: EventTarget | null): boolean {
-  return (
-    target instanceof HTMLElement &&
-    (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))
-  );
-}
+import { isTypingTarget } from '@/utils/typing-target';
 
 function Keys({ keys }: { keys: string[] }) {
   return (
@@ -34,7 +28,8 @@ export function ShortcutsDialog() {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key !== '?' || event.metaKey || event.ctrlKey || typingTarget(event.target)) return;
+      if (event.key !== '?' || event.metaKey || event.ctrlKey || isTypingTarget(event.target))
+        return;
       event.preventDefault();
       setOpen(true);
     }
@@ -81,6 +76,13 @@ export function ShortcutsDialog() {
       [
         [t.shortcuts.titleToBody, ['Enter']],
         [t.shortcuts.rename, [t.shortcuts.doubleClick]],
+      ],
+    ],
+    [
+      t.shortcuts.calendar,
+      [
+        [t.shortcuts.calendarStep, ['←', '→']],
+        [t.shortcuts.calendarToday, ['T']],
       ],
     ],
   ];
