@@ -119,7 +119,7 @@ hand-drawn look (matches the eyes in the logo), perfect-freehand for the pen.
 - [x] Formatting toolbar on text selection
 - [x] Command palette (Ctrl/Cmd+K)
 - [x] Debounced title writes, persistent storage, visible write errors
-- [ ] Workspace export / import (JSON)
+- [x] Workspace export / import (JSON)
 
 ---
 

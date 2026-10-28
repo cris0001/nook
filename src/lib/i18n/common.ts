@@ -26,6 +26,17 @@ const en = {
     },
   },
   readOnly: 'View only',
+  backup: {
+    title: 'Workspace',
+    export: 'Export to file',
+    import: 'Import from file',
+    exported: (n: number) => `Exported ${n} pages`,
+    imported: (n: number) => `Imported ${n} pages`,
+    invalid: 'That file is not a nOOk backup',
+    confirmTitle: 'Replace this workspace?',
+    confirmBody:
+      'Everything here will be replaced by the file. Export first if you want to keep it.',
+  },
   errors: {
     saveFailed: 'A change could not be saved. Try again, or reload the page.',
     storageFull: 'Browser storage is full — free some space so changes can be saved.',
@@ -67,6 +78,17 @@ const pl: typeof en = {
     },
   },
   readOnly: 'Tylko podgląd',
+  backup: {
+    title: 'Przestrzeń',
+    export: 'Eksportuj do pliku',
+    import: 'Importuj z pliku',
+    exported: (n: number) => `Wyeksportowano stron: ${n}`,
+    imported: (n: number) => `Zaimportowano stron: ${n}`,
+    invalid: 'To nie jest plik kopii nOOk',
+    confirmTitle: 'Zastąpić tę przestrzeń?',
+    confirmBody:
+      'Wszystko tutaj zostanie zastąpione zawartością pliku. Jeśli chcesz to zachować, najpierw wyeksportuj.',
+  },
   errors: {
     saveFailed: 'Nie udało się zapisać zmiany. Spróbuj ponownie albo odśwież stronę.',
     storageFull: 'Pamięć przeglądarki jest pełna — zwolnij miejsce, żeby zapisywać zmiany.',

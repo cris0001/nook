@@ -2,6 +2,7 @@ import { Check, ChevronsUpDown, Monitor, Moon, Sun } from 'lucide-react';
 
 import { Flag } from '@/components/flags';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { WorkspaceBackup } from '@/components/workspace-backup';
 import { useCommonTranslation } from '@/lib/i18n/common';
 import { ROLES } from '@/lib/permissions';
 import { cn } from '@/lib/utils';
@@ -120,6 +121,8 @@ export function ProfileMenu() {
             ))}
           </div>
         </div>
+        <div className="border-divider my-1.5 border-t" />
+        <WorkspaceBackup />
       </PopoverContent>
     </Popover>
   );
