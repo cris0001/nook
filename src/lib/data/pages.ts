@@ -1,9 +1,12 @@
+import type { JSONContent } from '@tiptap/react';
 import { generateKeyBetween } from 'fractional-indexing';
 
 import { db } from '@/lib/db';
 import type { Page, PageType } from '@/schemas/page.schema';
 
 import { byOrder } from '@/utils/order';
+
+import { writeLinks } from './links';
 
 export interface CreatePageInput {
   parentId: string | null;
@@ -156,37 +159,46 @@ async function copyContents(newIds: Map<string, string>): Promise<void> {
       return row && id ? [{ ...row, id, updatedAt: Date.now() }] : [];
     }),
   );
+  for (const row of rows) {
+    const id = row && newIds.get(row.id);
+    if (row && id) await writeLinks(id, row.doc as JSONContent);
+  }
 }
 
 export async function duplicatePage(id: string): Promise<Page | undefined> {
-  return db.transaction('rw', [db.pages, db.databases, db.views, db.contents], async () => {
-    const original = await db.pages.get(id);
-    if (original?.deletedAt !== null) {
-      return undefined;
-    }
+  return db.transaction(
+    'rw',
+    [db.pages, db.databases, db.views, db.contents, db.links],
+    async () => {
+      const original = await db.pages.get(id);
+      if (original?.deletedAt !== null) {
+        return undefined;
+      }
 
-    const siblings = await childrenOf(original.parentId);
-    const next = siblings[siblings.findIndex((page) => page.id === id) + 1];
-    const now = Date.now();
-    const ids = await subtreeIds(id);
-    const rows = (await db.pages.bulkGet(ids)).filter((p): p is Page => p?.deletedAt === null);
-    const newIds = new Map(rows.map((page) => [page.id, crypto.randomUUID()]));
+      const siblings = await childrenOf(original.parentId);
+      const next = siblings[siblings.findIndex((page) => page.id === id) + 1];
+      const now = Date.now();
+      const ids = await subtreeIds(id);
+      const rows = (await db.pages.bulkGet(ids)).filter((p): p is Page => p?.deletedAt === null);
+      const newIds = new Map(rows.map((page) => [page.id, crypto.randomUUID()]));
 
-    const copies = rows.map((page) => ({
-      ...page,
-      id: newIds.get(page.id) ?? crypto.randomUUID(),
-      parentId: page.id === id ? page.parentId : (newIds.get(page.parentId ?? '') ?? null),
-      order: page.id === id ? generateKeyBetween(original.order, next?.order ?? null) : page.order,
-      favoritedAt: null,
-      lastOpenedAt: null,
-      createdAt: now,
-      updatedAt: now,
-    }));
-    await db.pages.bulkAdd(copies);
-    await copyDatabaseRows(newIds);
-    await copyContents(newIds);
-    return copies[0];
-  });
+      const copies = rows.map((page) => ({
+        ...page,
+        id: newIds.get(page.id) ?? crypto.randomUUID(),
+        parentId: page.id === id ? page.parentId : (newIds.get(page.parentId ?? '') ?? null),
+        order:
+          page.id === id ? generateKeyBetween(original.order, next?.order ?? null) : page.order,
+        favoritedAt: null,
+        lastOpenedAt: null,
+        createdAt: now,
+        updatedAt: now,
+      }));
+      await db.pages.bulkAdd(copies);
+      await copyDatabaseRows(newIds);
+      await copyContents(newIds);
+      return copies[0];
+    },
+  );
 }
 
 export async function listTrash(): Promise<Page[]> {
@@ -204,18 +216,23 @@ export async function listTrash(): Promise<Page[]> {
 }
 
 export async function deletePageForever(id: string): Promise<void> {
-  await db.transaction('rw', [db.pages, db.databases, db.views, db.contents], async () => {
-    const page = await db.pages.get(id);
-    if (!page?.deletedAt) {
-      return;
-    }
-    const batch = page.deletedAt;
-    const ids = await subtreeIds(id);
-    const rows = (await db.pages.bulkGet(ids)).filter((p): p is Page => p?.deletedAt === batch);
-    const gone = rows.map((p) => p.id);
-    await db.pages.bulkDelete(gone);
-    await db.databases.bulkDelete(gone);
-    await db.views.where('databaseId').anyOf(gone).delete();
-    await db.contents.bulkDelete(gone);
-  });
+  await db.transaction(
+    'rw',
+    [db.pages, db.databases, db.views, db.contents, db.links],
+    async () => {
+      const page = await db.pages.get(id);
+      if (!page?.deletedAt) {
+        return;
+      }
+      const batch = page.deletedAt;
+      const ids = await subtreeIds(id);
+      const rows = (await db.pages.bulkGet(ids)).filter((p): p is Page => p?.deletedAt === batch);
+      const gone = rows.map((p) => p.id);
+      await db.pages.bulkDelete(gone);
+      await db.databases.bulkDelete(gone);
+      await db.views.where('databaseId').anyOf(gone).delete();
+      await db.contents.bulkDelete(gone);
+      await db.links.where('sourceId').anyOf(gone).delete();
+    },
+  );
 }

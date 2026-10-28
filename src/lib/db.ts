@@ -1,8 +1,11 @@
+import type { JSONContent } from '@tiptap/react';
 import { Dexie, type EntityTable } from 'dexie';
 
 import type { Content } from '@/schemas/content.schema';
 import type { Database, View } from '@/schemas/database.schema';
+import type { Link } from '@/schemas/link.schema';
 import type { Page } from '@/schemas/page.schema';
+import { mentionTargets } from '@/utils/mentions';
 
 // The whole workspace lives in one IndexedDB database. Only indexed fields go in the
 // store definitions; the rest of each row is stored as-is. IndexedDB can't index null,
@@ -14,6 +17,7 @@ export const db = new Dexie('nook') as Dexie & {
   databases: EntityTable<Database, 'id'>;
   views: EntityTable<View, 'id'>;
   contents: EntityTable<Content, 'id'>;
+  links: EntityTable<Link, 'id'>;
 };
 
 db.version(1).stores({
@@ -42,3 +46,21 @@ db.version(2)
 db.version(3).stores({
   contents: 'id',
 });
+
+// v4: backlinks. An index of mentions, rebuilt here from the bodies already stored.
+db.version(4)
+  .stores({
+    links: 'id, sourceId, targetId',
+  })
+  .upgrade(async (tx) => {
+    const contents = await tx.table<Content>('contents').toArray();
+    const links = tx.table<Link>('links');
+    for (const row of contents) {
+      const sourceId = row.id;
+      for (const targetId of mentionTargets(row.doc as JSONContent)) {
+        if (targetId !== sourceId) {
+          await links.put({ id: `${sourceId}>${targetId}`, sourceId, targetId });
+        }
+      }
+    }
+  });

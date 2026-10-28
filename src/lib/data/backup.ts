@@ -1,6 +1,8 @@
 import { db } from '@/lib/db';
 import { BACKUP_VERSION, BackupSchema, type Backup } from '@/schemas/backup.schema';
 
+import { rebuildLinks } from './links';
+
 export type ImportResult = { ok: true; pages: number } | { ok: false; reason: 'invalid' };
 
 export async function exportWorkspace(): Promise<Backup> {
@@ -29,19 +31,24 @@ export async function importWorkspace(input: unknown): Promise<ImportResult> {
     return { ok: false, reason: 'invalid' };
   }
   const backup = parsed.data;
-  await db.transaction('rw', [db.pages, db.databases, db.views, db.contents], async () => {
-    await Promise.all([
-      db.pages.clear(),
-      db.databases.clear(),
-      db.views.clear(),
-      db.contents.clear(),
-    ]);
-    await Promise.all([
-      db.pages.bulkAdd(backup.pages),
-      db.databases.bulkAdd(backup.databases),
-      db.views.bulkAdd(backup.views),
-      db.contents.bulkAdd(backup.contents),
-    ]);
-  });
+  await db.transaction(
+    'rw',
+    [db.pages, db.databases, db.views, db.contents, db.links],
+    async () => {
+      await Promise.all([
+        db.pages.clear(),
+        db.databases.clear(),
+        db.views.clear(),
+        db.contents.clear(),
+      ]);
+      await Promise.all([
+        db.pages.bulkAdd(backup.pages),
+        db.databases.bulkAdd(backup.databases),
+        db.views.bulkAdd(backup.views),
+        db.contents.bulkAdd(backup.contents),
+      ]);
+      await rebuildLinks();
+    },
+  );
   return { ok: true, pages: backup.pages.length };
 }
