@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { useWidth } from '../hooks/use-width';
 import { niceMax } from '../utils/scale';
 import { ChartFrame, FOOT, GUTTER, type Point } from './chart-frame';
+import { ChartTable } from './chart-table';
 import { ChartTooltip } from './chart-tooltip';
 
 const HEIGHT = 200;
@@ -30,43 +31,50 @@ export function ColumnChart({ points, label }: { points: Point[]; label: string 
   const active = hover === null ? undefined : points[hover];
 
   return (
-    <div ref={setElement} className="relative" role="img" aria-label={label}>
-      {width ? (
-        <ChartFrame
-          width={width}
-          height={HEIGHT}
-          max={max}
-          points={points}
-          xOf={xOf}
-          shownLabels={(i) => band > 44 || i % 2 === points.length % 2}
-        >
-          {points.map((point, i) => (
-            <g key={point.key} onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(null)}>
-              <rect
-                x={GUTTER + band * i}
-                y={0}
-                width={band}
-                height={base}
-                className="fill-transparent"
-              />
-              {point.value ? (
-                <path
-                  d={columnPath(xOf(i) - barWidth / 2, yOf(point.value), barWidth, base)}
-                  className={cn(
-                    'fill-primary transition-opacity',
-                    hover !== null && hover !== i && 'opacity-50',
-                  )}
+    <div ref={setElement} className="relative">
+      <ChartTable label={label} points={points} />
+      <div aria-hidden>
+        {width ? (
+          <ChartFrame
+            width={width}
+            height={HEIGHT}
+            max={max}
+            points={points}
+            xOf={xOf}
+            shownLabels={(i) => band > 44 || i % 2 === points.length % 2}
+          >
+            {points.map((point, i) => (
+              <g
+                key={point.key}
+                onMouseEnter={() => setHover(i)}
+                onMouseLeave={() => setHover(null)}
+              >
+                <rect
+                  x={GUTTER + band * i}
+                  y={0}
+                  width={band}
+                  height={base}
+                  className="fill-transparent"
                 />
-              ) : null}
-            </g>
-          ))}
-        </ChartFrame>
-      ) : (
-        <div style={{ height: HEIGHT }} />
-      )}
-      {active && hover !== null ? (
-        <ChartTooltip x={xOf(hover)} y={yOf(active.value)} text={active.tooltip} />
-      ) : null}
+                {point.value ? (
+                  <path
+                    d={columnPath(xOf(i) - barWidth / 2, yOf(point.value), barWidth, base)}
+                    className={cn(
+                      'fill-primary transition-opacity',
+                      hover !== null && hover !== i && 'opacity-50',
+                    )}
+                  />
+                ) : null}
+              </g>
+            ))}
+          </ChartFrame>
+        ) : (
+          <div style={{ height: HEIGHT }} />
+        )}
+        {active && hover !== null ? (
+          <ChartTooltip x={xOf(hover)} y={yOf(active.value)} text={active.tooltip} />
+        ) : null}
+      </div>
     </div>
   );
 }

@@ -4,8 +4,7 @@ const en = {
   openMenu: 'Open menu',
   sidebar: 'Sidebar',
   dnd: {
-    instructions:
-      'Drag with the mouse, or press and hold on touch screens. The item menu moves it with the keyboard.',
+    instructions: 'Drag with the mouse, or press and hold on touch screens.',
     picked: (item: string) => `Picked up ${item}.`,
     over: (item: string, target: string) => `${item} is over ${target}.`,
     away: (item: string) => `${item} is not over a drop area.`,
@@ -99,8 +98,7 @@ const pl: typeof en = {
   openMenu: 'Otwórz menu',
   sidebar: 'Pasek boczny',
   dnd: {
-    instructions:
-      'Przeciągnij myszą albo przytrzymaj na ekranie dotykowym. Menu elementu pozwala przenieść go klawiaturą.',
+    instructions: 'Przeciągnij myszą albo przytrzymaj na ekranie dotykowym.',
     picked: (item: string) => `Podniesiono: ${item}.`,
     over: (item: string, target: string) => `${item} nad: ${target}.`,
     away: (item: string) => `${item} poza obszarem upuszczenia.`,
