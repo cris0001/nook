@@ -4,6 +4,7 @@ import {
   Database,
   FilePlus,
   House,
+  Keyboard,
   Languages,
   Monitor,
   Moon,
@@ -14,6 +15,7 @@ import {
 
 import { useCan } from '@/hooks/use-can';
 import { LOCALES, useLocaleStore } from '@/stores/locale.store';
+import { useShortcutsStore } from '@/stores/shortcuts.store';
 import { useThemeStore, type Theme } from '@/stores/theme.store';
 
 import { useCreatePage } from '../hooks/use-create-page';
@@ -38,6 +40,7 @@ export function PaletteActions({ className, onDone }: { className: string; onDon
   const setLocale = useLocaleStore((s) => s.setLocale);
   const theme = useThemeStore((s) => s.theme);
   const setTheme = useThemeStore((s) => s.setTheme);
+  const openShortcuts = useShortcutsStore((s) => s.setOpen);
   const other = LOCALES.find((l) => l.code !== locale);
 
   const actions: Action[] = [
@@ -58,6 +61,12 @@ export function PaletteActions({ className, onDone }: { className: string; onDon
         ]
       : []),
     { id: 'today', label: t.palette.goToday, Icon: House, run: () => void navigate({ to: '/' }) },
+    {
+      id: 'shortcuts',
+      label: t.palette.shortcuts,
+      Icon: Keyboard,
+      run: () => openShortcuts(true),
+    },
     {
       id: 'trash',
       label: t.palette.goTrash,

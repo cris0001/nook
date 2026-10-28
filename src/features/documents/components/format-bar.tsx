@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { MOD, SHIFT, shortcut } from '@/utils/platform';
 
 import { useDocumentsTranslation } from '../i18n';
 import { useFormatBarStore } from '../stores/format-bar.store';
@@ -23,11 +24,11 @@ import { TurnIntoPanel } from './turn-into-panel';
 type Mark = 'bold' | 'italic' | 'underline' | 'strike' | 'code';
 
 const MARKS: { mark: Mark; Icon: LucideIcon; keys: string }[] = [
-  { mark: 'bold', Icon: Bold, keys: '⌘B' },
-  { mark: 'italic', Icon: Italic, keys: '⌘I' },
-  { mark: 'underline', Icon: Underline, keys: '⌘U' },
-  { mark: 'strike', Icon: Strikethrough, keys: '⌘⇧S' },
-  { mark: 'code', Icon: Code, keys: '⌘E' },
+  { mark: 'bold', Icon: Bold, keys: shortcut(MOD, 'B') },
+  { mark: 'italic', Icon: Italic, keys: shortcut(MOD, 'I') },
+  { mark: 'underline', Icon: Underline, keys: shortcut(MOD, 'U') },
+  { mark: 'strike', Icon: Strikethrough, keys: shortcut(MOD, SHIFT, 'S') },
+  { mark: 'code', Icon: Code, keys: shortcut(MOD, 'E') },
 ];
 
 const BUTTON =
@@ -111,7 +112,7 @@ export function FormatBar({ editor }: { editor: Editor }) {
           <button
             type="button"
             aria-label={t.format.link}
-            title={`${t.format.link} ⌘K`}
+            title={`${t.format.link} ${shortcut(MOD, 'K')}`}
             aria-pressed={state.link}
             onClick={() => setMode('link')}
             className={cn(BUTTON, 'gap-1.5 px-2 text-[13px]', state.link && ON)}

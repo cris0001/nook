@@ -1,4 +1,5 @@
 import { createTranslation } from '@/lib/i18n/create-translation';
+import { polishPlural } from '@/lib/i18n/plural';
 
 const en = {
   newPage: 'New page',
@@ -26,6 +27,7 @@ const en = {
     newDatabase: 'New database',
     goToday: 'Go to Today',
     goTrash: 'Open the trash',
+    shortcuts: 'Keyboard shortcuts',
     theme: {
       light: 'Switch to light theme',
       dark: 'Switch to dark theme',
@@ -47,6 +49,8 @@ const en = {
   icon: { add: 'Add icon', change: 'Change icon', remove: 'Remove', random: 'Random' },
   breadcrumbs: 'Breadcrumbs',
   edited: (when: string) => `Edited ${when}`,
+  stats: (words: number, minutes: number) =>
+    `${words} ${words === 1 ? 'word' : 'words'} · ${minutes} min read`,
   recent: 'Jump back in',
   tip: 'Press / in any page to insert a block.',
   actions: {
@@ -102,6 +106,7 @@ const pl: typeof en = {
     newDatabase: 'Nowa baza danych',
     goToday: 'Przejdź do Dziś',
     goTrash: 'Otwórz kosz',
+    shortcuts: 'Skróty klawiszowe',
     theme: { light: 'Włącz jasny motyw', dark: 'Włącz ciemny motyw', system: 'Motyw systemowy' },
     language: (name: string) => `Zmień język na ${name}`,
     hintMove: 'wybierz',
@@ -119,6 +124,8 @@ const pl: typeof en = {
   icon: { add: 'Dodaj ikonę', change: 'Zmień ikonę', remove: 'Usuń', random: 'Losowa' },
   breadcrumbs: 'Ścieżka',
   edited: (when: string) => `Edytowano ${when}`,
+  stats: (words, minutes) =>
+    `${words} ${polishPlural(words, 'słowo', 'słowa', 'słów')} · ${minutes} min czytania`,
   recent: 'Wróć do',
   tip: 'Wciśnij / na dowolnej stronie, żeby wstawić blok.',
   actions: {

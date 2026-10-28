@@ -4,6 +4,7 @@ import { House, Search, Trash2 } from 'lucide-react';
 import { BrandMark } from '@/components/brand';
 import { ProfileMenu } from '@/components/profile-menu';
 import { cn } from '@/lib/utils';
+import { MOD, shortcut } from '@/utils/platform';
 
 import { usePagesTranslation } from '../i18n';
 import { useCommandPaletteStore } from '../stores/command-palette.store';
@@ -11,8 +12,6 @@ import { ACTIVE_SELF, SECTION_LABEL, SIDEBAR_ROW } from '../utils/row-styles';
 import { FavoritesList } from './favorites-list';
 import { NewPageMenu } from './new-page-menu';
 import { PageTree } from './page-tree';
-
-const SHORTCUT = /mac|iphone|ipad/i.test(navigator.userAgent) ? '⌘K' : 'Ctrl K';
 
 export function PageSidebar({ todayCount = 0 }: { todayCount?: number }) {
   const t = usePagesTranslation();
@@ -35,7 +34,7 @@ export function PageSidebar({ todayCount = 0 }: { todayCount?: number }) {
         <Search className="size-4 shrink-0" />
         <span className="flex-1">{t.search}</span>
         <kbd className="text-muted-foreground bg-background/60 rounded border px-1.5 font-mono text-[10.5px]">
-          {SHORTCUT}
+          {shortcut(MOD, 'K')}
         </kbd>
       </button>
       <Link
