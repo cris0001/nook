@@ -5,13 +5,10 @@ import { cn } from '@/lib/utils';
 import { useDocumentsTranslation } from '../i18n';
 import { useSlashMenuStore } from '../stores/slash-menu.store';
 import { matchesQuery, SLASH_ITEMS } from '../utils/slash-items';
+import { SUGGESTION_MAX_HEIGHT, SuggestionPopup } from './suggestion-popup';
 
-const WIDTH = 288;
-const MAX_HEIGHT = 320;
-
-// The floating "/" block menu, positioned under the caret (or above it near the bottom
-// of the screen). Mouse picks use onMouseDown + preventDefault so the editor keeps
-// focus and the "/query" range stays valid.
+// Mouse picks use onMouseDown + preventDefault so the editor keeps focus and the
+// "/query" range stays valid.
 export function SlashMenu() {
   const t = useDocumentsTranslation();
   const { open, query, rect, index, pick, setIndex, setItems } = useSlashMenuStore();
@@ -38,23 +35,12 @@ export function SlashMenu() {
     return null;
   }
 
-  const below = rect.bottom + 6 + MAX_HEIGHT < window.innerHeight;
-  const left = Math.max(8, Math.min(rect.left, window.innerWidth - WIDTH - 8));
-
   return (
-    <div
-      role="listbox"
-      className="bg-background fixed z-50 overflow-hidden rounded-md border p-1 shadow-lg"
-      style={{
-        left,
-        width: WIDTH,
-        ...(below ? { top: rect.bottom + 6 } : { bottom: window.innerHeight - rect.top + 6 }),
-      }}
-    >
+    <SuggestionPopup rect={rect} label={t.blocksLabel}>
       {items.length === 0 ? (
         <p className="text-muted-foreground px-2 py-2 text-sm">{t.noMatches}</p>
       ) : (
-        <ul ref={listRef} className="overflow-y-auto" style={{ maxHeight: MAX_HEIGHT }}>
+        <ul ref={listRef} className="overflow-y-auto" style={{ maxHeight: SUGGESTION_MAX_HEIGHT }}>
           {items.map((item, i) => {
             const [title, description] = t.blocks[item.id];
             const Icon = item.icon;
@@ -87,6 +73,6 @@ export function SlashMenu() {
           })}
         </ul>
       )}
-    </div>
+    </SuggestionPopup>
   );
 }

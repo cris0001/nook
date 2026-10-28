@@ -1,7 +1,7 @@
 import { Command } from 'cmdk';
 
 import { usePagesTranslation } from '../i18n';
-import { PAGE_TYPE_ICON } from '../utils/page-icon';
+import { PAGE_TYPE_ICON } from '@/components/page-type-icon';
 import type { PaletteEntry } from '../utils/palette';
 
 export const PALETTE_ITEM =

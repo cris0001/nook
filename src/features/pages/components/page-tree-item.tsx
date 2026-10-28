@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 import { useCreatePage } from '../hooks/use-create-page';
 import { usePagesTranslation } from '../i18n';
 import { useSidebarUiStore } from '../stores/sidebar-ui.store';
-import { PAGE_TYPE_ICON } from '../utils/page-icon';
+import { PAGE_TYPE_ICON } from '@/components/page-type-icon';
 import { ACTIVE_WITHIN, SIDEBAR_ROW } from '../utils/row-styles';
 import type { PageNode } from '../utils/page-tree';
 import { DatabaseProgress } from './database-progress';

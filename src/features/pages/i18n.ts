@@ -15,6 +15,7 @@ const en = {
   pages: 'Pages',
   today: 'Today',
   search: 'Search',
+  backlinks: 'Linked from',
   palette: {
     label: 'Search and commands',
     placeholder: 'Search pages or type a command…',
@@ -94,6 +95,7 @@ const pl: typeof en = {
   pages: 'Strony',
   today: 'Dziś',
   search: 'Szukaj',
+  backlinks: 'Linkują tutaj',
   palette: {
     label: 'Wyszukiwanie i polecenia',
     placeholder: 'Szukaj stron albo wpisz polecenie…',

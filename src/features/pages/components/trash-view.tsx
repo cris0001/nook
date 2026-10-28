@@ -10,7 +10,7 @@ import { usePermissions } from '@/hooks/use-can';
 import { deletePageForever, restorePage } from '@/lib/data/pages';
 import { useTrash } from '../hooks/use-trash';
 import { usePagesTranslation } from '../i18n';
-import { PAGE_TYPE_ICON } from '../utils/page-icon';
+import { PAGE_TYPE_ICON } from '@/components/page-type-icon';
 
 export function TrashView() {
   const t = usePagesTranslation();

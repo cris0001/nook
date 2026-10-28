@@ -7,6 +7,7 @@ import type { Page } from '@/schemas/page.schema';
 import { useOpenPage } from '../hooks/use-open-page';
 import { usePage } from '../hooks/use-page';
 import { usePagesTranslation } from '../i18n';
+import { Backlinks } from './backlinks';
 import { PageHeader } from './page-header';
 import { PageIconPicker } from './page-icon-picker';
 
@@ -100,6 +101,7 @@ export function PageView({
           className="font-heading placeholder:text-muted-foreground/50 w-full bg-transparent text-[30px] leading-tight font-bold tracking-tight outline-none [font-variation-settings:'opsz'_96] sm:text-[36px]"
         />
         {body?.(page, editable)}
+        <Backlinks pageId={page.id} />
       </article>
     </>
   );

@@ -8,6 +8,14 @@ const en = {
   emptyHeading: 'Heading',
   noMatches: 'No matching blocks',
   dragBlock: 'Drag to move',
+  blocksLabel: 'Blocks',
+  untitledPage: 'Untitled',
+  mention: {
+    label: 'Link to a page',
+    empty: 'No matching pages',
+    create: (title: string) => `New page “${title}”`,
+    deleted: 'Deleted page',
+  },
   format: {
     bold: 'Bold',
     italic: 'Italic',
@@ -55,6 +63,14 @@ const pl: typeof en = {
   emptyHeading: 'Nagłówek',
   noMatches: 'Brak pasujących bloków',
   dragBlock: 'Przeciągnij, aby przenieść',
+  blocksLabel: 'Bloki',
+  untitledPage: 'Bez tytułu',
+  mention: {
+    label: 'Link do strony',
+    empty: 'Brak pasujących stron',
+    create: (title: string) => `Nowa strona „${title}”`,
+    deleted: 'Usunięta strona',
+  },
   format: {
     bold: 'Pogrubienie',
     italic: 'Kursywa',

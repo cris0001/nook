@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import type { Page } from '@/schemas/page.schema';
 
 import { usePagesTranslation } from '../i18n';
-import { PAGE_TYPE_ICON } from '../utils/page-icon';
+import { PAGE_TYPE_ICON } from '@/components/page-type-icon';
 import { ACTIVE_SELF, SIDEBAR_ROW } from '../utils/row-styles';
 import { DatabaseProgress } from './database-progress';
 

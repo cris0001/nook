@@ -1,7 +1,7 @@
 import type { Page } from '@/schemas/page.schema';
 
 import { usePagesTranslation } from '../i18n';
-import { PAGE_TYPE_ICON } from '../utils/page-icon';
+import { PAGE_TYPE_ICON } from '@/components/page-type-icon';
 
 export function PageDragPreview({ page }: { page: Page }) {
   const t = usePagesTranslation();

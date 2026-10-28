@@ -10,6 +10,7 @@ import { saveContent } from '@/lib/data/contents';
 import { debounce } from '@/utils/debounce';
 
 import { LinkShortcut } from '../extensions/link-shortcut';
+import { PageMention } from '../extensions/page-mention';
 import { SlashCommand } from '../extensions/slash-command';
 import { usePageContent } from '../hooks/use-page-content';
 import { useDocumentsTranslation } from '../i18n';
@@ -17,6 +18,7 @@ import { normalizeUrl } from '@/utils/safe-url';
 
 import { BlockHandle } from './block-handle';
 import { FormatBar } from './format-bar';
+import { MentionMenu } from './mention-menu';
 import { SlashMenu } from './slash-menu';
 
 const SAVE_DELAY_MS = 400;
@@ -72,6 +74,7 @@ function Editor({
         },
       }),
       SlashCommand,
+      PageMention,
       LinkShortcut,
       TextStyle,
       Color,
@@ -102,6 +105,7 @@ function Editor({
           <BlockHandle editor={editor} container={container} />
           <FormatBar editor={editor} />
           <SlashMenu />
+          <MentionMenu pageId={pageId} />
         </>
       ) : null}
     </div>

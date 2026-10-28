@@ -7,7 +7,7 @@ import { useLocaleStore } from '@/stores/locale.store';
 
 import { usePages } from '../hooks/use-pages';
 import { usePagesTranslation } from '../i18n';
-import { PAGE_TYPE_ICON } from '../utils/page-icon';
+import { PAGE_TYPE_ICON } from '@/components/page-type-icon';
 import { recentOf } from '../utils/page-lists';
 
 export function JumpBackIn() {

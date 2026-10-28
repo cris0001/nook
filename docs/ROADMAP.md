@@ -71,10 +71,10 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 - [x] Slash menu and Markdown shortcuts
 - [x] Drag blocks
 
-### Stage 7 — Links and backlinks
+### Stage 7 — Links and backlinks ✅ COMPLETE
 
-- [ ] `@` mentions of pages and records (with live status)
-- [ ] Backlinks section under every page
+- [x] `@` mentions of pages and records (with live status), create a page from `@`
+- [x] Backlinks section under every page
 
 ### Stage 8 — Calendar view
 
