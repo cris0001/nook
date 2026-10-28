@@ -7,6 +7,7 @@ import type { Dashboard } from '@/schemas/dashboard.schema';
 import type { Database, View } from '@/schemas/database.schema';
 import type { Link } from '@/schemas/link.schema';
 import type { Page } from '@/schemas/page.schema';
+import type { Scene } from '@/schemas/scene.schema';
 import { mentionTargets } from '@/utils/mentions';
 
 // The whole workspace lives in one IndexedDB database. Only indexed fields go in the
@@ -21,6 +22,7 @@ export const db = new Dexie('nook') as Dexie & {
   contents: EntityTable<Content, 'id'>;
   links: EntityTable<Link, 'id'>;
   dashboards: EntityTable<Dashboard, 'id'>;
+  scenes: EntityTable<Scene, 'id'>;
 };
 
 db.version(1).stores({
@@ -101,4 +103,9 @@ db.version(5)
 // v6: dashboards — which database each dashboard page charts.
 db.version(6).stores({
   dashboards: 'id',
+});
+
+// v7: whiteboards — one scene (a list of drawn elements) per whiteboard page.
+db.version(7).stores({
+  scenes: 'id',
 });

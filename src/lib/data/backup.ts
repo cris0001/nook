@@ -6,12 +6,13 @@ import { rebuildLinks } from './links';
 export type ImportResult = { ok: true; pages: number } | { ok: false; reason: 'invalid' };
 
 export async function exportWorkspace(): Promise<Backup> {
-  const [pages, databases, views, contents, dashboards] = await Promise.all([
+  const [pages, databases, views, contents, dashboards, scenes] = await Promise.all([
     db.pages.toArray(),
     db.databases.toArray(),
     db.views.toArray(),
     db.contents.toArray(),
     db.dashboards.toArray(),
+    db.scenes.toArray(),
   ]);
   return {
     format: 'nook',
@@ -22,6 +23,7 @@ export async function exportWorkspace(): Promise<Backup> {
     views,
     contents,
     dashboards,
+    scenes,
   };
 }
 
@@ -35,7 +37,7 @@ export async function importWorkspace(input: unknown): Promise<ImportResult> {
   const backup = parsed.data;
   await db.transaction(
     'rw',
-    [db.pages, db.databases, db.views, db.contents, db.links, db.dashboards],
+    [db.pages, db.databases, db.views, db.contents, db.links, db.dashboards, db.scenes],
     async () => {
       await Promise.all([
         db.pages.clear(),
@@ -43,6 +45,7 @@ export async function importWorkspace(input: unknown): Promise<ImportResult> {
         db.views.clear(),
         db.contents.clear(),
         db.dashboards.clear(),
+        db.scenes.clear(),
       ]);
       await Promise.all([
         db.pages.bulkAdd(backup.pages),
@@ -50,6 +53,7 @@ export async function importWorkspace(input: unknown): Promise<ImportResult> {
         db.views.bulkAdd(backup.views),
         db.contents.bulkAdd(backup.contents),
         db.dashboards.bulkAdd(backup.dashboards),
+        db.scenes.bulkAdd(backup.scenes),
       ]);
       await rebuildLinks();
     },

@@ -162,6 +162,16 @@ async function copyDashboards(newIds: Map<string, string>): Promise<void> {
   );
 }
 
+async function copyScenes(newIds: Map<string, string>): Promise<void> {
+  const rows = await db.scenes.bulkGet([...newIds.keys()]);
+  await db.scenes.bulkAdd(
+    rows.flatMap((row) => {
+      const id = row && newIds.get(row.id);
+      return row && id ? [{ ...row, id, updatedAt: Date.now() }] : [];
+    }),
+  );
+}
+
 async function copyContents(newIds: Map<string, string>): Promise<void> {
   const rows = await db.contents.bulkGet([...newIds.keys()]);
   await db.contents.bulkAdd(
@@ -179,7 +189,7 @@ async function copyContents(newIds: Map<string, string>): Promise<void> {
 export async function duplicatePage(id: string): Promise<Page | undefined> {
   return db.transaction(
     'rw',
-    [db.pages, db.databases, db.views, db.contents, db.links, db.dashboards],
+    [db.pages, db.databases, db.views, db.contents, db.links, db.dashboards, db.scenes],
     async () => {
       const original = await db.pages.get(id);
       if (original?.deletedAt !== null) {
@@ -208,6 +218,7 @@ export async function duplicatePage(id: string): Promise<Page | undefined> {
       await copyDatabaseRows(newIds);
       await copyContents(newIds);
       await copyDashboards(newIds);
+      await copyScenes(newIds);
       return copies[0];
     },
   );
@@ -230,7 +241,7 @@ export async function listTrash(): Promise<Page[]> {
 export async function deletePageForever(id: string): Promise<void> {
   await db.transaction(
     'rw',
-    [db.pages, db.databases, db.views, db.contents, db.links, db.dashboards],
+    [db.pages, db.databases, db.views, db.contents, db.links, db.dashboards, db.scenes],
     async () => {
       const page = await db.pages.get(id);
       if (!page?.deletedAt) {
@@ -246,6 +257,7 @@ export async function deletePageForever(id: string): Promise<void> {
       await db.contents.bulkDelete(gone);
       await db.links.where('sourceId').anyOf(gone).delete();
       await db.dashboards.bulkDelete(gone);
+      await db.scenes.bulkDelete(gone);
     },
   );
 }

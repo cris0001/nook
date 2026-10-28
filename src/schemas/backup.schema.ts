@@ -4,6 +4,7 @@ import { ContentSchema } from './content.schema';
 import { DashboardSchema } from './dashboard.schema';
 import { DatabaseSchema, ViewSchema } from './database.schema';
 import { PageSchema } from './page.schema';
+import { SceneSchema } from './scene.schema';
 
 export const BACKUP_VERSION = 1;
 
@@ -16,6 +17,7 @@ export const BackupSchema = z.object({
   views: z.array(ViewSchema),
   contents: z.array(ContentSchema),
   dashboards: z.array(DashboardSchema).default([]),
+  scenes: z.array(SceneSchema).default([]),
 });
 
 export type Backup = z.infer<typeof BackupSchema>;
