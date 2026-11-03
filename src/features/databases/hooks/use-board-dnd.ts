@@ -8,6 +8,7 @@ import {
   type DragStartEvent,
 } from '@dnd-kit/core';
 
+import { ITEM_KEYS, ItemKeyboardSensor, stepCoordinates } from '@/utils/dnd-keyboard';
 import { moveRecord } from '@/lib/data/databases';
 import type { PropertyDef, View } from '@/schemas/database.schema';
 
@@ -24,6 +25,10 @@ export function useBoardDnd(columns: BoardColumn[], view: View, group: PropertyD
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 6 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 6 } }),
+    useSensor(ItemKeyboardSensor, {
+      keyboardCodes: ITEM_KEYS,
+      coordinateGetter: stepCoordinates(352, 78),
+    }),
   );
   const { startDrag, setTarget, endDrag } = useBoardUiStore.getState();
 
@@ -51,16 +56,21 @@ export function useBoardDnd(columns: BoardColumn[], view: View, group: PropertyD
     return { columnKey: data.columnKey, beforeId: cards?.[index + 1]?.id ?? null };
   }
 
+  // Also on drag over: a keyboard step is a single move event that arrives before the
+  // item under it is known, so the target is settled once `over` updates.
+  function track(event: DragMoveEvent) {
+    const next = targetFor(event);
+    const current = useBoardUiStore.getState().target;
+    if (next?.columnKey !== current?.columnKey || next?.beforeId !== current?.beforeId) {
+      setTarget(next);
+    }
+  }
+
   return {
     sensors,
     onDragStart: ({ active }: DragStartEvent) => startDrag(String(active.id)),
-    onDragMove: (event: DragMoveEvent) => {
-      const next = targetFor(event);
-      const current = useBoardUiStore.getState().target;
-      if (next?.columnKey !== current?.columnKey || next?.beforeId !== current?.beforeId) {
-        setTarget(next);
-      }
-    },
+    onDragMove: track,
+    onDragOver: track,
     onDragEnd: ({ active }: DragEndEvent) => {
       const target = useBoardUiStore.getState().target;
       endDrag();

@@ -49,6 +49,7 @@ export function CalendarDay({
   return (
     <div
       ref={setNodeRef}
+      data-day-cell
       className={cn(
         'group/day border-divider relative flex min-w-0 flex-col gap-1 border-t border-l p-1 sm:p-1.5',
         mode === 'month' ? 'min-h-24 sm:min-h-28' : 'min-h-64',

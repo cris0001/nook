@@ -76,6 +76,7 @@ export function ShortcutsDialog() {
       [
         [t.shortcuts.titleToBody, ['Enter']],
         [t.shortcuts.rename, [t.shortcuts.doubleClick]],
+        [t.shortcuts.dragKeys, ['␣', '↑↓←→', '␣']],
       ],
     ],
     [

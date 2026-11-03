@@ -3,11 +3,13 @@ import { useEffect, type Dispatch, type SetStateAction } from 'react';
 
 import { isTypingTarget } from '@/utils/typing-target';
 
+import { useCalendarUiStore } from '../stores/calendar-ui.store';
 import type { CalendarMode } from '../utils/calendar';
 
 export function useCalendarKeys(mode: CalendarMode, setAnchor: Dispatch<SetStateAction<Date>>) {
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
+      if (event.defaultPrevented || useCalendarUiStore.getState().draggingId) return;
       if (event.metaKey || event.ctrlKey || event.altKey || isTypingTarget(event.target)) return;
       if (document.querySelector('[role="dialog"], [data-radix-popper-content-wrapper]')) return;
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {

@@ -19,6 +19,7 @@ import { addRecord, setRecordValue } from '@/lib/data/databases';
 import type { Database, View } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
 import { todayKey } from '@/utils/dates';
+import { ITEM_KEYS, ItemKeyboardSensor, stepCoordinates } from '@/utils/dnd-keyboard';
 import { statusPropertyOf } from '@/utils/progress';
 
 import { useCalendarKeys } from '../hooks/use-calendar-keys';
@@ -30,6 +31,10 @@ import { CHIP } from './calendar-chip';
 import { CalendarDay } from './calendar-day';
 import { CalendarHeader } from './calendar-header';
 import { UNDATED, UndatedTray } from './undated-tray';
+
+// Arrow keys move a dragged chip by one day cell, whatever the cell size right now.
+const cellSize = (side: 'width' | 'height') => () =>
+  document.querySelector('[data-day-cell]')?.getBoundingClientRect()[side] ?? 100;
 
 export function CalendarView({
   database,
@@ -50,6 +55,10 @@ export function CalendarView({
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 6 } }),
+    useSensor(ItemKeyboardSensor, {
+      keyboardCodes: ITEM_KEYS,
+      coordinateGetter: stepCoordinates(cellSize('width'), cellSize('height')),
+    }),
   );
   const dateProperty = calendarDateProperty(database, view);
   const accessibility = useDndAccessibility((id) => {

@@ -12,6 +12,7 @@ import { useCallback } from 'react';
 import type { Page } from '@/schemas/page.schema';
 
 import { movePage } from '@/lib/data/pages';
+import { ITEM_KEYS, ItemKeyboardSensor, stepCoordinates } from '@/utils/dnd-keyboard';
 import { useSidebarUiStore } from '../stores/sidebar-ui.store';
 import { planDrop, type DropPosition } from '../utils/plan-drop';
 
@@ -21,6 +22,10 @@ export function usePageDnd(pages: readonly Page[]) {
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 6 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 6 } }),
+    useSensor(ItemKeyboardSensor, {
+      keyboardCodes: ITEM_KEYS,
+      coordinateGetter: stepCoordinates(16, 32),
+    }),
   );
   const { startDrag, setDropTarget, endDrag, expand } = useSidebarUiStore.getState();
 
@@ -69,5 +74,12 @@ export function usePageDnd(pages: readonly Page[]) {
     [pages, endDrag, expand],
   );
 
-  return { sensors, onDragStart, onDragMove, onDragEnd, onDragCancel: endDrag };
+  return {
+    sensors,
+    onDragStart,
+    onDragMove,
+    onDragOver: onDragMove,
+    onDragEnd,
+    onDragCancel: endDrag,
+  };
 }

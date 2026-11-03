@@ -1,6 +1,7 @@
 import {
   closestCenter,
   DndContext,
+  KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
@@ -9,6 +10,7 @@ import {
 import {
   arrayMove,
   SortableContext,
+  sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
@@ -32,7 +34,10 @@ export function OptionList({
   property: PropertyDef;
 }) {
   const t = useDatabasesTranslation();
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
   const ids = property.options.map((o) => o.id);
   const accessibility = useDndAccessibility(
     (id) => property.options.find((o) => o.id === id)?.name ?? '',

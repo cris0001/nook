@@ -4,7 +4,8 @@ const en = {
   openMenu: 'Open menu',
   sidebar: 'Sidebar',
   dnd: {
-    instructions: 'Drag with the mouse, or press and hold on touch screens.',
+    instructions:
+      'Press Space to pick an item up, move it with the arrow keys, then Space to drop or Escape to cancel. With a mouse, just drag; on touch screens, press and hold.',
     picked: (item: string) => `Picked up ${item}.`,
     over: (item: string, target: string) => `${item} is over ${target}.`,
     away: (item: string) => `${item} is not over a drop area.`,
@@ -64,6 +65,7 @@ const en = {
     titleToBody: 'From the title into the page',
     rename: 'Rename in the sidebar',
     doubleClick: 'Double-click',
+    dragKeys: 'Move a page, card or chip',
     calendar: 'Calendar',
     calendarStep: 'Previous / next month or week',
     calendarToday: 'Back to today',
@@ -98,7 +100,8 @@ const pl: typeof en = {
   openMenu: 'Otwórz menu',
   sidebar: 'Pasek boczny',
   dnd: {
-    instructions: 'Przeciągnij myszą albo przytrzymaj na ekranie dotykowym.',
+    instructions:
+      'Spacja podnosi element, strzałki go przesuwają, Spacja upuszcza, a Escape anuluje. Myszą po prostu przeciągnij, na ekranie dotykowym przytrzymaj.',
     picked: (item: string) => `Podniesiono: ${item}.`,
     over: (item: string, target: string) => `${item} nad: ${target}.`,
     away: (item: string) => `${item} poza obszarem upuszczenia.`,
@@ -158,6 +161,7 @@ const pl: typeof en = {
     titleToBody: 'Z tytułu do treści strony',
     rename: 'Zmiana nazwy w sidebarze',
     doubleClick: 'Dwuklik',
+    dragKeys: 'Przenieś stronę, kartę lub zadanie',
     calendar: 'Kalendarz',
     calendarStep: 'Poprzedni / następny miesiąc lub tydzień',
     calendarToday: 'Wróć do dziś',

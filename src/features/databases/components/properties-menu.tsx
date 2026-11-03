@@ -1,6 +1,7 @@
 import {
   closestCenter,
   DndContext,
+  KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
@@ -9,6 +10,7 @@ import {
 import {
   arrayMove,
   SortableContext,
+  sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
@@ -28,7 +30,10 @@ import { ToolbarButton } from './toolbar-button';
 
 export function PropertiesMenu({ database, view }: { database: Database; view: View }) {
   const t = useDatabasesTranslation();
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
   const ids = database.properties.map((p) => p.id);
   const accessibility = useDndAccessibility(
     (id) => database.properties.find((p) => p.id === id)?.name ?? '',
