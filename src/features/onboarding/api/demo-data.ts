@@ -1,3 +1,5 @@
+import type { Locale } from 'date-fns';
+
 import { insertRows, lastRootOrder } from '@/lib/data/bulk';
 
 import type { DemoCopy } from '../demo-copy';
@@ -6,10 +8,10 @@ import { createRandom } from '../utils/random';
 import { buildStressWorkspace, STRESS_SIZE, type StressSize } from '../utils/stress-workspace';
 import { createWorkspaceBuilder } from '../utils/workspace-builder';
 
-export async function addDemoWorkspace(copy: DemoCopy): Promise<void> {
+export async function addDemoWorkspace(copy: DemoCopy, locale?: Locale): Promise<void> {
   const now = Date.now();
   const builder = createWorkspaceBuilder(await lastRootOrder(), now);
-  buildDemoWorkspace(builder, copy, createRandom(42), now);
+  buildDemoWorkspace(builder, copy, createRandom(42), now, locale);
   await insertRows(builder.rows);
 }
 

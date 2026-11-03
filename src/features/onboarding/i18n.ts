@@ -97,7 +97,7 @@ const en = {
     clearTitle: 'Delete everything?',
     clearBody:
       'Every page, database and drawing in this browser is removed for good. Export first to keep a copy.',
-    done: (what: string, seconds: string) => `${what} in ${seconds} s`,
+    done: (what: string, took: string) => `${what} in ${took}`,
   },
   status: 'Status',
   stages: ['To do', 'In progress', 'Done'],
@@ -198,7 +198,7 @@ const pl: typeof en = {
     clearTitle: 'Usunąć wszystko?',
     clearBody:
       'Wszystkie strony, bazy i rysunki w tej przeglądarce zostaną trwale usunięte. Najpierw wyeksportuj, jeśli chcesz kopię.',
-    done: (what: string, seconds: string) => `${what} w ${seconds} s`,
+    done: (what: string, took: string) => `${what} w ${took}`,
   },
   status: 'Status',
   stages: ['Do zrobienia', 'W trakcie', 'Zrobione'],

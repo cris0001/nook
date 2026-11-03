@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { useCan } from '@/hooks/use-can';
+import { useDateLocale } from '@/hooks/use-date-locale';
 import { clearWorkspace } from '@/lib/data/bulk';
 import { useConfirm } from '@/stores/confirm.store';
 
@@ -17,6 +18,7 @@ const ROW =
 export function DemoDataActions() {
   const t = useOnboardingTranslation();
   const copy = useDemoTranslation();
+  const { locale } = useDateLocale();
   const navigate = useNavigate();
   const confirm = useConfirm();
   const canManage = useCan('workspace.manage');
@@ -29,7 +31,10 @@ export function DemoDataActions() {
     const started = performance.now();
     try {
       const message = await task();
-      toast(t.data.done(message, ((performance.now() - started) / 1000).toFixed(1)));
+      const ms = performance.now() - started;
+      toast(
+        t.data.done(message, ms < 1000 ? `${Math.round(ms)} ms` : `${(ms / 1000).toFixed(1)} s`),
+      );
     } finally {
       setBusy(false);
     }
@@ -64,7 +69,7 @@ export function DemoDataActions() {
         disabled={busy}
         onClick={() =>
           void run(async () => {
-            await addDemoWorkspace(copy);
+            await addDemoWorkspace(copy, locale);
             return t.data.demoAdded;
           })
         }

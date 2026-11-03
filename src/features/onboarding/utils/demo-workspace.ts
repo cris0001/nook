@@ -1,4 +1,4 @@
-import { addDays, format } from 'date-fns';
+import { addDays, format, type Locale } from 'date-fns';
 import type { JSONContent } from '@tiptap/react';
 
 import type { OptionColor } from '@/schemas/database.schema';
@@ -28,6 +28,7 @@ export function buildDemoWorkspace(
   copy: DemoCopy,
   random: Random,
   now: number,
+  locale?: Locale,
 ) {
   const c = copy.columns;
   const home = b.page({
@@ -123,13 +124,18 @@ export function buildDemoWorkspace(
   });
   b.content(meetings.id, doc(p(copy.teamIntro)));
   copy.meetingTitles.forEach((title, i) => {
-    const date = format(addDays(now, -7 * (copy.meetingTitles.length - i)), 'd MMM');
+    const date = format(
+      addDays(now, -7 * (copy.meetingTitles.length - i)),
+      'd MMM',
+      locale ? { locale } : {},
+    );
     const meeting = b.page({
       parentId: meetings.id,
       type: 'document',
       title: `${title} — ${date}`,
     });
-    const linked = items.slice(i * 4, i * 4 + 3);
+    // One shipped, one in progress, one planned item per meeting.
+    const linked = [items[i], items[7 + i], items[11 + i]].filter((item) => item !== undefined);
     b.content(
       meeting.id,
       doc(
