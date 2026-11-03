@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router';
+import type { ReactNode } from 'react';
 import { House, Search, Trash2 } from 'lucide-react';
 
 import { BrandMark } from '@/components/brand';
@@ -13,7 +14,13 @@ import { FavoritesList } from './favorites-list';
 import { NewPageMenu } from './new-page-menu';
 import { PageTree } from './page-tree';
 
-export function PageSidebar({ todayCount = 0 }: { todayCount?: number }) {
+export function PageSidebar({
+  todayCount = 0,
+  profileExtra,
+}: {
+  todayCount?: number;
+  profileExtra?: ReactNode;
+}) {
   const t = usePagesTranslation();
   const openPalette = useCommandPaletteStore((s) => s.setOpen);
 
@@ -62,7 +69,7 @@ export function PageSidebar({ todayCount = 0 }: { todayCount?: number }) {
         {t.trash.title}
       </Link>
       <div className="border-divider mt-1.5 border-t pt-1.5">
-        <ProfileMenu />
+        <ProfileMenu extra={profileExtra} />
       </div>
     </div>
   );

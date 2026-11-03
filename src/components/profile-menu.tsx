@@ -1,4 +1,5 @@
 import { Check, ChevronsUpDown, Monitor, Moon, Sun } from 'lucide-react';
+import type { ReactNode } from 'react';
 
 import { Flag } from '@/components/flags';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -24,7 +25,7 @@ function initialsOf(name: string, fallback: string): string {
   return letters.join('').toUpperCase();
 }
 
-export function ProfileMenu() {
+export function ProfileMenu({ extra }: { extra?: ReactNode }) {
   const t = useCommonTranslation();
   const { name, role, setName, setRole } = useProfileStore();
   const locale = useLocaleStore((s) => s.locale);
@@ -123,6 +124,7 @@ export function ProfileMenu() {
         </div>
         <div className="border-divider my-1.5 border-t" />
         <WorkspaceBackup />
+        {extra}
       </PopoverContent>
     </Popover>
   );

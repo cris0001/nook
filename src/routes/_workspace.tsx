@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import { AppShell } from '@/components/app-shell';
 import { CommandPalette, PageSidebar } from '@/features/pages';
-import { useSampleWorkspace } from '@/features/onboarding';
+import { DemoDataActions, useSampleWorkspace } from '@/features/onboarding';
 import { useAgendaCount } from '@/features/today';
 
 export const Route = createFileRoute('/_workspace')({
@@ -27,7 +27,7 @@ function WorkspaceLayout() {
   usePrefetchViews();
   const todayCount = useAgendaCount();
   return (
-    <AppShell sidebar={<PageSidebar todayCount={todayCount} />}>
+    <AppShell sidebar={<PageSidebar todayCount={todayCount} profileExtra={<DemoDataActions />} />}>
       <Outlet />
       <CommandPalette />
     </AppShell>
