@@ -21,7 +21,8 @@ The name is written **nOOk** — the double O is a pair of animated eyes (see Br
 - dnd-kit (drag and drop), Tiptap (editor), date-fns
 - Charts are small in-house SVG components (`features/dashboards`): colors through
   token classes, no chart library
-- Vitest (+ Testing Library) for unit tests, Playwright for a few e2e flows
+- Vitest for unit tests; component tests with Testing Library in jsdom (`*.dom.test.tsx`,
+  `// @vitest-environment jsdom` + `@/test/setup-dom`); Playwright for a few e2e flows
 - pnpm, ESLint 9 flat config, Prettier, Husky + lint-staged
 
 No TanStack Query: there is no server. IndexedDB answers in milliseconds and
