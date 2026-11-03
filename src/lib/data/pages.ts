@@ -20,6 +20,28 @@ export async function listPages(): Promise<Page[]> {
   return pages.filter((page) => page.deletedAt === null);
 }
 
+// Everything the sidebar tree and breadcrumbs need: pages that aren't database records.
+export async function listNavigationPages(): Promise<Page[]> {
+  const pages = await db.pages.where('type').notEqual('record').toArray();
+  return pages.filter((page) => page.deletedAt === null);
+}
+
+export async function listRecentPages(limit: number): Promise<Page[]> {
+  return db.pages
+    .orderBy('lastOpenedAt')
+    .reverse()
+    .filter((page) => page.deletedAt === null)
+    .limit(limit)
+    .toArray();
+}
+
+export async function listFavoritePages(): Promise<Page[]> {
+  return db.pages
+    .orderBy('favoritedAt')
+    .filter((page) => page.deletedAt === null)
+    .toArray();
+}
+
 export function getPage(id: string): Promise<Page | undefined> {
   return db.pages.get(id);
 }

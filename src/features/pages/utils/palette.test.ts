@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { makePage } from '@/test/make-page';
 
-import { matchScore, paletteEntries } from './palette';
+import { matchScore, paletteEntries, SEARCH_LIMIT, searchPalette } from './palette';
 
 describe('matchScore', () => {
   it('ranks title prefixes above word and substring matches', () => {
@@ -26,5 +26,22 @@ describe('paletteEntries', () => {
       'Work',
       'Work / Board',
     ]);
+  });
+});
+
+describe('searchPalette', () => {
+  it('ranks, splits pages from records and caps each group', () => {
+    const records = Array.from({ length: 100 }, (_, i) =>
+      makePage(`Fix bug ${i}`, 'Tasks', { type: 'record' }),
+    );
+    const pages = [
+      makePage('Tasks', null, { type: 'database' }),
+      makePage('Fixtures', null),
+      ...records,
+    ];
+    const { navigation, records: found } = searchPalette(pages, 'fix', 'Untitled');
+    expect(navigation.map((e) => e.page.title)).toEqual(['Fixtures']);
+    expect(found).toHaveLength(SEARCH_LIMIT);
+    expect(found[0]?.path).toBe('Tasks');
   });
 });

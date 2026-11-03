@@ -16,7 +16,7 @@ export function MentionMenu({ pageId }: { pageId: string }) {
   const t = useDocumentsTranslation();
   const { open, query, rect, index, pick, setIndex, setItems } = useMentionMenuStore();
   const canCreate = useCan('page.create');
-  const candidates = useMentionCandidates(query, pageId);
+  const candidates = useMentionCandidates(query, pageId, open);
   const listRef = useRef<HTMLUListElement>(null);
   const title = query.trim();
 

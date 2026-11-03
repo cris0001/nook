@@ -1,13 +1,11 @@
-import { usePages } from '../hooks/use-pages';
+import { useFavoritePages } from '../hooks/use-page-lists';
 import { usePagesTranslation } from '../i18n';
-import { favoritesOf } from '../utils/page-lists';
 import { SECTION_LABEL } from '../utils/row-styles';
 import { PageLinkRow } from './page-link-row';
 
 export function FavoritesList() {
   const t = usePagesTranslation();
-  const state = usePages();
-  const favorites = state.status === 'ready' ? favoritesOf(state.pages) : [];
+  const favorites = useFavoritePages();
 
   if (favorites.length === 0) {
     return null;

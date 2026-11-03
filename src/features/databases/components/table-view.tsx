@@ -1,6 +1,8 @@
 import { Plus } from 'lucide-react';
+import { useMemo } from 'react';
 
 import { usePermissions } from '@/hooks/use-can';
+import { useIncremental } from '@/hooks/use-incremental';
 import { addRecord } from '@/lib/data/databases';
 import type { Database, View } from '@/schemas/database.schema';
 import type { Page } from '@/schemas/page.schema';
@@ -8,12 +10,12 @@ import type { Page } from '@/schemas/page.schema';
 import { useDatabasesTranslation } from '../i18n';
 import { statusPropertyOf } from '@/utils/progress';
 
-import { isFinished } from '../utils/board';
 import { AddPropertyButton } from './add-property-button';
-import { PropertyCell } from './property-cell';
 import { PropertyHeader } from './property-header';
-import { RecordTitleCell } from './record-title-cell';
 import { TableFooter } from './table-footer';
+import { TableRow } from './table-row';
+
+const ROW_STEP = 100;
 
 export function TableView({
   database,
@@ -25,8 +27,12 @@ export function TableView({
   records: Page[];
 }) {
   const t = useDatabasesTranslation();
-  const columns = database.properties.filter((p) => !view.hiddenProperties.includes(p.id));
-  const status = statusPropertyOf(database);
+  const columns = useMemo(
+    () => database.properties.filter((p) => !view.hiddenProperties.includes(p.id)),
+    [database.properties, view.hiddenProperties],
+  );
+  const { visible, hidden, sentinel, showMore } = useIncremental(records, ROW_STEP);
+  const status = useMemo(() => statusPropertyOf(database), [database]);
   const allowed = usePermissions();
 
   return (
@@ -50,25 +56,28 @@ export function TableView({
           </tr>
         </thead>
         <tbody>
-          {records.map((record) => (
-            <tr key={record.id} className="group/row hover:bg-hover/50 border-divider border-b">
-              <td className="p-0 group-hover/row:shadow-[inset_2.5px_0_0_var(--color-primary)]">
-                <RecordTitleCell record={record} />
-              </td>
-              {columns.map((property) => (
-                <td key={property.id} className="border-divider border-l p-0 align-middle">
-                  <PropertyCell
-                    databaseId={database.id}
-                    recordId={record.id}
-                    property={property}
-                    value={record.properties[property.id] ?? null}
-                    finished={isFinished(record, status)}
-                  />
-                </td>
-              ))}
-              <td className="border-divider border-l" />
-            </tr>
+          {visible.map((record) => (
+            <TableRow
+              key={record.id}
+              databaseId={database.id}
+              record={record}
+              columns={columns}
+              status={status}
+            />
           ))}
+          {hidden ? (
+            <tr ref={sentinel}>
+              <td colSpan={columns.length + 2} className="border-divider border-b p-0">
+                <button
+                  type="button"
+                  onClick={showMore}
+                  className="text-muted-foreground hover:bg-hover h-9 w-full px-2 text-left font-mono text-xs"
+                >
+                  {t.moreRows(hidden)}
+                </button>
+              </td>
+            </tr>
+          ) : null}
           {allowed('record.edit') ? (
             <tr>
               <td colSpan={columns.length + 2} className="border-divider border-b p-0">

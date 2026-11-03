@@ -3,6 +3,7 @@ import { Plus } from 'lucide-react';
 
 import { useCan } from '@/hooks/use-can';
 import { BrandMark } from '@/components/brand';
+import { useIncremental } from '@/hooks/use-incremental';
 import { addRecord } from '@/lib/data/databases';
 import { cn } from '@/lib/utils';
 import type { Database, PropertyDef, View } from '@/schemas/database.schema';
@@ -14,6 +15,8 @@ import { NO_GROUP, type BoardColumn as Column } from '../utils/board';
 import { DOT_STYLE } from '../utils/option-style';
 import { BoardCard } from './board-card';
 import { BoardColumnMenu } from './board-column-menu';
+
+const CARD_STEP = 30;
 
 export function BoardColumn({
   column,
@@ -35,6 +38,7 @@ export function BoardColumn({
     (s) => s.target?.columnKey === column.key && s.target.beforeId === null,
   );
   const setEditing = useBoardUiStore((s) => s.setEditing);
+  const { visible, hidden, sentinel, showMore } = useIncremental(column.records, CARD_STEP);
   const canAdd = useCan('record.edit');
 
   async function addCard() {
@@ -89,7 +93,7 @@ export function BoardColumn({
             {canAdd ? t.emptyColumn : t.emptyColumnReadOnly}
           </li>
         ) : null}
-        {column.records.map((record) => (
+        {visible.map((record) => (
           <BoardCard
             key={record.id}
             record={record}
@@ -99,6 +103,17 @@ export function BoardColumn({
             group={group}
           />
         ))}
+        {hidden ? (
+          <li ref={sentinel}>
+            <button
+              type="button"
+              onClick={showMore}
+              className="text-muted-foreground hover:bg-hover h-8 w-full rounded-md font-mono text-xs"
+            >
+              {t.moreRows(hidden)}
+            </button>
+          </li>
+        ) : null}
         <li
           aria-hidden
           className={cn('bg-primary h-0.5 rounded-full', !lineAtEnd && 'invisible')}

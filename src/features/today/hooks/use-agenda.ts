@@ -1,6 +1,6 @@
-import { useLiveQuery } from 'dexie-react-hooks';
 import { useMemo } from 'react';
 
+import { useSharedLiveQuery } from '@/hooks/use-shared-live-query';
 import { todayKey } from '@/utils/dates';
 
 import { loadAgendaSources } from '../api/agenda';
@@ -10,7 +10,7 @@ export type AgendaState =
   { status: 'loading' } | { status: 'ready'; agenda: Agenda; databases: number };
 
 export function useAgenda(): AgendaState {
-  const sources = useLiveQuery(loadAgendaSources, []);
+  const sources = useSharedLiveQuery('agenda:sources', loadAgendaSources);
   const today = todayKey();
   const agenda = useMemo(() => (sources ? buildAgenda(sources, today) : null), [sources, today]);
   return sources && agenda

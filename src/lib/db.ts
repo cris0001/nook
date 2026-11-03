@@ -109,3 +109,10 @@ db.version(6).stores({
 db.version(7).stores({
   scenes: 'id',
 });
+
+// v8: indexes for the sidebar — by type (navigation pages without the thousands of
+// records), and the visit / star timestamps (IndexedDB skips nulls, so only opened or
+// starred pages are in those indexes).
+db.version(8).stores({
+  pages: 'id, parentId, updatedAt, type, lastOpenedAt, favoritedAt',
+});

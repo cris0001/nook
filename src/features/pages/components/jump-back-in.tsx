@@ -5,16 +5,14 @@ import { pl } from 'date-fns/locale';
 import { BrandMark } from '@/components/brand';
 import { useLocaleStore } from '@/stores/locale.store';
 
-import { usePages } from '../hooks/use-pages';
+import { useRecentPages } from '../hooks/use-page-lists';
 import { usePagesTranslation } from '../i18n';
 import { PAGE_TYPE_ICON } from '@/components/page-type-icon';
-import { recentOf } from '../utils/page-lists';
 
 export function JumpBackIn() {
   const t = usePagesTranslation();
   const locale = useLocaleStore((s) => s.locale);
-  const state = usePages();
-  const recent = state.status === 'ready' ? recentOf(state.pages, 5) : [];
+  const recent = useRecentPages().slice(0, 5);
 
   return (
     <div>

@@ -1,14 +1,15 @@
 import { useNavigate } from '@tanstack/react-router';
 import { Command } from 'cmdk';
+import { useLiveQuery } from 'dexie-react-hooks';
 import { useMemo, useState } from 'react';
 
 import { BrandMark } from '@/components/brand';
+import { listPages } from '@/lib/data/pages';
 
-import { usePages } from '../hooks/use-pages';
 import { usePagesTranslation } from '../i18n';
 import { useCommandPaletteStore } from '../stores/command-palette.store';
 import { recentOf } from '../utils/page-lists';
-import { matchScore, paletteEntries } from '../utils/palette';
+import { paletteEntries, searchPalette } from '../utils/palette';
 import { PaletteActions } from './palette-actions';
 import { PalettePageItem } from './palette-page-item';
 
@@ -21,10 +22,16 @@ export function CommandPalette() {
   const open = useCommandPaletteStore((s) => s.open);
   const setOpen = useCommandPaletteStore((s) => s.setOpen);
   const [search, setSearch] = useState('');
-  const state = usePages();
-  const pages = useMemo(() => (state.status === 'ready' ? state.pages : []), [state]);
-  const entries = useMemo(() => paletteEntries(pages, t.untitled), [pages, t.untitled]);
+  const pages = useLiveQuery(listPages, []);
   const searching = search.trim() !== '';
+  const results = useMemo(
+    () => (pages && searching ? searchPalette(pages, search, t.untitled) : null),
+    [pages, search, searching, t.untitled],
+  );
+  const recent = useMemo(
+    () => (pages ? paletteEntries(recentOf(pages, 5), t.untitled) : []),
+    [pages, t.untitled],
+  );
 
   function close() {
     setOpen(false);
@@ -36,16 +43,12 @@ export function CommandPalette() {
     void navigate({ to: '/p/$pageId', params: { pageId: id } });
   }
 
-  const recent = recentOf(pages, 5);
-  const navigation = entries.filter((e) => e.page.type !== 'record');
-  const records = entries.filter((e) => e.page.type === 'record');
-
   return (
     <Command.Dialog
       open={open}
       onOpenChange={(next) => (next ? setOpen(true) : close())}
       label={t.palette.label}
-      filter={(_value, query, keywords) => matchScore(keywords ?? [], query)}
+      shouldFilter={false}
       overlayClassName="fixed inset-0 z-50 bg-black/25 animate-[fade-in_120ms_ease-out]"
       contentClassName="bg-background shadow-raised fixed top-[12vh] left-1/2 z-50 w-[min(40rem,calc(100vw-2rem))] -translate-x-1/2 overflow-hidden rounded-xl"
     >
@@ -61,31 +64,32 @@ export function CommandPalette() {
           {t.palette.empty}
         </Command.Empty>
 
-        {searching ? (
+        {results ? (
           <>
-            <Command.Group heading={t.palette.pages} className={GROUP}>
-              {navigation.map((entry) => (
-                <PalettePageItem key={entry.page.id} entry={entry} onOpen={openPage} />
-              ))}
-            </Command.Group>
-            <Command.Group heading={t.palette.records} className={GROUP}>
-              {records.map((entry) => (
-                <PalettePageItem key={entry.page.id} entry={entry} onOpen={openPage} />
-              ))}
-            </Command.Group>
+            {results.navigation.length ? (
+              <Command.Group heading={t.palette.pages} className={GROUP}>
+                {results.navigation.map((entry) => (
+                  <PalettePageItem key={entry.page.id} entry={entry} onOpen={openPage} />
+                ))}
+              </Command.Group>
+            ) : null}
+            {results.records.length ? (
+              <Command.Group heading={t.palette.records} className={GROUP}>
+                {results.records.map((entry) => (
+                  <PalettePageItem key={entry.page.id} entry={entry} onOpen={openPage} />
+                ))}
+              </Command.Group>
+            ) : null}
           </>
         ) : recent.length ? (
           <Command.Group heading={t.palette.recent} className={GROUP}>
-            {recent.map((page) => {
-              const entry = entries.find((e) => e.page.id === page.id);
-              return entry ? (
-                <PalettePageItem key={page.id} entry={entry} onOpen={openPage} />
-              ) : null;
-            })}
+            {recent.map((entry) => (
+              <PalettePageItem key={entry.page.id} entry={entry} onOpen={openPage} />
+            ))}
           </Command.Group>
         ) : null}
 
-        <PaletteActions className={GROUP} onDone={close} />
+        <PaletteActions className={GROUP} search={search} onDone={close} />
       </Command.List>
       <div className="border-divider text-muted-foreground flex items-center gap-4 border-t px-4 py-2 text-xs">
         <span>

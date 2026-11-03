@@ -10,8 +10,7 @@ export type PageTreeState =
 
 export function usePageTree(): PageTreeState {
   const state = usePages();
-  const all = state.status === 'ready' ? state.pages : null;
-  const pages = useMemo(() => all?.filter((page) => page.type !== 'record') ?? null, [all]);
+  const pages = state.status === 'ready' ? state.pages : null;
   const tree = useMemo(() => (pages ? buildPageTree(pages) : null), [pages]);
   return pages && tree ? { status: 'ready', tree, pages } : { status: 'loading' };
 }

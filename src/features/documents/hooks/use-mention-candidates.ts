@@ -13,8 +13,14 @@ export interface MentionCandidate {
   path: string;
 }
 
-export function useMentionCandidates(query: string, excludeId: string): MentionCandidate[] {
-  const pages = useLiveQuery(listPages, []);
+export function useMentionCandidates(
+  query: string,
+  excludeId: string,
+  open: boolean,
+): MentionCandidate[] {
+  // Only while the @ menu is open: every editor has one, and a workspace can hold
+  // thousands of records.
+  const pages = useLiveQuery(() => (open ? listPages() : Promise.resolve([])), [open]);
   return useMemo(() => {
     if (!pages) return [];
     const byId = new Map(pages.map((page) => [page.id, page]));

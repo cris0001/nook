@@ -22,6 +22,7 @@ import { useThemeStore, type Theme } from '@/stores/theme.store';
 
 import { useCreatePage } from '../hooks/use-create-page';
 import { usePagesTranslation } from '../i18n';
+import { matchScore } from '../utils/palette';
 import { PALETTE_ITEM } from './palette-page-item';
 
 const THEME_ICON: Record<Theme, LucideIcon> = { system: Monitor, light: Sun, dark: Moon };
@@ -33,7 +34,15 @@ interface Action {
   run: () => void;
 }
 
-export function PaletteActions({ className, onDone }: { className: string; onDone: () => void }) {
+export function PaletteActions({
+  className,
+  search,
+  onDone,
+}: {
+  className: string;
+  search: string;
+  onDone: () => void;
+}) {
   const t = usePagesTranslation();
   const navigate = useNavigate();
   const createPage = useCreatePage();
@@ -107,9 +116,12 @@ export function PaletteActions({ className, onDone }: { className: string; onDon
       : []),
   ];
 
+  const shown = actions.filter((action) => matchScore([action.label], search) > 0);
+  if (!shown.length) return null;
+
   return (
     <Command.Group heading={t.palette.actions} className={className}>
-      {actions.map(({ id, label, Icon, run }) => (
+      {shown.map(({ id, label, Icon, run }) => (
         <Command.Item
           key={id}
           value={id}

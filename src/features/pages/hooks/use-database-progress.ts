@@ -1,7 +1,6 @@
-import { useLiveQuery } from 'dexie-react-hooks';
-
+import { useSharedLiveQuery } from '@/hooks/use-shared-live-query';
 import { getDatabaseProgress } from '@/lib/data/databases';
 
 export function useDatabaseProgress(databaseId: string) {
-  return useLiveQuery(() => getDatabaseProgress(databaseId), [databaseId]);
+  return useSharedLiveQuery(`progress:${databaseId}`, () => getDatabaseProgress(databaseId));
 }
