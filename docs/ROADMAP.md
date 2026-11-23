@@ -96,8 +96,8 @@ stages move as needed. Anything that doesn't fit lands in "Later".
 - [x] Sample workspace on first launch
 - [ ] Mobile pass
 - [ ] Unit tests for data + utils, 2–3 Playwright flows
-- [ ] README with GIF and architecture notes
-- [ ] Deploy to Vercel
+- [x] README with screenshots and architecture notes
+- [x] Deploy to GitHub Pages
 
 ### Stage 11 — Whiteboard (own Excalidraw-style canvas) ✅ COMPLETE
 

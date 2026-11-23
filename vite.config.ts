@@ -6,6 +6,8 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  // GitHub Pages serves the app from /<repo>/; the deploy workflow sets BASE_PATH.
+  base: process.env.BASE_PATH ?? '/',
   // tanstackRouter must precede the React plugin. It generates
   // src/routeTree.gen.ts from the files in src/routes and enables per-route
   // code-splitting.
